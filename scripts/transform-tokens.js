@@ -14,7 +14,7 @@ const path = require('path');
 // CONFIGURATION
 // ============================================================================
 
-const INPUT_DIR = path.join(__dirname, '../../figma_tokens');
+const INPUT_DIR = path.join(__dirname, '../figma_tokens');
 const OUTPUT_DIR = path.join(__dirname, '../dist');
 const DOCS_DIR = path.join(__dirname, '../docs');
 
@@ -32,7 +32,21 @@ function kebabCase(str) {
   return str
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .replace(/[\s_]+/g, '-')
+    .replace(/\//g, '-') // Replace "/" with "-" to avoid CSS selector issues
     .toLowerCase();
+}
+
+/**
+ * Check if theme is a SEM theme (Health, Home, Compare Coverage)
+ * SEM themes use: serif (Georgia) + sans-serif (Euclid Circular B)
+ * SEO/LLM themes use: display (Schnyder S) + heading/body/sans-serif (Work Sans)
+ */
+function isSEMTheme(themeName) {
+  const name = themeName.toLowerCase();
+  return name.includes('health') ||
+         name.includes('home') ||
+         name.includes('compare') ||
+         (name.includes('sem') && !name.includes('seo'));
 }
 
 function camelCase(str) {
@@ -224,11 +238,9 @@ function generateCSS(themes, typography, breakpoints) {
 
   // Add typography variables (from Desktop as base)
   const desktopTypo = typography.find(t => t.mode === 'Desktop') || typography[0];
-  
-  css += `  /* Typography - Font Families */\n`;
-  for (const [key, val] of Object.entries(desktopTypo.fontFamily)) {
-    css += `  --font-family-${key}: "${val}", system-ui, sans-serif;\n`;
-  }
+
+  // Note: Font families are defined per-theme below, not in :root
+  // This allows SEM themes to use serif/sans-serif and SEO/LLM themes to use display/heading/body
 
   css += `\n  /* Typography - Font Sizes */\n`;
   for (const [key, val] of Object.entries(desktopTypo.fontSize)) {
@@ -254,12 +266,27 @@ function generateCSS(themes, typography, breakpoints) {
 
   // Generate theme classes
   for (const theme of themes) {
+    const isSEM = isSEMTheme(theme.name);
+
     css += `/* ============================================================================
    THEME: ${theme.name}
    ============================================================================ */
 .theme-${theme.slug},
 [data-theme="${theme.slug}"] {
 `;
+
+    // Font Families - different for SEM vs SEO/LLM themes
+    if (isSEM) {
+      css += `  /* Font Families - SEM */\n`;
+      css += `  --font-family-serif: "Georgia";\n`;
+      css += `  --font-family-sans-serif: "Euclid Circular B";\n\n`;
+    } else {
+      css += `  /* Font Families - SEO/LLM */\n`;
+      css += `  --font-family-display: "Schnyder S";\n`;
+      css += `  --font-family-heading: "Work Sans";\n`;
+      css += `  --font-family-body: "Work Sans";\n`;
+      css += `  --font-family-sans-serif: "Work Sans";\n\n`;
+    }
 
     // Button colors
     css += `  /* Button - Primary */\n`;
@@ -407,11 +434,14 @@ function generateTailwindConfig(themes, typography, breakpoints) {
     fontSize[key] = [`${val}px`, { lineHeight: '1.4' }];
   }
 
-  // Build font families
-  const fontFamily = {};
-  for (const [key, val] of Object.entries(desktopTypo.fontFamily)) {
-    fontFamily[key] = [val, 'system-ui', 'sans-serif'];
-  }
+  // Build font families - reference CSS variables for theming
+  const fontFamily = {
+    'serif': ['var(--font-family-serif)', 'Georgia', 'serif'],
+    'sans-serif': ['var(--font-family-sans-serif)', 'system-ui', 'sans-serif'],
+    'display': ['var(--font-family-display)', 'Georgia', 'serif'],
+    'heading': ['var(--font-family-heading)', 'system-ui', 'sans-serif'],
+    'body': ['var(--font-family-body)', 'Georgia', 'serif'],
+  };
 
   // Build screens (breakpoints)
   const screens = {};

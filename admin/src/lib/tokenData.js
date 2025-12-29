@@ -1,20 +1,25 @@
 /**
  * Token Data Helper
  * Provides organized access to design system tokens
- * 
+ *
  * Token paths from Figma are transformed to CSS variables:
  * - "Color.Button.Primary.primary-bg" → "--color-btn-primary-bg"
  * - "Color.Background.bg-white" → "--color-bg-white"
  * - "Font Size.heading-lg" → "--font-size-heading-lg"
  */
 
+// Import breakpoint JSON files directly (Vite supports JSON imports)
+import MobileBreakpoints from '../../../figma_tokens/breakpoints/Mobile.tokens.json';
+import TabletBreakpoints from '../../../figma_tokens/breakpoints/Tablet.tokens.json';
+import DesktopBreakpoints from '../../../figma_tokens/breakpoints/Desktop.tokens.json';
+
 // Theme definitions - matches CSS classes in tokens.css
 export const themes = [
   { name: 'Health SEM', slug: 'theme-health---sem' },
   { name: 'Home SEM', slug: 'theme-home---sem' },
   { name: 'LLM', slug: 'theme-llm' },
-  { name: 'ForbesMedia SEO', slug: 'theme-forbesmedia---seo' },
-  { name: 'Compare Coverage', slug: 'theme-advisor-sem/compare-coverage' },
+  { name: 'ForbesMedia SEO', slug: 'theme-forbes-media---seo' },
+  { name: 'Compare Coverage', slug: 'theme-advisor-sem-compare-coverage' },
 ];
 
 // Color tokens organized by category
@@ -337,32 +342,29 @@ export const borderWidthTokens = [
   { name: 'border-width-lg', variable: '--border-width-lg', value: '8px' },
 ];
 
-// Breakpoints and grid - from Desktop_tokens.json, Mobile_tokens.json, Tablet_tokens.json
+// Breakpoints and grid - parsed from figma_tokens/breakpoints/*.tokens.json
+
+/**
+ * Parse breakpoint JSON file into breakpoints object
+ * @param {Object} json - The JSON object from Figma export
+ * @param {string} name - The breakpoint name (Mobile, Tablet, Desktop)
+ * @returns {Object} - Parsed breakpoint object
+ */
+function parseBreakpoint(json, name) {
+  return {
+    name: json.$extensions?.['com.figma.modeName'] || name,
+    width: `${json.Breakpoint.$value}px`,
+    columns: json.Columns.$value,
+    margin: `${json.Margin.$value}px`,
+    gutter: `${json.Gutter.$value}px`,
+    variable: `--breakpoint-${name.toLowerCase()}`
+  };
+}
+
 export const breakpoints = [
-  { 
-    name: 'Mobile', 
-    width: '390px', 
-    columns: 4, 
-    margin: '16px', 
-    gutter: '12px',
-    variable: '--breakpoint-mobile'
-  },
-  { 
-    name: 'Tablet', 
-    width: '744px', 
-    columns: 8, 
-    margin: '24px', 
-    gutter: '24px',
-    variable: '--breakpoint-tablet'
-  },
-  { 
-    name: 'Desktop', 
-    width: '1440px', 
-    columns: 12, 
-    margin: '80px', 
-    gutter: '24px',
-    variable: '--breakpoint-desktop'
-  },
+  parseBreakpoint(MobileBreakpoints, 'Mobile'),
+  parseBreakpoint(TabletBreakpoints, 'Tablet'),
+  parseBreakpoint(DesktopBreakpoints, 'Desktop'),
 ];
 
 // ============================================================================

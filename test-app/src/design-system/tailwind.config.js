@@ -8,7 +8,7 @@
  * 3. Use semantic classes: bg-bg-brand, text-fg-heading, etc.
  * 
  * AVAILABLE THEMES:
- * - theme-advisor-sem/compare-coverage
+ * - theme-advisor-sem-compare-coverage
  * - theme-forbes-media---seo
  * - theme-health---sem
  * - theme-home---sem
@@ -250,40 +250,30 @@ module.exports = {
         ]
       },
       "fontFamily": {
-        "font-family-serif": [
+        "serif": [
+          "var(--font-family-serif)",
           "Georgia",
+          "serif"
+        ],
+        "sans-serif": [
+          "var(--font-family-sans-serif)",
           "system-ui",
           "sans-serif"
         ],
-        "font-family-sans-serif": [
-          "Euclid Circular B",
-          "system-ui",
-          "sans-serif"
-        ],
-        "forbes-media---seo-font-family-heading-serif": [
-          "Schnyder S",
-          "system-ui",
-          "sans-serif"
-        ],
-        "forbes-media---seo-font-family-heading": [
-          "Work Sans",
-          "system-ui",
-          "sans-serif"
-        ],
-        "forbes-media---seo-font-family-body": [
+        "display": [
+          "var(--font-family-display)",
           "Georgia",
+          "serif"
+        ],
+        "heading": [
+          "var(--font-family-heading)",
           "system-ui",
           "sans-serif"
         ],
-        "forbes-media---seo-font-family-body-serif": [
-          "Work Sans",
-          "system-ui",
-          "sans-serif"
-        ],
-        "forbes-media---seo-font-family-breadcrumbs": [
-          "Graphik",
-          "system-ui",
-          "sans-serif"
+        "body": [
+          "var(--font-family-body)",
+          "Georgia",
+          "serif"
         ]
       },
       "fontWeight": {

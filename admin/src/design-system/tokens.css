@@ -30,14 +30,6 @@
   --grid-margin-desktop: 80px;
   --grid-gutter-desktop: 24px;
 
-  /* Typography - Font Families */
-  --font-family-font-family-serif: "Georgia", system-ui, sans-serif;
-  --font-family-font-family-sans-serif: "Euclid Circular B", system-ui, sans-serif;
-  --font-family-forbes-media---seo-font-family-heading-serif: "Schnyder S", system-ui, sans-serif;
-  --font-family-forbes-media---seo-font-family-heading: "Work Sans", system-ui, sans-serif;
-  --font-family-forbes-media---seo-font-family-body: "Work Sans", system-ui, sans-serif;
-  --font-family-forbes-media---seo-font-family-body-serif: "Work Sans", system-ui, sans-serif;
-  --font-family-forbes-media---seo-font-family-breadcrumbs: "Graphik", system-ui, sans-serif;
 
   /* Typography - Font Sizes */
   --font-size-display: 56px;
@@ -99,8 +91,12 @@
 /* ============================================================================
    THEME: Advisor SEM/Compare Coverage
    ============================================================================ */
-.theme-advisor-sem/compare-coverage,
-[data-theme="advisor-sem/compare-coverage"] {
+.theme-advisor-sem-compare-coverage,
+[data-theme="advisor-sem-compare-coverage"] {
+  /* Font Families - SEM */
+  --font-family-serif: "Georgia";
+  --font-family-sans-serif: "Euclid Circular B";
+
   /* Button - Primary */
   --color-btn-primary-bg: #35B782;
   --color-btn-primary-text: #FFFFFF;
@@ -176,6 +172,12 @@
    ============================================================================ */
 .theme-forbes-media---seo,
 [data-theme="forbes-media---seo"] {
+  /* Font Families - SEO/LLM */
+  --font-family-display: "Schnyder S";
+  --font-family-heading: "Work Sans";
+  --font-family-body: "Work Sans";
+  --font-family-sans-serif: "Work Sans";
+
   /* Button - Primary */
   --color-btn-primary-bg: #007AC8;
   --color-btn-primary-text: #FFFFFF;
@@ -251,6 +253,10 @@
    ============================================================================ */
 .theme-health---sem,
 [data-theme="health---sem"] {
+  /* Font Families - SEM */
+  --font-family-serif: "Georgia";
+  --font-family-sans-serif: "Euclid Circular B";
+
   /* Button - Primary */
   --color-btn-primary-bg: #657E79;
   --color-btn-primary-text: #FFFFFF;
@@ -326,6 +332,10 @@
    ============================================================================ */
 .theme-home---sem,
 [data-theme="home---sem"] {
+  /* Font Families - SEM */
+  --font-family-serif: "Georgia";
+  --font-family-sans-serif: "Euclid Circular B";
+
   /* Button - Primary */
   --color-btn-primary-bg: #EA7F67;
   --color-btn-primary-text: #FFFFFF;
@@ -401,6 +411,12 @@
    ============================================================================ */
 .theme-llm,
 [data-theme="llm"] {
+  /* Font Families - SEO/LLM */
+  --font-family-display: "Schnyder S";
+  --font-family-heading: "Work Sans";
+  --font-family-body: "Work Sans";
+  --font-family-sans-serif: "Work Sans";
+
   /* Button - Primary */
   --color-btn-primary-bg: #007AC8;
   --color-btn-primary-text: #FFFFFF;

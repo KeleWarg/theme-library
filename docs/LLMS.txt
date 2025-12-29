@@ -11,7 +11,7 @@
 
 ## Available Themes
 
-- `theme-advisor-sem/compare-coverage` - Advisor SEM/Compare Coverage
+- `theme-advisor-sem-compare-coverage` - Advisor SEM/Compare Coverage
 - `theme-forbes-media---seo` - ForbesMedia - SEO
 - `theme-health---sem` - Health - SEM
 - `theme-home---sem` - Home - SEM
