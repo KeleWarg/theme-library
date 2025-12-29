@@ -30,7 +30,7 @@ describe('ComponentPreview', () => {
   it('has sandbox attribute for security', () => {
     render(<ComponentPreview code="" componentProps={{}} />)
     const iframe = screen.getByTitle('Component Preview')
-    expect(iframe).toHaveAttribute('sandbox', 'allow-scripts')
+    expect(iframe).toHaveAttribute('sandbox', 'allow-scripts allow-same-origin')
   })
 })
 

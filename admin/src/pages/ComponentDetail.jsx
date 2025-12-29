@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Save, Sparkles, CheckCircle, Upload, ExternalLink, Copy, Check } from 'lucide-react'
+import { ArrowLeft, Save, CheckCircle, Upload, ExternalLink, Copy, Check } from 'lucide-react'
 import { useComponent } from '../hooks/useComponent'
 import { useTheme } from '../hooks/useTheme'
 import Tabs from '../components/ui/Tabs'
@@ -8,6 +8,9 @@ import Badge from '../components/ui/Badge'
 import CodeEditor from '../components/ui/CodeEditor'
 import PropsTable from '../components/ui/PropsTable'
 import ComponentPreview from '../components/ui/ComponentPreview'
+import GenerateButton from '../components/ui/GenerateButton'
+import FeedbackModal from '../components/ui/FeedbackModal'
+import { generateComponentCode } from '../lib/generateCode'
 import { themes } from '../lib/tokenData'
 
 const tabs = [
@@ -29,6 +32,9 @@ export default function ComponentDetail() {
   const [previewProps, setPreviewProps] = useState({ children: 'Click me' })
   const [saving, setSaving] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false)
+  const [generationError, setGenerationError] = useState(null)
 
   // Initialize local state when component loads
   useEffect(() => {
@@ -67,6 +73,33 @@ export default function ComponentDetail() {
     navigator.clipboard.writeText(localCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  // AI Code Generation handler
+  const handleGenerate = async (feedback = '') => {
+    setGenerating(true)
+    setGenerationError(null)
+    setShowFeedbackModal(false)
+    
+    try {
+      const result = await generateComponentCode(component, feedback)
+      setLocalCode(result.jsx_code)
+      if (result.props && result.props.length > 0) {
+        setLocalProps(result.props)
+      }
+      
+      // Auto-save and update status
+      await update({
+        jsx_code: result.jsx_code,
+        props: result.props,
+        code_status: 'generated'
+      })
+    } catch (err) {
+      console.error('Generation failed:', err)
+      setGenerationError(err.message)
+    } finally {
+      setGenerating(false)
+    }
   }
 
   if (loading) {
@@ -121,28 +154,6 @@ export default function ComponentDetail() {
           
           {/* Action buttons */}
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {/* Generate Code button */}
-            {component.code_status === 'pending' && (
-              <button
-                onClick={() => handleStatusChange('generated')}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '8px 16px',
-                  background: 'linear-gradient(135deg, #8B5CF6, #6366F1)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: 500,
-                }}
-              >
-                <Sparkles size={16} />
-                Generate Code
-              </button>
-            )}
-            
             {/* Approve button */}
             {component.code_status === 'generated' && (
               <button
@@ -225,32 +236,104 @@ export default function ComponentDetail() {
             
             {activeTab === 'code' && (
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                {/* Header with actions */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h3 style={{ margin: 0, color: 'var(--color-fg-heading)', fontSize: '16px' }}>JSX Code</h3>
-                  <button
-                    onClick={handleCopyCode}
-                    style={{
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {/* Generate/Regenerate button */}
+                    {localCode ? (
+                      <GenerateButton
+                        onClick={() => setShowFeedbackModal(true)}
+                        loading={generating}
+                        hasExistingCode={true}
+                      />
+                    ) : (
+                      <GenerateButton
+                        onClick={() => handleGenerate()}
+                        loading={generating}
+                        hasExistingCode={false}
+                      />
+                    )}
+                    
+                    {/* Copy button */}
+                    <button
+                      onClick={handleCopyCode}
+                      disabled={!localCode}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '10px 14px',
+                        background: 'var(--color-bg-neutral-light)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: localCode ? 'pointer' : 'not-allowed',
+                        fontSize: '14px',
+                        color: 'var(--color-fg-body)',
+                        opacity: localCode ? 1 : 0.5,
+                      }}
+                    >
+                      {copied ? <Check size={14} /> : <Copy size={14} />}
+                      {copied ? 'Copied!' : 'Copy'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Error message */}
+                {generationError && (
+                  <div style={{
+                    padding: '12px 16px',
+                    background: '#FEE2E2',
+                    borderRadius: '8px',
+                    marginBottom: '16px',
+                    color: '#991B1B',
+                    fontSize: '14px',
+                  }}>
+                    <strong>Generation failed:</strong> {generationError}
+                  </div>
+                )}
+
+                {/* Code editor or empty state */}
+                {localCode ? (
+                  <CodeEditor
+                    value={localCode}
+                    onChange={setLocalCode}
+                    language="javascript"
+                    height="500px"
+                  />
+                ) : (
+                  <div style={{
+                    border: '2px dashed var(--color-border-default)',
+                    borderRadius: '12px',
+                    padding: '60px 24px',
+                    textAlign: 'center',
+                    background: 'var(--color-bg-neutral-light)',
+                  }}>
+                    <div style={{
+                      width: '64px',
+                      height: '64px',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '4px',
-                      padding: '6px 12px',
-                      background: 'var(--color-bg-neutral-light)',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '13px',
-                      color: 'var(--color-fg-body)',
-                    }}
-                  >
-                    {copied ? <Check size={14} /> : <Copy size={14} />}
-                    {copied ? 'Copied!' : 'Copy'}
-                  </button>
-                </div>
-                <CodeEditor
-                  value={localCode}
-                  onChange={setLocalCode}
-                  language="javascript"
-                  height="500px"
+                      justifyContent: 'center',
+                      margin: '0 auto 16px',
+                    }}>
+                      <Copy size={28} color="white" />
+                    </div>
+                    <h4 style={{ margin: '0 0 8px', color: 'var(--color-fg-heading)' }}>No code yet</h4>
+                    <p style={{ margin: 0, color: 'var(--color-fg-caption)', maxWidth: '300px', marginLeft: 'auto', marginRight: 'auto' }}>
+                      Click "Generate with AI" to create React code from this component's Figma design.
+                    </p>
+                  </div>
+                )}
+                
+                {/* Feedback Modal */}
+                <FeedbackModal
+                  isOpen={showFeedbackModal}
+                  onClose={() => setShowFeedbackModal(false)}
+                  onSubmit={handleGenerate}
+                  loading={generating}
                 />
               </div>
             )}
