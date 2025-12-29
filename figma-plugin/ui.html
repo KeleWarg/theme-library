@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 16px;
+      background: #ffffff;
+      color: #333;
+    }
+    
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1e1e1e;
+    }
+    
+    .section { margin-bottom: 20px; }
+    
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    
+    .checkbox-label input { width: 14px; height: 14px; }
+    
+    .collection-list {
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .collection-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    
+    .collection-item:hover { background: #f5f5f5; }
+    .collection-item.selected { background: #e8f0fe; }
+    
+    .mode-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      background: #e5e5e5;
+      border-radius: 3px;
+      color: #666;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #18a0fb;
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover { background: #0d8de5; }
+    .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+    
+    .btn-secondary {
+      background: white;
+      color: #333;
+      border: 1px solid #e5e5e5;
+    }
+    
+    .btn-secondary:hover { background: #f5f5f5; }
+    
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: none;
+    }
+    
+    .status.success { display: block; background: #e6f4ea; color: #1e7e34; }
+    .status.error { display: block; background: #fce8e6; color: #c5221f; }
+    .status.info { display: block; background: #e8f0fe; color: #1967d2; }
+    
+    .divider { height: 1px; background: #e5e5e5; margin: 16px 0; }
+    
+    .input-group { margin-bottom: 12px; }
+    
+    .input-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #666;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    
+    .input-group input:focus { outline: none; border-color: #18a0fb; }
+  </style>
+</head>
+<body>
+  <h2>Design System Variables Exporter</h2>
+  
+  <div class="section">
+    <div class="section-title">Variable Collections</div>
+    <div id="collections" class="collection-list">
+      <div style="color: #999; font-size: 11px;">Loading collections...</div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="section-title">Export Options</div>
+    <div class="checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="exportColors" checked>
+        Colors (themes)
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="exportTypography" checked>
+        Typography
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="exportBreakpoints" checked>
+        Breakpoints / Spacing
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="includeMetadata">
+        Include Figma metadata
+      </label>
+    </div>
+  </div>
+  
+  <div class="divider"></div>
+  
+  <div class="section">
+    <div class="section-title">Output Format</div>
+    <div class="checkbox-group">
+      <label class="checkbox-label">
+        <input type="radio" name="format" value="dtcg" checked>
+        DTCG Format (Design Tokens Community Group)
+      </label>
+      <label class="checkbox-label">
+        <input type="radio" name="format" value="simple">
+        Simple JSON (key-value pairs)
+      </label>
+    </div>
+  </div>
+  
+  <div class="divider"></div>
+  
+  <div class="section">
+    <div class="section-title">API Sync (Optional)</div>
+    <div class="input-group">
+      <label>Admin Dashboard URL</label>
+      <input type="text" id="apiUrl" placeholder="https://your-admin.vercel.app/api/tokens">
+    </div>
+    <div class="input-group">
+      <label>API Key</label>
+      <input type="password" id="apiKey" placeholder="Enter API key for sync">
+    </div>
+  </div>
+  
+  <div class="button-group">
+    <button class="btn-secondary" id="cancelBtn">Cancel</button>
+    <button class="btn-primary" id="exportBtn">Export to JSON</button>
+  </div>
+  
+  <button class="btn-primary" id="syncBtn" style="width: 100%; margin-top: 8px; background: #34a853;" disabled>
+    Sync to Dashboard
+  </button>
+  
+  <div id="status" class="status"></div>
+
+  <script>
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      
+      if (msg.type === 'collections') {
+        renderCollections(msg.collections);
+      } else if (msg.type === 'export-complete') {
+        showStatus('success', `Exported ${msg.fileCount} files!`);
+        msg.files.forEach((file, index) => {
+          setTimeout(() => downloadFile(file.name, file.content), index * 500);
+        });
+      } else if (msg.type === 'sync-complete') {
+        showStatus('success', 'Synced to dashboard successfully!');
+      } else if (msg.type === 'error') {
+        showStatus('error', msg.message);
+      }
+    };
+    
+    function renderCollections(collections) {
+      const container = document.getElementById('collections');
+      
+      if (collections.length === 0) {
+        container.innerHTML = '<div style="color: #999; font-size: 11px;">No variable collections found</div>';
+        return;
+      }
+      
+      container.innerHTML = collections.map(col => `
+        <label class="collection-item">
+          <input type="checkbox" value="${col.id}" checked>
+          <span>${col.name}</span>
+          <span class="mode-badge">${col.modeCount} mode${col.modeCount > 1 ? 's' : ''}</span>
+        </label>
+      `).join('');
+    }
+    
+    function showStatus(type, message) {
+      const status = document.getElementById('status');
+      status.className = 'status ' + type;
+      status.textContent = message;
+    }
+    
+    function getSelectedCollections() {
+      const checkboxes = document.querySelectorAll('#collections input[type="checkbox"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+    
+    function getExportOptions() {
+      return {
+        colors: document.getElementById('exportColors').checked,
+        typography: document.getElementById('exportTypography').checked,
+        breakpoints: document.getElementById('exportBreakpoints').checked,
+        includeMetadata: document.getElementById('includeMetadata').checked,
+        format: document.querySelector('input[name="format"]:checked').value
+      };
+    }
+    
+    function downloadFile(filename, content) {
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename.replace(/\//g, '_');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    
+    document.getElementById('exportBtn').onclick = () => {
+      const collections = getSelectedCollections();
+      const options = getExportOptions();
+      
+      if (collections.length === 0) {
+        showStatus('error', 'Please select at least one collection');
+        return;
+      }
+      
+      showStatus('info', 'Exporting...');
+      parent.postMessage({ pluginMessage: { type: 'export', collections, options } }, '*');
+    };
+    
+    document.getElementById('syncBtn').onclick = () => {
+      const apiUrl = document.getElementById('apiUrl').value;
+      const apiKey = document.getElementById('apiKey').value;
+      const collections = getSelectedCollections();
+      const options = getExportOptions();
+      
+      if (!apiUrl) {
+        showStatus('error', 'Please enter API URL');
+        return;
+      }
+      
+      showStatus('info', 'Syncing...');
+      parent.postMessage({ pluginMessage: { type: 'sync', apiUrl, apiKey, collections, options } }, '*');
+    };
+    
+    document.getElementById('apiUrl').oninput = (e) => {
+      document.getElementById('syncBtn').disabled = !e.target.value;
+    };
+    
+    document.getElementById('cancelBtn').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    };
+    
+    parent.postMessage({ pluginMessage: { type: 'get-collections' } }, '*');
+  </script>
+</body>
+</html>

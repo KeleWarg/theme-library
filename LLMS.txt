@@ -1,0 +1,147 @@
+# Design System Documentation for AI Assistants
+
+> This file helps AI coding assistants (Cursor, Copilot, Bolt, Lovable) understand 
+> and correctly use this design system. Read this before generating any UI code.
+
+## Quick Start
+
+1. Import the CSS: `@import '@your-org/design-system/dist/tokens.css';`
+2. Add theme to HTML: `<html class="theme-health-sem">`
+3. Use semantic CSS variables: `color: var(--color-fg-heading);`
+
+## Available Themes
+
+- `theme-advisor-sem/compare-coverage` - Advisor SEM/Compare Coverage
+- `theme-forbes-media---seo` - ForbesMedia - SEO
+- `theme-health---sem` - Health - SEM
+- `theme-home---sem` - Home - SEM
+- `theme-llm` - LLM
+
+## Color System
+
+### When to use each color:
+
+**Backgrounds (--color-bg-*)**
+- `bg-white` - Default page background
+- `bg-neutral-subtle` - Subtle section differentiation
+- `bg-neutral-light` - Card backgrounds, input fields
+- `bg-brand` - Brand-colored sections, CTAs
+- `bg-header` - Navigation header background
+- `bg-table` - Table backgrounds
+
+**Text/Foreground (--color-fg-*)**
+- `fg-heading` - All headings (h1-h6)
+- `fg-body` - Paragraph text, default content
+- `fg-caption` - Secondary text, timestamps, metadata
+- `fg-link` - Clickable links
+- `fg-heading-inverse` - Headings on dark backgrounds
+- `fg-body-inverse` - Body text on dark backgrounds
+
+**Buttons (--color-btn-*)**
+- Primary buttons: `btn-primary-bg`, `btn-primary-text`, `btn-primary-hover-bg`
+- Secondary buttons: `btn-secondary-bg`, `btn-secondary-border`, `btn-secondary-text`
+- Ghost buttons: `btn-ghost-text`, `btn-ghost-hover-bg`
+
+**Feedback States**
+- `fg-feedback-error` (#EB4015) - Error messages, destructive actions
+- `fg-feedback-warning` (#FFB136) - Warnings, cautions
+- `fg-feedback-success` (#0C7663) - Success states, confirmations
+
+## Typography
+
+### Font Families
+- `--font-family-font-family-serif`: Georgia
+- `--font-family-font-family-sans-serif`: Euclid Circular B
+- `--font-family-forbes-media---seo-font-family-heading-serif`: Schnyder S
+- `--font-family-forbes-media---seo-font-family-heading`: Work Sans
+- `--font-family-forbes-media---seo-font-family-body`: Georgia
+- `--font-family-forbes-media---seo-font-family-body-serif`: Work Sans
+- `--font-family-forbes-media---seo-font-family-breadcrumbs`: Graphik
+
+### Font Sizes (use for consistent hierarchy)
+- Display: 56px - Hero headlines only
+- Heading LG: 48px - Page titles
+- Heading MD: 32px - Section headers
+- Heading SM: 24px - Card titles
+- Title LG: 20px - Emphasized content
+- Title MD: 18px - Subtitles
+- Body LG: 18px - Lead paragraphs
+- Body MD: 16px - Default body text
+- Body SM: 14px - Secondary content
+- Label: 14px - Form labels, buttons
+
+### Font Weights
+- Light: 300
+- Regular: 400 - Body text
+- Medium: 500 - Emphasis
+- Semibold: 600 - Buttons, labels
+- Bold: 700 - Headings
+
+## Responsive Breakpoints
+
+| Device  | Min Width | Columns | Margin | Gutter |
+|---------|-----------|---------|--------|--------|
+| Mobile | 390px | 4 | 16px | 12px |
+| Tablet | 744px | 8 | 24px | 24px |
+| Desktop | 1440px | 12 | 80px | 24px |
+
+## Code Examples
+
+### React Component with Theme
+```jsx
+import '@your-org/design-system/dist/tokens.css';
+
+function Card({ title, children }) {
+  return (
+    <div style={{ 
+      background: 'var(--color-bg-neutral-light)',
+      padding: 'var(--grid-gutter)'
+    }}>
+      <h3 style={{ 
+        color: 'var(--color-fg-heading)',
+        fontSize: 'var(--font-size-heading-sm)'
+      }}>
+        {title}
+      </h3>
+      <p style={{ color: 'var(--color-fg-body)' }}>
+        {children}
+      </p>
+    </div>
+  );
+}
+```
+
+### Tailwind Classes
+```html
+<button class="bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover rounded-md px-4 py-2">
+  Primary Action
+</button>
+
+<div class="bg-bg-neutral-light text-fg-body p-gutter">
+  Card content
+</div>
+```
+
+## DO's and DON'Ts
+
+✅ DO:
+- Use semantic color tokens (fg-heading, bg-brand) not raw hex values
+- Apply theme class to root element
+- Use responsive grid tokens for layout
+- Reference CSS variables for theme-ability
+
+❌ DON'T:
+- Hardcode colors like #657E79 directly
+- Mix tokens from different themes
+- Ignore the typography scale
+- Use arbitrary spacing values
+
+## File Structure
+
+```
+dist/
+├── tokens.css          # All CSS custom properties
+├── tailwind.config.js  # Tailwind theme extension
+├── tokens.ts           # TypeScript constants & types
+└── tokens.json         # Raw token data
+```

@@ -1,0 +1,33 @@
+{
+  "Breakpoint": {
+    "$type": "number",
+    "$value": 390,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:500:373"
+    }
+  },
+  "Columns": {
+    "$type": "number",
+    "$value": 4,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:500:375"
+    }
+  },
+  "Margin": {
+    "$type": "number",
+    "$value": 16,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:500:376"
+    }
+  },
+  "Gutter": {
+    "$type": "number",
+    "$value": 12,
+    "$extensions": {
+      "com.figma.variableId": "VariableID:500:377"
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Mobile"
+  }
+}

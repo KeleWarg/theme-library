@@ -1,0 +1,494 @@
+/**
+ * Design System Tokens
+ * Auto-generated from Figma Variables
+ * 
+ * USAGE FOR AI TOOLS:
+ * - Use CSS variables for theming: var(--color-bg-primary)
+ * - Theme class on root: <html class="theme-health-sem">
+ * - Responsive breakpoints: mobile (<744px), tablet (744-1439px), desktop (≥1440px)
+ */
+
+/* ============================================================================
+   BREAKPOINTS & GRID
+   ============================================================================ */
+:root {
+  /* mobile */
+  --breakpoint-mobile: 390px;
+  --grid-columns-mobile: 4;
+  --grid-margin-mobile: 16px;
+  --grid-gutter-mobile: 12px;
+
+  /* tablet */
+  --breakpoint-tablet: 744px;
+  --grid-columns-tablet: 8;
+  --grid-margin-tablet: 24px;
+  --grid-gutter-tablet: 24px;
+
+  /* desktop */
+  --breakpoint-desktop: 1440px;
+  --grid-columns-desktop: 12;
+  --grid-margin-desktop: 80px;
+  --grid-gutter-desktop: 24px;
+
+  /* Typography - Font Families */
+  --font-family-font-family-serif: "Georgia", system-ui, sans-serif;
+  --font-family-font-family-sans-serif: "Euclid Circular B", system-ui, sans-serif;
+  --font-family-forbes-media---seo-font-family-heading-serif: "Schnyder S", system-ui, sans-serif;
+  --font-family-forbes-media---seo-font-family-heading: "Work Sans", system-ui, sans-serif;
+  --font-family-forbes-media---seo-font-family-body: "Work Sans", system-ui, sans-serif;
+  --font-family-forbes-media---seo-font-family-body-serif: "Work Sans", system-ui, sans-serif;
+  --font-family-forbes-media---seo-font-family-breadcrumbs: "Graphik", system-ui, sans-serif;
+
+  /* Typography - Font Sizes */
+  --font-size-display: 56px;
+  --font-size-heading-lg: 48px;
+  --font-size-heading-md: 32px;
+  --font-size-heading-sm: 24px;
+  --font-size-title-lg: 20px;
+  --font-size-title-md: 18px;
+  --font-size-title-sm: 16px;
+  --font-size-title-xs: 14px;
+  --font-size-body-lg: 18px;
+  --font-size-body-md: 16px;
+  --font-size-body-xs: 12px;
+  --font-size-body-sm: 14px;
+  --font-size-label-lg: 16px;
+  --font-size-label-md: 14px;
+  --font-size-label-sm: 12px;
+  --font-size-label-xs: 10px;
+  --font-size-forbes-media-heading-lg: 48px;
+  --font-size-forbes-media-heading-md: 32px;
+  --font-size-forbes-media-heading-sm: 24px;
+  --font-size-forbes-media-heading-xs: 20px;
+  --font-size-forbes-media-body-lg-serif: 18px;
+  --font-size-forbes-media-body-lg: 18px;
+  --font-size-forbes-media-body-md: 16px;
+  --font-size-forbes-media-body-sm: 14px;
+  --font-size-forbes-media-body-xs: 12px;
+  --font-size-forbes-media-body-2xs: 10px;
+  --font-size-forbes-media-label-eyebrow: 18px;
+  --font-size-forbes-media-label-breadcrumb: 12px;
+
+  /* Typography - Font Weights */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+  --font-weight-light: 300;
+
+  /* Typography - Line Heights */
+  --line-height-5xl: 68px;
+  --line-height-4xl: 58px;
+  --line-height-3xl: 40px;
+  --line-height-2xl: 32px;
+  --line-height-xl: 26px;
+  --line-height-lg: 24px;
+  --line-height-md: 22px;
+  --line-height-sm: 20px;
+  --line-height-xs: 18px;
+  --line-height-2xs: 16px;
+
+  /* Typography - Letter Spacing */
+  --letter-spacing-tighter: -0.20000000298023224px;
+  --letter-spacing-wider: 1px;
+  --letter-spacing-tight: -0.10000000149011612px;
+  --letter-spacing-normal: 0px;
+  --letter-spacing-wide: 0.5px;
+}
+
+/* ============================================================================
+   THEME: Advisor SEM/Compare Coverage
+   ============================================================================ */
+.theme-advisor-sem/compare-coverage,
+[data-theme="advisor-sem/compare-coverage"] {
+  /* Button - Primary */
+  --color-btn-primary-bg: #35B782;
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-primary-icon: #FFFFFF;
+  --color-btn-primary-hover-bg: #1E9E6A;
+  --color-btn-primary-pressed-bg: #0C8553;
+  --color-btn-primary-disabled-bg: #35B782;
+  --color-btn-focused-border: #209BE3;
+
+  /* Button - Secondary */
+  --color-btn-secondary-bg: #FFFFFF;
+  --color-btn-secondary-border: #7A8EC7;
+  --color-btn-secondary-text: #3453A7;
+  --color-btn-secondary-icon: #3453A7;
+  --color-btn-secondary-hover-bg: #F0F3FF;
+  --color-btn-secondary-pressed-bg: #E7ECF8;
+  --color-btn-secondary-disabled-bg: #ECEFF3;
+
+  /* Button - Ghost */
+  --color-btn-ghost-bg: #FFFFFF;
+  --color-btn-ghost-text: #3453A7;
+  --color-btn-ghost-icon: #3453A7;
+  --color-btn-ghost-hover-bg: #F0F3FF;
+  --color-btn-ghost-pressed-bg: #E7ECF8;
+  --color-btn-ghost-disabled-bg: #ECEFF3;
+
+  /* Backgrounds */
+  --color-bg-white: #FFFFFF;
+  --color-bg-neutral-subtle: #F4F5F8;
+  --color-bg-neutral-light: #ECEFF3;
+  --color-bg-neutral: #E3E7ED;
+  --color-bg-accent: #FEC864;
+  --color-bg-accent-mid: #FEC864;
+  --color-bg-brand-subtle: #F5F7FF;
+  --color-bg-table: #F5F7FF;
+  --color-bg-secondary: #C5EDE1;
+  --color-bg-brand-light: #E7ECF8;
+  --color-bg-brand-mid: #2F4B97;
+  --color-bg-brand: #3453A7;
+  --color-bg-neutral-mid: #383C43;
+  --color-bg-neutral-strong: #2B2E34;
+  --color-bg-header: #1E2125;
+  --color-bg-superlative: #ED6E13;
+  --color-bg-button: #35B782;
+
+  /* Foreground / Text */
+  --color-fg-heading: #1E2125;
+  --color-fg-body: #383C43;
+  --color-fg-link-secondary: #383C43;
+  --color-fg-caption: #616A76;
+  --color-fg-stroke-ui: #7F8B9A;
+  --color-fg-link: #4759B2;
+  --color-fg-stroke-ui-inverse: #D7DCE5;
+  --color-fg-heading-inverse: #FFFFFF;
+  --color-fg-body-inverse: #F4F5F8;
+  --color-fg-caption-inverse: #D7DCE5;
+  --color-fg-table-border: #C5CCED;
+  --color-fg-stroke-default: #BFC7D4;
+  --color-fg-divider: #D7DCE5;
+  --color-fg-stroke-inverse: #FFFFFF;
+  --color-fg-stroke-dark-inverse: #383C43;
+  --color-fg-feedback-error: #EB4015;
+  --color-fg-feedback-warning: #FFB136;
+  --color-fg-feedback-success: #0C7663;
+
+  /* Superlative / Accent */
+  --color-superlative-primary: #ED6E13;
+  --color-superlative-secondary: #4759B2;
+}
+
+/* ============================================================================
+   THEME: ForbesMedia - SEO
+   ============================================================================ */
+.theme-forbes-media---seo,
+[data-theme="forbes-media---seo"] {
+  /* Button - Primary */
+  --color-btn-primary-bg: #007AC8;
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-primary-icon: #FFFFFF;
+  --color-btn-primary-hover-bg: #007AC8;
+  --color-btn-primary-pressed-bg: #007AC8;
+  --color-btn-primary-disabled-bg: #007AC8;
+  --color-btn-focused-border: #80CAF4;
+
+  /* Button - Secondary */
+  --color-btn-secondary-bg: #FFFFFF;
+  --color-btn-secondary-border: #007AC8;
+  --color-btn-secondary-text: #007AC8;
+  --color-btn-secondary-icon: #007AC8;
+  --color-btn-secondary-hover-bg: #F3F5FB;
+  --color-btn-secondary-pressed-bg: #F3F5FB;
+  --color-btn-secondary-disabled-bg: #E2E8F0;
+
+  /* Button - Ghost */
+  --color-btn-ghost-bg: #FFFFFF;
+  --color-btn-ghost-text: #007AC8;
+  --color-btn-ghost-icon: #007AC8;
+  --color-btn-ghost-hover-bg: #F3F5FB;
+  --color-btn-ghost-pressed-bg: #F3F5FB;
+  --color-btn-ghost-disabled-bg: #E2E8F0;
+
+  /* Backgrounds */
+  --color-bg-white: #FFFFFF;
+  --color-bg-neutral-subtle: #F3F5FB;
+  --color-bg-neutral-light: #E2E8F0;
+  --color-bg-neutral: #E2E8F0;
+  --color-bg-accent: #2F4B96;
+  --color-bg-accent-mid: #2F4B96;
+  --color-bg-brand-subtle: #E2E8F0;
+  --color-bg-table: #F3F5FB;
+  --color-bg-secondary: #007AC8;
+  --color-bg-brand-light: #F3F5FB;
+  --color-bg-brand-mid: #F3F5FB;
+  --color-bg-brand: #003186;
+  --color-bg-neutral-mid: #515260;
+  --color-bg-neutral-strong: #333333;
+  --color-bg-header: #000000;
+  --color-bg-superlative: #F3F5FB;
+  --color-bg-button: #007AC8;
+
+  /* Foreground / Text */
+  --color-fg-heading: #333333;
+  --color-fg-body: #333333;
+  --color-fg-link-secondary: #333333;
+  --color-fg-caption: #515260;
+  --color-fg-stroke-ui: #7F8B9A;
+  --color-fg-link: #007AC8;
+  --color-fg-stroke-ui-inverse: #D7DCE5;
+  --color-fg-heading-inverse: #FFFFFF;
+  --color-fg-body-inverse: #FFFFFF;
+  --color-fg-caption-inverse: #EDEDED;
+  --color-fg-table-border: #EDEDED;
+  --color-fg-stroke-default: #EDEDED;
+  --color-fg-divider: #EDEDED;
+  --color-fg-stroke-inverse: #FFFFFF;
+  --color-fg-stroke-dark-inverse: #515260;
+  --color-fg-feedback-error: #EB4015;
+  --color-fg-feedback-warning: #FFB136;
+  --color-fg-feedback-success: #0C7663;
+
+  /* Superlative / Accent */
+  --color-superlative-primary: #003186;
+  --color-superlative-secondary: #DEF1FC;
+}
+
+/* ============================================================================
+   THEME: Health - SEM
+   ============================================================================ */
+.theme-health---sem,
+[data-theme="health---sem"] {
+  /* Button - Primary */
+  --color-btn-primary-bg: #657E79;
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-primary-icon: #FFFFFF;
+  --color-btn-primary-hover-bg: #46635D;
+  --color-btn-primary-pressed-bg: #3C5C55;
+  --color-btn-primary-disabled-bg: #657E79;
+  --color-btn-focused-border: #80CAF4;
+
+  /* Button - Secondary */
+  --color-btn-secondary-bg: #F2F5F4;
+  --color-btn-secondary-border: #657E79;
+  --color-btn-secondary-text: #657E79;
+  --color-btn-secondary-icon: #3C5C55;
+  --color-btn-secondary-hover-bg: #D1E5E1;
+  --color-btn-secondary-pressed-bg: #9CB8B2;
+  --color-btn-secondary-disabled-bg: #F2F5F4;
+
+  /* Button - Ghost */
+  --color-btn-ghost-bg: #FFFFFF;
+  --color-btn-ghost-text: #3C5C55;
+  --color-btn-ghost-icon: #3C5C55;
+  --color-btn-ghost-hover-bg: #D1E5E1;
+  --color-btn-ghost-pressed-bg: #9CB8B2;
+  --color-btn-ghost-disabled-bg: #D7DCE5;
+
+  /* Backgrounds */
+  --color-bg-white: #FFFFFF;
+  --color-bg-neutral-subtle: #F4F5F8;
+  --color-bg-neutral-light: #ECEFF3;
+  --color-bg-neutral: #E3E7ED;
+  --color-bg-accent: #F6F5F3;
+  --color-bg-accent-mid: #FFF0D4;
+  --color-bg-brand-subtle: #F2F5F4;
+  --color-bg-table: #F2F5F4;
+  --color-bg-secondary: #D1E5E1;
+  --color-bg-brand-light: #D1E5E1;
+  --color-bg-brand-mid: #9CB8B2;
+  --color-bg-brand: #657E79;
+  --color-bg-neutral-mid: #383C43;
+  --color-bg-neutral-strong: #2B2E34;
+  --color-bg-header: #1E2125;
+  --color-bg-superlative: #ED6E13;
+  --color-bg-button: #657E79;
+
+  /* Foreground / Text */
+  --color-fg-heading: #1E2125;
+  --color-fg-body: #383C43;
+  --color-fg-link-secondary: #383C43;
+  --color-fg-caption: #616A76;
+  --color-fg-stroke-ui: #7F8B9A;
+  --color-fg-link: #657E79;
+  --color-fg-stroke-ui-inverse: #D7DCE5;
+  --color-fg-heading-inverse: #FFFFFF;
+  --color-fg-body-inverse: #F4F5F8;
+  --color-fg-caption-inverse: #D7DCE5;
+  --color-fg-table-border: #BFC7D4;
+  --color-fg-stroke-default: #BFC7D4;
+  --color-fg-divider: #D7DCE5;
+  --color-fg-stroke-inverse: #FFFFFF;
+  --color-fg-stroke-dark-inverse: #383C43;
+  --color-fg-feedback-error: #EB4015;
+  --color-fg-feedback-warning: #FFB136;
+  --color-fg-feedback-success: #0C7663;
+
+  /* Superlative / Accent */
+  --color-superlative-primary: #ED6E13;
+  --color-superlative-secondary: #657E79;
+}
+
+/* ============================================================================
+   THEME: Home - SEM
+   ============================================================================ */
+.theme-home---sem,
+[data-theme="home---sem"] {
+  /* Button - Primary */
+  --color-btn-primary-bg: #EA7F67;
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-primary-icon: #FFFFFF;
+  --color-btn-primary-hover-bg: #CF664E;
+  --color-btn-primary-pressed-bg: #C9492C;
+  --color-btn-primary-disabled-bg: #EA7F67;
+  --color-btn-focused-border: #80CAF4;
+
+  /* Button - Secondary */
+  --color-btn-secondary-bg: #FDEAE6;
+  --color-btn-secondary-border: #EA7F67;
+  --color-btn-secondary-text: #EA7F67;
+  --color-btn-secondary-icon: #C9492C;
+  --color-btn-secondary-hover-bg: #F7C2B7;
+  --color-btn-secondary-pressed-bg: #F7A794;
+  --color-btn-secondary-disabled-bg: #FDEAE6;
+
+  /* Button - Ghost */
+  --color-btn-ghost-bg: #FFFFFF;
+  --color-btn-ghost-text: #C9492C;
+  --color-btn-ghost-icon: #C9492C;
+  --color-btn-ghost-hover-bg: #F7C2B7;
+  --color-btn-ghost-pressed-bg: #F7C2B7;
+  --color-btn-ghost-disabled-bg: #D7DCE5;
+
+  /* Backgrounds */
+  --color-bg-white: #FFFFFF;
+  --color-bg-neutral-subtle: #F4F5F8;
+  --color-bg-neutral-light: #ECEFF3;
+  --color-bg-neutral: #E3E7ED;
+  --color-bg-accent: #FEFBF5;
+  --color-bg-accent-mid: #FEFBF5;
+  --color-bg-brand-subtle: #FDEAE6;
+  --color-bg-table: #F0F3FF;
+  --color-bg-secondary: #F7C2B7;
+  --color-bg-brand-light: #F7C2B7;
+  --color-bg-brand-mid: #F7A794;
+  --color-bg-brand: #EA7F67;
+  --color-bg-neutral-mid: #383C43;
+  --color-bg-neutral-strong: #2B2E34;
+  --color-bg-header: #1E2125;
+  --color-bg-superlative: #ED6E13;
+  --color-bg-button: #EA7F67;
+
+  /* Foreground / Text */
+  --color-fg-heading: #1E2125;
+  --color-fg-body: #383C43;
+  --color-fg-link-secondary: #383C43;
+  --color-fg-caption: #616A76;
+  --color-fg-stroke-ui: #7F8B9A;
+  --color-fg-link: #EA7F67;
+  --color-fg-stroke-ui-inverse: #D7DCE5;
+  --color-fg-heading-inverse: #FFFFFF;
+  --color-fg-body-inverse: #F4F5F8;
+  --color-fg-caption-inverse: #D7DCE5;
+  --color-fg-table-border: #BFC7D4;
+  --color-fg-stroke-default: #BFC7D4;
+  --color-fg-divider: #D7DCE5;
+  --color-fg-stroke-inverse: #FFFFFF;
+  --color-fg-stroke-dark-inverse: #383C43;
+  --color-fg-feedback-error: #EB4015;
+  --color-fg-feedback-warning: #FFB136;
+  --color-fg-feedback-success: #0C7663;
+
+  /* Superlative / Accent */
+  --color-superlative-primary: #0C7663;
+  --color-superlative-secondary: #EA7F67;
+}
+
+/* ============================================================================
+   THEME: LLM
+   ============================================================================ */
+.theme-llm,
+[data-theme="llm"] {
+  /* Button - Primary */
+  --color-btn-primary-bg: #007AC8;
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-primary-icon: #FFFFFF;
+  --color-btn-primary-hover-bg: #1E72A8;
+  --color-btn-primary-pressed-bg: #0B5F95;
+  --color-btn-primary-disabled-bg: #007AC8;
+  --color-btn-focused-border: #80CAF4;
+
+  /* Button - Secondary */
+  --color-btn-secondary-bg: #FFFFFF;
+  --color-btn-secondary-border: #007AC8;
+  --color-btn-secondary-text: #007AC8;
+  --color-btn-secondary-icon: #007AC8;
+  --color-btn-secondary-hover-bg: #F3F5FB;
+  --color-btn-secondary-pressed-bg: #F3F5FB;
+  --color-btn-secondary-disabled-bg: #FFFFFF;
+
+  /* Button - Ghost */
+  --color-btn-ghost-bg: #FFFFFF;
+  --color-btn-ghost-text: #007AC8;
+  --color-btn-ghost-icon: #007AC8;
+  --color-btn-ghost-hover-bg: #F3F5FB;
+  --color-btn-ghost-pressed-bg: #F3F5FB;
+  --color-btn-ghost-disabled-bg: #E2E8F0;
+
+  /* Backgrounds */
+  --color-bg-white: #FFFFFF;
+  --color-bg-neutral-subtle: #F8F8FA;
+  --color-bg-neutral-light: #F3F5FB;
+  --color-bg-neutral: #ECF1FF;
+  --color-bg-accent: #FEF9EF;
+  --color-bg-accent-mid: #F3C060;
+  --color-bg-brand-subtle: #7F8B9A;
+  --color-bg-table: #F3F5FB;
+  --color-bg-secondary: #FEF9EF;
+  --color-bg-brand-light: #ECF1FF;
+  --color-bg-brand-mid: #007AC8;
+  --color-bg-brand: #007AC8;
+  --color-bg-neutral-mid: #6A6A6A;
+  --color-bg-neutral-strong: #333333;
+  --color-bg-header: #000000;
+  --color-bg-superlative: #F3C060;
+  --color-bg-button: #007AC8;
+
+  /* Foreground / Text */
+  --color-fg-heading: #000000;
+  --color-fg-body: #333333;
+  --color-fg-link-secondary: #000000;
+  --color-fg-caption: #6A6A6A;
+  --color-fg-stroke-ui: #7F8B9A;
+  --color-fg-link: #1E72A8;
+  --color-fg-stroke-ui-inverse: #D7DCE5;
+  --color-fg-heading-inverse: #FFFFFF;
+  --color-fg-body-inverse: #F8F8FA;
+  --color-fg-caption-inverse: #ECF1FF;
+  --color-fg-table-border: #7F8B9A;
+  --color-fg-stroke-default: #ECF1FF;
+  --color-fg-divider: #EDEDED;
+  --color-fg-stroke-inverse: #F8F8FA;
+  --color-fg-stroke-dark-inverse: #333333;
+  --color-fg-feedback-error: #EB4015;
+  --color-fg-feedback-warning: #FFB136;
+  --color-fg-feedback-success: #0C7663;
+
+  /* Superlative / Accent */
+  --color-superlative-primary: #F3C060;
+  --color-superlative-secondary: #FEF9EF;
+}
+
+/* ============================================================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================================================ */
+
+/* Tablet adjustments */
+@media (max-width: 1439px) and (min-width: 744px) {
+  :root {
+    --grid-columns: var(--grid-columns-tablet);
+    --grid-margin: var(--grid-margin-tablet);
+    --grid-gutter: var(--grid-gutter-tablet);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 743px) {
+  :root {
+    --grid-columns: var(--grid-columns-mobile);
+    --grid-margin: var(--grid-margin-mobile);
+    --grid-gutter: var(--grid-gutter-mobile);
+  }
+}

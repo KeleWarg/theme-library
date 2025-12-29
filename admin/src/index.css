@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Euclid Circular B', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   Theme-specific Font Family CSS Variables
+   ============================================ */
+
+/* SEM Themes: Health, Home, Compare Coverage */
+.theme-health---sem,
+.theme-home---sem,
+.theme-advisor-sem-compare-coverage,
+.theme-advisor-sem\/compare-coverage {
+  --font-family-display: 'Georgia';
+  --font-family-heading: 'Euclid Circular B';
+  --font-family-body: 'Georgia';
+  --font-family-sans-serif: 'Euclid Circular B';
+}
+
+/* ForbesMedia SEO + LLM Themes */
+.theme-forbesmedia---seo,
+.theme-forbes-media---seo,
+.theme-llm {
+  --font-family-display: 'Schnyder S';
+  --font-family-heading: 'Work Sans';
+  --font-family-body: 'Work Sans';
+  --font-family-sans-serif: 'Work Sans';
+  --font-family-breadcrumbs: 'Graphik';
+}
+

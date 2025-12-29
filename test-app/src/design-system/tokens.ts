@@ -1,0 +1,574 @@
+/**
+ * Design System TypeScript Definitions
+ * Auto-generated from Figma Variables
+ * 
+ * This file provides type-safe access to design tokens for AI code generation.
+ * Import and use these constants to ensure consistent styling.
+ */
+
+// ============================================================================
+// THEME TYPES
+// ============================================================================
+
+/** Available theme identifiers */
+export type ThemeSlug = 'advisor-sem/compare-coverage' | 'forbes-media---seo' | 'health---sem' | 'home---sem' | 'llm';
+
+/** Theme configuration object */
+export interface Theme {
+  name: string;
+  slug: ThemeSlug;
+  colors: ThemeColors;
+}
+
+export interface ThemeColors {
+  button: {
+    primary: ButtonColorSet;
+    secondary: ButtonColorSet;
+    ghost: ButtonColorSet;
+  };
+  background: Record<string, string>;
+  foreground: Record<string, string>;
+  superlative: Record<string, string>;
+}
+
+export interface ButtonColorSet {
+  bg?: string;
+  text?: string;
+  icon?: string;
+  border?: string;
+  hoverBg?: string;
+  pressedBg?: string;
+  disabledBg?: string;
+  focusedBorder?: string;
+}
+
+// ============================================================================
+// THEMES DATA
+// ============================================================================
+
+export const themes: Record<ThemeSlug, Theme> = {
+  'advisor-sem/compare-coverage': {
+      "name": "Advisor SEM/Compare Coverage",
+      "slug": "advisor-sem/compare-coverage",
+      "colors": {
+          "button": {
+              "primary": {
+                  "primary-bg": "#35B782",
+                  "primary-text": "#FFFFFF",
+                  "primary-icon": "#FFFFFF",
+                  "primary-hover-bg": "#1E9E6A",
+                  "primary-pressed-bg": "#0C8553",
+                  "primary-disabled-bg": "#35B782",
+                  "focused-border": "#209BE3"
+              },
+              "secondary": {
+                  "secondary-bg": "#FFFFFF",
+                  "secondary-border": "#7A8EC7",
+                  "secondary-text": "#3453A7",
+                  "secondary-icon": "#3453A7",
+                  "secondary-hover-bg": "#F0F3FF",
+                  "secondary-pressed-bg": "#E7ECF8",
+                  "secondary-disabled-bg": "#ECEFF3"
+              },
+              "ghost": {
+                  "ghost-bg": "#FFFFFF",
+                  "ghost-text": "#3453A7",
+                  "ghost-icon": "#3453A7",
+                  "ghost-hover-bg": "#F0F3FF",
+                  "ghost-pressed-bg": "#E7ECF8",
+                  "ghost-disabled-bg": "#ECEFF3"
+              }
+          },
+          "background": {
+              "bg-white": "#FFFFFF",
+              "bg-neutral-subtle": "#F4F5F8",
+              "bg-neutral-light": "#ECEFF3",
+              "bg-neutral": "#E3E7ED",
+              "bg-accent": "#FEC864",
+              "bg-accent-mid": "#FEC864",
+              "bg-brand-subtle": "#F5F7FF",
+              "bg-table": "#F5F7FF",
+              "bg-secondary": "#C5EDE1",
+              "bg-brand-light": "#E7ECF8",
+              "bg-brand-mid": "#2F4B97",
+              "bg-brand": "#3453A7",
+              "bg-neutral-mid": "#383C43",
+              "bg-neutral-strong": "#2B2E34",
+              "bg-header": "#1E2125",
+              "bg-superlative": "#ED6E13",
+              "bg-button": "#35B782"
+          },
+          "foreground": {
+              "fg-heading": "#1E2125",
+              "fg-body": "#383C43",
+              "fg-link-secondary": "#383C43",
+              "fg-caption": "#616A76",
+              "fg-stroke-ui": "#7F8B9A",
+              "fg-link": "#4759B2",
+              "fg-stroke-ui-inverse": "#D7DCE5",
+              "fg-heading-inverse": "#FFFFFF",
+              "fg-body-inverse": "#F4F5F8",
+              "fg-caption-inverse": "#D7DCE5",
+              "fg-table-border": "#C5CCED",
+              "fg-stroke-default": "#BFC7D4",
+              "fg-divider": "#D7DCE5",
+              "fg-stroke-inverse": "#FFFFFF",
+              "fg-stroke-dark-inverse": "#383C43",
+              "fg-feedback-error": "#EB4015",
+              "fg-feedback-warning": "#FFB136",
+              "fg-feedback-success": "#0C7663"
+          },
+          "superlative": {
+              "primary": "#ED6E13",
+              "secondary": "#4759B2"
+          }
+      }
+  },
+  'forbes-media---seo': {
+      "name": "ForbesMedia - SEO",
+      "slug": "forbes-media---seo",
+      "colors": {
+          "button": {
+              "primary": {
+                  "primary-bg": "#007AC8",
+                  "primary-text": "#FFFFFF",
+                  "primary-icon": "#FFFFFF",
+                  "primary-hover-bg": "#007AC8",
+                  "primary-pressed-bg": "#007AC8",
+                  "primary-disabled-bg": "#007AC8",
+                  "focused-border": "#80CAF4"
+              },
+              "secondary": {
+                  "secondary-bg": "#FFFFFF",
+                  "secondary-border": "#007AC8",
+                  "secondary-text": "#007AC8",
+                  "secondary-icon": "#007AC8",
+                  "secondary-hover-bg": "#F3F5FB",
+                  "secondary-pressed-bg": "#F3F5FB",
+                  "secondary-disabled-bg": "#E2E8F0"
+              },
+              "ghost": {
+                  "ghost-bg": "#FFFFFF",
+                  "ghost-text": "#007AC8",
+                  "ghost-icon": "#007AC8",
+                  "ghost-hover-bg": "#F3F5FB",
+                  "ghost-pressed-bg": "#F3F5FB",
+                  "ghost-disabled-bg": "#E2E8F0"
+              }
+          },
+          "background": {
+              "bg-white": "#FFFFFF",
+              "bg-neutral-subtle": "#F3F5FB",
+              "bg-neutral-light": "#E2E8F0",
+              "bg-neutral": "#E2E8F0",
+              "bg-accent": "#2F4B96",
+              "bg-accent-mid": "#2F4B96",
+              "bg-brand-subtle": "#E2E8F0",
+              "bg-table": "#F3F5FB",
+              "bg-secondary": "#007AC8",
+              "bg-brand-light": "#F3F5FB",
+              "bg-brand-mid": "#F3F5FB",
+              "bg-brand": "#003186",
+              "bg-neutral-mid": "#515260",
+              "bg-neutral-strong": "#333333",
+              "bg-header": "#000000",
+              "bg-superlative": "#F3F5FB",
+              "bg-button": "#007AC8"
+          },
+          "foreground": {
+              "fg-heading": "#333333",
+              "fg-body": "#333333",
+              "fg-link-secondary": "#333333",
+              "fg-caption": "#515260",
+              "fg-stroke-ui": "#7F8B9A",
+              "fg-link": "#007AC8",
+              "fg-stroke-ui-inverse": "#D7DCE5",
+              "fg-heading-inverse": "#FFFFFF",
+              "fg-body-inverse": "#FFFFFF",
+              "fg-caption-inverse": "#EDEDED",
+              "fg-table-border": "#EDEDED",
+              "fg-stroke-default": "#EDEDED",
+              "fg-divider": "#EDEDED",
+              "fg-stroke-inverse": "#FFFFFF",
+              "fg-stroke-dark-inverse": "#515260",
+              "fg-feedback-error": "#EB4015",
+              "fg-feedback-warning": "#FFB136",
+              "fg-feedback-success": "#0C7663"
+          },
+          "superlative": {
+              "primary": "#003186",
+              "secondary": "#DEF1FC"
+          }
+      }
+  },
+  'health---sem': {
+      "name": "Health - SEM",
+      "slug": "health---sem",
+      "colors": {
+          "button": {
+              "primary": {
+                  "primary-bg": "#657E79",
+                  "primary-text": "#FFFFFF",
+                  "primary-icon": "#FFFFFF",
+                  "primary-hover-bg": "#46635D",
+                  "primary-pressed-bg": "#3C5C55",
+                  "primary-disabled-bg": "#657E79",
+                  "focused-border": "#80CAF4"
+              },
+              "secondary": {
+                  "secondary-bg": "#F2F5F4",
+                  "secondary-border": "#657E79",
+                  "secondary-text": "#657E79",
+                  "secondary-icon": "#3C5C55",
+                  "secondary-hover-bg": "#D1E5E1",
+                  "secondary-pressed-bg": "#9CB8B2",
+                  "secondary-disabled-bg": "#F2F5F4"
+              },
+              "ghost": {
+                  "ghost-bg": "#FFFFFF",
+                  "ghost-text": "#3C5C55",
+                  "ghost-icon": "#3C5C55",
+                  "ghost-hover-bg": "#D1E5E1",
+                  "ghost-pressed-bg": "#9CB8B2",
+                  "ghost-disabled-bg": "#D7DCE5"
+              }
+          },
+          "background": {
+              "bg-white": "#FFFFFF",
+              "bg-neutral-subtle": "#F4F5F8",
+              "bg-neutral-light": "#ECEFF3",
+              "bg-neutral": "#E3E7ED",
+              "bg-accent": "#F6F5F3",
+              "bg-accent-mid": "#FFF0D4",
+              "bg-brand-subtle": "#F2F5F4",
+              "bg-table": "#F2F5F4",
+              "bg-secondary": "#D1E5E1",
+              "bg-brand-light": "#D1E5E1",
+              "bg-brand-mid": "#9CB8B2",
+              "bg-brand": "#657E79",
+              "bg-neutral-mid": "#383C43",
+              "bg-neutral-strong": "#2B2E34",
+              "bg-header": "#1E2125",
+              "bg-superlative": "#ED6E13",
+              "bg-button": "#657E79"
+          },
+          "foreground": {
+              "fg-heading": "#1E2125",
+              "fg-body": "#383C43",
+              "fg-link-secondary": "#383C43",
+              "fg-caption": "#616A76",
+              "fg-stroke-ui": "#7F8B9A",
+              "fg-link": "#657E79",
+              "fg-stroke-ui-inverse": "#D7DCE5",
+              "fg-heading-inverse": "#FFFFFF",
+              "fg-body-inverse": "#F4F5F8",
+              "fg-caption-inverse": "#D7DCE5",
+              "fg-table-border": "#BFC7D4",
+              "fg-stroke-default": "#BFC7D4",
+              "fg-divider": "#D7DCE5",
+              "fg-stroke-inverse": "#FFFFFF",
+              "fg-stroke-dark-inverse": "#383C43",
+              "fg-feedback-error": "#EB4015",
+              "fg-feedback-warning": "#FFB136",
+              "fg-feedback-success": "#0C7663"
+          },
+          "superlative": {
+              "primary": "#ED6E13",
+              "secondary": "#657E79"
+          }
+      }
+  },
+  'home---sem': {
+      "name": "Home - SEM",
+      "slug": "home---sem",
+      "colors": {
+          "button": {
+              "primary": {
+                  "primary-bg": "#EA7F67",
+                  "primary-text": "#FFFFFF",
+                  "primary-icon": "#FFFFFF",
+                  "primary-hover-bg": "#CF664E",
+                  "primary-pressed-bg": "#C9492C",
+                  "primary-disabled-bg": "#EA7F67",
+                  "focused-border": "#80CAF4"
+              },
+              "secondary": {
+                  "secondary-bg": "#FDEAE6",
+                  "secondary-border": "#EA7F67",
+                  "secondary-text": "#EA7F67",
+                  "secondary-icon": "#C9492C",
+                  "secondary-hover-bg": "#F7C2B7",
+                  "secondary-pressed-bg": "#F7A794",
+                  "secondary-disabled-bg": "#FDEAE6"
+              },
+              "ghost": {
+                  "ghost-bg": "#FFFFFF",
+                  "ghost-text": "#C9492C",
+                  "ghost-icon": "#C9492C",
+                  "ghost-hover-bg": "#F7C2B7",
+                  "ghost-pressed-bg": "#F7C2B7",
+                  "ghost-disabled-bg": "#D7DCE5"
+              }
+          },
+          "background": {
+              "bg-white": "#FFFFFF",
+              "bg-neutral-subtle": "#F4F5F8",
+              "bg-neutral-light": "#ECEFF3",
+              "bg-neutral": "#E3E7ED",
+              "bg-accent": "#FEFBF5",
+              "bg-accent-mid": "#FEFBF5",
+              "bg-brand-subtle": "#FDEAE6",
+              "bg-table": "#F0F3FF",
+              "bg-secondary": "#F7C2B7",
+              "bg-brand-light": "#F7C2B7",
+              "bg-brand-mid": "#F7A794",
+              "bg-brand": "#EA7F67",
+              "bg-neutral-mid": "#383C43",
+              "bg-neutral-strong": "#2B2E34",
+              "bg-header": "#1E2125",
+              "bg-superlative": "#ED6E13",
+              "bg-button": "#EA7F67"
+          },
+          "foreground": {
+              "fg-heading": "#1E2125",
+              "fg-body": "#383C43",
+              "fg-link-secondary": "#383C43",
+              "fg-caption": "#616A76",
+              "fg-stroke-ui": "#7F8B9A",
+              "fg-link": "#EA7F67",
+              "fg-stroke-ui-inverse": "#D7DCE5",
+              "fg-heading-inverse": "#FFFFFF",
+              "fg-body-inverse": "#F4F5F8",
+              "fg-caption-inverse": "#D7DCE5",
+              "fg-table-border": "#BFC7D4",
+              "fg-stroke-default": "#BFC7D4",
+              "fg-divider": "#D7DCE5",
+              "fg-stroke-inverse": "#FFFFFF",
+              "fg-stroke-dark-inverse": "#383C43",
+              "fg-feedback-error": "#EB4015",
+              "fg-feedback-warning": "#FFB136",
+              "fg-feedback-success": "#0C7663"
+          },
+          "superlative": {
+              "primary": "#0C7663",
+              "secondary": "#EA7F67"
+          }
+      }
+  },
+  'llm': {
+      "name": "LLM",
+      "slug": "llm",
+      "colors": {
+          "button": {
+              "primary": {
+                  "primary-bg": "#007AC8",
+                  "primary-text": "#FFFFFF",
+                  "primary-icon": "#FFFFFF",
+                  "primary-hover-bg": "#1E72A8",
+                  "primary-pressed-bg": "#0B5F95",
+                  "primary-disabled-bg": "#007AC8",
+                  "focused-border": "#80CAF4"
+              },
+              "secondary": {
+                  "secondary-bg": "#FFFFFF",
+                  "secondary-border": "#007AC8",
+                  "secondary-text": "#007AC8",
+                  "secondary-icon": "#007AC8",
+                  "secondary-hover-bg": "#F3F5FB",
+                  "secondary-pressed-bg": "#F3F5FB",
+                  "secondary-disabled-bg": "#FFFFFF"
+              },
+              "ghost": {
+                  "ghost-bg": "#FFFFFF",
+                  "ghost-text": "#007AC8",
+                  "ghost-icon": "#007AC8",
+                  "ghost-hover-bg": "#F3F5FB",
+                  "ghost-pressed-bg": "#F3F5FB",
+                  "ghost-disabled-bg": "#E2E8F0"
+              }
+          },
+          "background": {
+              "bg-white": "#FFFFFF",
+              "bg-neutral-subtle": "#F8F8FA",
+              "bg-neutral-light": "#F3F5FB",
+              "bg-neutral": "#ECF1FF",
+              "bg-accent": "#FEF9EF",
+              "bg-accent-mid": "#F3C060",
+              "bg-brand-subtle": "#7F8B9A",
+              "bg-table": "#F3F5FB",
+              "bg-secondary": "#FEF9EF",
+              "bg-brand-light": "#ECF1FF",
+              "bg-brand-mid": "#007AC8",
+              "bg-brand": "#007AC8",
+              "bg-neutral-mid": "#6A6A6A",
+              "bg-neutral-strong": "#333333",
+              "bg-header": "#000000",
+              "bg-superlative": "#F3C060",
+              "bg-button": "#007AC8"
+          },
+          "foreground": {
+              "fg-heading": "#000000",
+              "fg-body": "#333333",
+              "fg-link-secondary": "#000000",
+              "fg-caption": "#6A6A6A",
+              "fg-stroke-ui": "#7F8B9A",
+              "fg-link": "#1E72A8",
+              "fg-stroke-ui-inverse": "#D7DCE5",
+              "fg-heading-inverse": "#FFFFFF",
+              "fg-body-inverse": "#F8F8FA",
+              "fg-caption-inverse": "#ECF1FF",
+              "fg-table-border": "#7F8B9A",
+              "fg-stroke-default": "#ECF1FF",
+              "fg-divider": "#EDEDED",
+              "fg-stroke-inverse": "#F8F8FA",
+              "fg-stroke-dark-inverse": "#333333",
+              "fg-feedback-error": "#EB4015",
+              "fg-feedback-warning": "#FFB136",
+              "fg-feedback-success": "#0C7663"
+          },
+          "superlative": {
+              "primary": "#F3C060",
+              "secondary": "#FEF9EF"
+          }
+      }
+  }
+};
+
+// ============================================================================
+// TYPOGRAPHY TOKENS
+// ============================================================================
+
+/** Font family tokens */
+export const fontFamily = {
+  "font-family-serif": "Georgia",
+  "font-family-sans-serif": "Euclid Circular B",
+  "forbes-media---seo-font-family-heading-serif": "Schnyder S",
+  "forbes-media---seo-font-family-heading": "Work Sans",
+  "forbes-media---seo-font-family-body": "Georgia",
+  "forbes-media---seo-font-family-body-serif": "Work Sans",
+  "forbes-media---seo-font-family-breadcrumbs": "Graphik"
+} as const;
+
+/** Font size tokens (in pixels) */
+export const fontSize = {
+  "display": 56,
+  "heading-lg": 48,
+  "heading-md": 32,
+  "heading-sm": 24,
+  "title-lg": 20,
+  "title-md": 18,
+  "title-sm": 16,
+  "title-xs": 14,
+  "body-lg": 18,
+  "body-md": 16,
+  "body-xs": 12,
+  "body-sm": 14,
+  "label-lg": 16,
+  "label-md": 14,
+  "label-sm": 12,
+  "label-xs": 10,
+  "forbes-media-heading-lg": 48,
+  "forbes-media-heading-md": 32,
+  "forbes-media-heading-sm": 24,
+  "forbes-media-heading-xs": 20,
+  "forbes-media-body-lg-serif": 18,
+  "forbes-media-body-lg": 18,
+  "forbes-media-body-md": 16,
+  "forbes-media-body-sm": 14,
+  "forbes-media-body-xs": 12,
+  "forbes-media-body-2xs": 10,
+  "forbes-media-label-eyebrow": 18,
+  "forbes-media-label-breadcrumb": 12
+} as const;
+
+/** Font weight tokens */
+export const fontWeight = {
+  "font-weight-bold": 700,
+  "font-weight-semibold": 600,
+  "font-weight-medium": 500,
+  "font-weight-regular": 400,
+  "font-weight-light": 300
+} as const;
+
+/** Line height tokens (in pixels) */
+export const lineHeight = {
+  "line-height-5xl": 68,
+  "line-height-4xl": 58,
+  "line-height-3xl": 40,
+  "line-height-2xl": 32,
+  "line-height-xl": 26,
+  "line-height-lg": 24,
+  "line-height-md": 22,
+  "line-height-sm": 20,
+  "line-height-xs": 18,
+  "line-height-2xs": 16
+} as const;
+
+/** Letter spacing tokens (in pixels) */
+export const letterSpacing = {
+  "spacing-tighter": -0.20000000298023224,
+  "spacing-wider": 1,
+  "spacing-tight": -0.10000000149011612,
+  "spacing-normal": 0,
+  "spacing-wide": 0.5
+} as const;
+
+// ============================================================================
+// BREAKPOINTS
+// ============================================================================
+
+export const breakpoints = {
+  mobile: {
+    width: 390,
+    columns: 4,
+    margin: 16,
+    gutter: 12
+  },
+  tablet: {
+    width: 744,
+    columns: 8,
+    margin: 24,
+    gutter: 24
+  },
+  desktop: {
+    width: 1440,
+    columns: 12,
+    margin: 80,
+    gutter: 24
+  }
+} as const;
+
+export type Breakpoint = keyof typeof breakpoints;
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Get CSS variable reference for a token
+ * @example getCSSVar('bg-brand') => 'var(--color-bg-brand)'
+ */
+export function getCSSVar(token: string): string {
+  return `var(--color-${token})`;
+}
+
+/**
+ * Apply theme class to document root
+ * @example setTheme('health-sem')
+ */
+export function setTheme(theme: ThemeSlug): void {
+  if (typeof document !== 'undefined') {
+    document.documentElement.className = `theme-${theme}`;
+    document.documentElement.dataset.theme = theme;
+  }
+}
+
+/**
+ * Get current theme from document
+ */
+export function getCurrentTheme(): ThemeSlug | null {
+  if (typeof document !== 'undefined') {
+    return (document.documentElement.dataset.theme as ThemeSlug) || null;
+  }
+  return null;
+}

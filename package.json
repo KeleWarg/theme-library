@@ -1,0 +1,44 @@
+{
+  "name": "@redventures/design-system",
+  "version": "1.0.0",
+  "description": "Multi-theme design system tokens for AI-assisted development. Optimized for Bolt, Lovable, Cursor, and other LLM coding tools.",
+  "main": "dist/tokens.js",
+  "types": "dist/tokens.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/tokens.js",
+      "require": "./dist/tokens.js",
+      "types": "./dist/tokens.d.ts"
+    },
+    "./css": "./dist/tokens.css",
+    "./tailwind": "./dist/tailwind.config.js",
+    "./tokens.json": "./dist/tokens.json"
+  },
+  "files": [
+    "dist",
+    "LLMS.txt",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/transform-tokens.js",
+    "watch": "nodemon --watch figma_tokens scripts/transform-tokens.js"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "figma",
+    "tailwind",
+    "css-variables",
+    "theming",
+    "ai",
+    "llm",
+    "bolt",
+    "lovable",
+    "cursor"
+  ],
+  "author": "Red Ventures",
+  "license": "PROPRIETARY",
+  "peerDependencies": {
+    "tailwindcss": ">=3.0.0"
+  }
+}

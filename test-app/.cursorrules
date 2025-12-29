@@ -1,0 +1,154 @@
+# Design System Rules for AI Assistant
+
+You have access to a multi-theme design system. ALWAYS use CSS variables from this system instead of hardcoded colors or arbitrary values.
+
+## Quick Reference
+
+### Apply Theme
+Add theme class to `<html>`:
+```html
+<html class="theme-health-sem">
+```
+
+Available themes: `theme-health-sem`, `theme-home-sem`, `theme-forbes-media-seo`, `theme-llm`, `theme-advisor-sem-compare-coverage`
+
+### Color Tokens
+
+**Backgrounds** - use `var(--color-bg-*)`
+| Token | Usage |
+|-------|-------|
+| `--color-bg-white` | Page background |
+| `--color-bg-neutral-light` | Cards, inputs |
+| `--color-bg-neutral` | Section backgrounds |
+| `--color-bg-brand` | Brand sections, CTAs |
+| `--color-bg-header` | Navigation |
+| `--color-bg-accent` | Highlights |
+
+**Text** - use `var(--color-fg-*)`
+| Token | Usage |
+|-------|-------|
+| `--color-fg-heading` | h1-h6 headings |
+| `--color-fg-body` | Paragraphs |
+| `--color-fg-caption` | Secondary text |
+| `--color-fg-link` | Links |
+| `--color-fg-heading-inverse` | Text on dark bg |
+| `--color-fg-body-inverse` | Text on dark bg |
+
+**Buttons** - use `var(--color-btn-*)`
+```css
+/* Primary button */
+background: var(--color-btn-primary-bg);
+color: var(--color-btn-primary-text);
+/* hover state */
+background: var(--color-btn-primary-hover-bg);
+
+/* Secondary button */
+background: var(--color-btn-secondary-bg);
+border-color: var(--color-btn-secondary-border);
+color: var(--color-btn-secondary-text);
+
+/* Ghost button */
+color: var(--color-btn-ghost-text);
+/* hover */
+background: var(--color-btn-ghost-hover-bg);
+```
+
+**Feedback States**
+- `var(--color-fg-feedback-error)` - Errors
+- `var(--color-fg-feedback-warning)` - Warnings
+- `var(--color-fg-feedback-success)` - Success
+
+### Typography Tokens
+
+**Font Sizes** - use `var(--font-size-*)`
+| Token | Size | Usage |
+|-------|------|-------|
+| `--font-size-display` | 56px | Hero headlines |
+| `--font-size-heading-lg` | 48px | Page titles |
+| `--font-size-heading-md` | 32px | Section headers |
+| `--font-size-heading-sm` | 24px | Card titles |
+| `--font-size-title-lg` | 20px | Subtitles |
+| `--font-size-body-lg` | 18px | Lead text |
+| `--font-size-body-md` | 16px | Body text |
+| `--font-size-body-sm` | 14px | Secondary |
+| `--font-size-label-md` | 14px | Buttons, labels |
+
+**Font Weights**
+- `var(--font-weight-regular)`: 400
+- `var(--font-weight-medium)`: 500
+- `var(--font-weight-semibold)`: 600
+- `var(--font-weight-bold)`: 700
+
+**Line Heights**
+- `var(--line-height-sm)`: 20px
+- `var(--line-height-md)`: 22px
+- `var(--line-height-lg)`: 24px
+- `var(--line-height-xl)`: 26px
+
+### Spacing & Grid
+
+```css
+padding: var(--grid-gutter);  /* 24px desktop, 12px mobile */
+margin: var(--grid-margin);   /* 80px desktop, 16px mobile */
+```
+
+Breakpoints:
+- Mobile: < 744px
+- Tablet: 744px - 1439px
+- Desktop: ≥ 1440px
+
+## Rules
+
+1. **NEVER** use hardcoded colors like `#657E79` or `bg-blue-500`
+2. **ALWAYS** use CSS variables: `var(--color-fg-heading)`
+3. **ALWAYS** apply theme class to root element
+4. Use semantic tokens (`fg-heading`) not generic names
+5. For hover states, use the `-hover-` token variants
+6. For dark backgrounds, use `-inverse` text tokens
+
+## Examples
+
+### ✅ Good
+```jsx
+<button style={{
+  backgroundColor: 'var(--color-btn-primary-bg)',
+  color: 'var(--color-btn-primary-text)'
+}}>
+  Submit
+</button>
+
+<h1 style={{
+  color: 'var(--color-fg-heading)',
+  fontSize: 'var(--font-size-heading-lg)'
+}}>
+  Welcome
+</h1>
+```
+
+### ❌ Bad
+```jsx
+<button style={{ backgroundColor: '#657E79', color: 'white' }}>
+  Submit
+</button>
+
+<h1 style={{ color: '#333', fontSize: '48px' }}>
+  Welcome
+</h1>
+```
+
+## With Tailwind
+
+If using Tailwind with the design system preset:
+```jsx
+<button className="bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover">
+  Submit
+</button>
+
+<h1 className="text-fg-heading text-heading-lg font-bold">
+  Welcome
+</h1>
+
+<div className="bg-bg-neutral-light p-gutter">
+  Card content
+</div>
+```

@@ -1,0 +1,214 @@
+# Design System Admin - Cursor Rules
+
+## Project Context
+You are building a design system admin dashboard that:
+- Visualizes design tokens from Figma
+- Manages React components through a workflow (pending → generated → approved → published)
+- Uses Claude AI to generate React code from Figma component specs
+- Exports an npm package with components and LLMS.txt
+
+## Documentation
+ALWAYS read the relevant phase doc before implementing:
+- `docs/ORCHESTRATOR.md` - Master execution guide
+- `docs/phases/PHASE_*.md` - Step-by-step implementation tasks
+- `docs/CURSOR_BUILD_GUIDE.md` - Token transformation reference
+
+## Token Data
+Raw Figma exports are in `figma_tokens/raw/*.json` in DTCG format:
+```json
+{
+  "Category": {
+    "Subcategory": {
+      "token-name": {
+        "$type": "color",
+        "$value": { "hex": "#657E79" }
+      }
+    }
+  }
+}
+```
+
+Transform paths to CSS variables:
+- `Color.Button.Primary.primary-bg` → `--color-btn-primary-bg`
+- `Color.Bg.white` → `--color-bg-white`
+- `Font Size.heading-lg` → `--font-size-heading-lg`
+
+## Code Standards
+
+### ALWAYS use CSS variables for styling
+```javascript
+// ✅ CORRECT
+backgroundColor: 'var(--color-btn-primary-bg)'
+color: 'var(--color-fg-heading)'
+fontSize: 'var(--font-size-body-md)'
+
+// ❌ WRONG - never hardcode
+backgroundColor: '#657E79'
+color: '#1a1a1a'
+fontSize: '16px'
+```
+
+### Component structure
+```
+src/
+├── components/
+│   ├── layout/        # Sidebar, Header, Layout
+│   ├── ui/            # Reusable: Button, Card, Badge, etc.
+│   └── features/      # Feature-specific components
+├── pages/             # Route pages
+├── lib/               # Utilities, API clients, helpers
+├── hooks/             # Custom React hooks
+└── __tests__/         # Test files (or colocate with components)
+```
+
+### File naming
+- Components: `PascalCase.jsx` (e.g., `ColorSwatch.jsx`)
+- Utilities: `camelCase.js` (e.g., `tokenData.js`)
+- Hooks: `use*.js` (e.g., `useTheme.js`)
+- Tests: `*.test.jsx` alongside component
+
+### Every component needs tests
+```javascript
+// ComponentName.test.jsx
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import ComponentName from './ComponentName'
+
+describe('ComponentName', () => {
+  it('renders correctly', () => {
+    render(<ComponentName />)
+    expect(screen.getByText('...')).toBeInTheDocument()
+  })
+})
+```
+
+## Theme Classes
+Apply themes via CSS class on root element:
+- `theme-health-sem`
+- `theme-home-sem`
+- `theme-llm`
+- `theme-forbes-media-seo`
+- `theme-advisor-sem-compare-coverage`
+
+## Component Status Workflow
+```
+pending_code → generated → approved → published
+     ↓             ↓           ↓
+  (sync from   (AI generates  (human      (included
+   Figma)       React code)   reviews)    in export)
+```
+
+## Database Schema (Supabase)
+```sql
+-- Components table
+components (
+  id uuid PRIMARY KEY,
+  figma_id text UNIQUE,
+  name text NOT NULL,
+  description text,
+  status text DEFAULT 'pending_code',
+  variants jsonb,
+  prop_types jsonb,
+  tokens_used text[],
+  snapshot_url text,
+  figma_url text,
+  react_code text,
+  created_at timestamptz,
+  updated_at timestamptz
+)
+
+-- Tokens table  
+tokens (
+  id uuid PRIMARY KEY,
+  theme text NOT NULL,
+  category text,
+  name text NOT NULL,
+  value jsonb,
+  css_variable text
+)
+```
+
+## AI Code Generation
+When generating React components with Claude:
+1. Include component name and description
+2. List all variants and their properties
+3. Map prop types with TypeScript types
+4. Specify which CSS variables to use
+5. Request accessible, well-commented code
+
+## Task Execution
+1. Read the phase doc completely before starting
+2. Implement ONE task at a time
+3. Write tests alongside code
+4. Run `npm test` after each task
+5. Mark task complete in the doc
+6. Don't proceed if tests fail
+
+## Dependencies
+```json
+{
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "lucide-react": "^0.294.0",
+    "@supabase/supabase-js": "^2.38.0",
+    "@monaco-editor/react": "^4.6.0",
+    "jszip": "^3.10.1",
+    "file-saver": "^2.0.5"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "@testing-library/react": "^14.1.0",
+    "@testing-library/jest-dom": "^6.1.0"
+  }
+}
+```
+
+## Key Commands
+```bash
+npm run dev          # Start dev server
+npm test             # Run tests
+npm run test:watch   # Tests in watch mode
+npm run build        # Production build
+```
+
+## Common Patterns
+
+### Fetching from Supabase
+```javascript
+import { supabase } from '../lib/supabase'
+
+const { data, error } = await supabase
+  .from('components')
+  .select('*')
+  .eq('status', 'published')
+```
+
+### Theme context
+```javascript
+import { useTheme } from '../hooks/useTheme'
+
+function Component() {
+  const { theme, setTheme } = useTheme()
+  // ...
+}
+```
+
+### Copy to clipboard with feedback
+```javascript
+const [copied, setCopied] = useState(false)
+
+const handleCopy = (text) => {
+  navigator.clipboard.writeText(text)
+  setCopied(true)
+  setTimeout(() => setCopied(false), 1500)
+}
+```
+
+## Don't
+- Don't hardcode colors, sizes, or spacing
+- Don't skip writing tests
+- Don't implement multiple tasks at once
+- Don't proceed with failing tests
+- Don't create components without reading the phase doc first
