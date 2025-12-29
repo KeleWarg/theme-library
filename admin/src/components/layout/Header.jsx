@@ -1,16 +1,12 @@
 import { Download } from 'lucide-react'
-
-const themes = [
-  { name: 'Health SEM', value: 'theme-health---sem' },
-  { name: 'Home SEM', value: 'theme-home---sem' },
-  { name: 'LLM', value: 'theme-llm' },
-  { name: 'ForbesMedia SEO', value: 'theme-forbes-media---seo' },
-  { name: 'Compare Coverage', value: 'theme-advisor-sem-compare-coverage' },
-]
+import { useTheme } from '../../hooks/useTheme'
+import { themes } from '../../lib/tokenData'
 
 export default function Header({ pageTitle }) {
+  const { theme, setTheme } = useTheme()
+
   const handleThemeChange = (e) => {
-    document.documentElement.className = e.target.value
+    setTheme(e.target.value)
   }
 
   return (
@@ -41,7 +37,7 @@ export default function Header({ pageTitle }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {/* Theme dropdown */}
         <select
-          defaultValue="theme-health---sem"
+          value={theme}
           onChange={handleThemeChange}
           style={{
             padding: '8px 12px',
@@ -53,9 +49,9 @@ export default function Header({ pageTitle }) {
             cursor: 'pointer',
           }}
         >
-          {themes.map((theme) => (
-            <option key={theme.value} value={theme.value}>
-              {theme.name}
+          {themes.map((t) => (
+            <option key={t.slug} value={t.slug}>
+              {t.name}
             </option>
           ))}
         </select>
@@ -83,4 +79,3 @@ export default function Header({ pageTitle }) {
     </header>
   )
 }
-

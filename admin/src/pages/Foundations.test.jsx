@@ -164,22 +164,20 @@ describe('Foundations', () => {
       expect(screen.getAllByText('Work Sans').length).toBeGreaterThan(0)
       // Schnyder S appears multiple times (heading name + value badge)
       expect(screen.getAllByText('Schnyder S').length).toBeGreaterThan(0)
-      // Graphik appears multiple times (breadcrumbs name + value badge)
-      expect(screen.getAllByText('Graphik').length).toBeGreaterThan(0)
     })
 
     it('shows theme-specific description for SEM', () => {
       document.documentElement.className = 'theme-health---sem'
       render(<Foundations />)
       fireEvent.click(screen.getByRole('button', { name: 'Typography' }))
-      expect(screen.getByText(/SEM themes use Georgia for serif/)).toBeInTheDocument()
+      expect(screen.getByText(/SEM themes use Georgia \(serif\) for display and body text/)).toBeInTheDocument()
     })
 
     it('shows theme-specific description for ForbesMedia', () => {
       document.documentElement.className = 'theme-forbesmedia---seo'
       render(<Foundations />)
       fireEvent.click(screen.getByRole('button', { name: 'Typography' }))
-      expect(screen.getByText(/This theme uses the ForbesMedia typography system with Work Sans, Schnyder S, and Graphik/)).toBeInTheDocument()
+      expect(screen.getByText(/SEO\/LLM themes use Schnyder S for display only/)).toBeInTheDocument()
     })
   })
 

@@ -4,7 +4,8 @@ import Header from './Header'
 
 describe('Header', () => {
   beforeEach(() => {
-    // Reset document class before each test
+    // Reset document class and localStorage before each test
+    localStorage.clear()
     document.documentElement.className = 'theme-health---sem'
   })
 
@@ -34,6 +35,20 @@ describe('Header', () => {
     const dropdown = screen.getByRole('combobox')
     fireEvent.change(dropdown, { target: { value: 'theme-llm' } })
     expect(document.documentElement.className).toBe('theme-llm')
+  })
+
+  it('syncs with useTheme hook - reads from localStorage', () => {
+    localStorage.setItem('design-system-theme', 'theme-llm')
+    render(<Header pageTitle="Test" />)
+    const dropdown = screen.getByRole('combobox')
+    expect(dropdown.value).toBe('theme-llm')
+  })
+
+  it('persists theme changes to localStorage', () => {
+    render(<Header pageTitle="Test" />)
+    const dropdown = screen.getByRole('combobox')
+    fireEvent.change(dropdown, { target: { value: 'theme-home---sem' } })
+    expect(localStorage.getItem('design-system-theme')).toBe('theme-home---sem')
   })
 })
 
