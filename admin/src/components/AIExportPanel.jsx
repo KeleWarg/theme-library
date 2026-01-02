@@ -3,11 +3,13 @@ import { Copy, Download, Check, Sparkles } from 'lucide-react';
 import { generateCursorRules } from '../lib/aiExport/cursorRules';
 import { generateClaudeMd, generateClaudeTokensRule } from '../lib/aiExport/claudeCode';
 import { generateProjectKnowledge } from '../lib/aiExport/projectKnowledge';
+import { downloadAIPackage } from '../lib/aiExport/fullPackage';
 
 const formats = [
   { id: 'cursor', name: 'Cursor Rules', desc: '.cursor/rules/*.mdc', actions: ['copy', 'download'] },
   { id: 'claude', name: 'Claude Code', desc: 'CLAUDE.md + rules', actions: ['copy', 'download'] },
   { id: 'bolt', name: 'Bolt/Lovable', desc: 'Project Knowledge', actions: ['copy'] },
+  { id: 'mcp', name: 'MCP Server', desc: 'design-system.json', actions: ['download'] },
 ];
 
 export default function AIExportPanel({ bundle }) {
@@ -18,6 +20,12 @@ export default function AIExportPanel({ bundle }) {
       case 'cursor': return generateCursorRules(bundle);
       case 'claude': return generateClaudeMd(bundle) + '\n---\n' + generateClaudeTokensRule(bundle);
       case 'bolt': return generateProjectKnowledge(bundle);
+      case 'mcp':
+        return JSON.stringify({
+          tokens: bundle.tokens,
+          components: bundle.components,
+          themes: bundle.themes
+        }, null, 2);
       default: return '';
     }
   };
@@ -30,8 +38,14 @@ export default function AIExportPanel({ bundle }) {
 
   const handleDownload = (format) => {
     const content = getContent(format);
-    const filename = format === 'cursor' ? 'design-system.mdc' : 'CLAUDE.md';
-    const blob = new Blob([content], { type: 'text/plain' });
+    const filenames = {
+      cursor: 'design-system.mdc',
+      claude: 'CLAUDE.md',
+      mcp: 'design-system.json'
+    };
+    const filename = filenames[format] || 'export.txt';
+    const mimeType = format === 'mcp' ? 'application/json' : 'text/plain';
+    const blob = new Blob([content], { type: mimeType });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = filename;
@@ -80,6 +94,30 @@ export default function AIExportPanel({ bundle }) {
           </div>
         ))}
       </div>
+
+      <button
+        data-testid="download-all"
+        onClick={() => downloadAIPackage(bundle)}
+        style={{
+          width: '100%',
+          marginTop: '16px',
+          padding: '12px',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          fontSize: '14px',
+          fontWeight: 500,
+        }}
+      >
+        <Download size={16} />
+        Download All Formats (ZIP)
+      </button>
     </section>
   );
 }

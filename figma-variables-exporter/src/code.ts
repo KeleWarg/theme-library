@@ -1,5 +1,5 @@
 /**
- * Chunk 9.04 + 9.05 — Main Plugin Entry + API Sync
+ * Chunk 9.04 + 9.05 - Main Plugin Entry + API Sync
  * 
  * Wires up the Figma plugin UI and handles messages.
  * Includes sync functionality to push tokens to admin dashboard.
@@ -75,10 +75,14 @@ figma.ui.onmessage = async (msg: UIMessage) => {
       // Send to admin dashboard API
       const response = await fetch(msg.apiUrl || 'http://localhost:3001/api/tokens', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(msg.apiKey ? { 'Authorization': `Bearer ${msg.apiKey}` } : {}),
-        },
+        headers: msg.apiKey 
+          ? {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${msg.apiKey}`
+            }
+          : {
+              'Content-Type': 'application/json'
+            },
         body: JSON.stringify({
           tokens: files,
           timestamp: new Date().toISOString(),
@@ -97,13 +101,13 @@ figma.ui.onmessage = async (msg: UIMessage) => {
         type: 'sync-complete',
         result,
       });
-      figma.notify('✓ Synced to dashboard');
+      figma.notify('Synced to dashboard');
     } catch (e) {
       figma.ui.postMessage({ 
         type: 'error', 
         message: `Sync failed: ${e}` 
       });
-      figma.notify('✗ Sync failed', { error: true });
+      figma.notify('Sync failed', { error: true });
     }
   }
 };

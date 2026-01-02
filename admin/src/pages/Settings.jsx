@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Download, FileText, Package, Check, AlertCircle, Figma, RefreshCw } from 'lucide-react'
 import { useComponents } from '../hooks/useComponents'
-import { downloadPackage, generateLLMSTxt } from '../lib/packageGenerator'
+import { downloadPackage } from '../lib/export/packageGenerator'
+import { generateLLMSTxt } from '../lib/export/llmsGenerator'
 import { isAIConfigured } from '../lib/ai/generateCode'
 import { getRecentSyncs } from '../lib/componentSync'
 import { getThemes } from '../lib/themeService'
@@ -110,7 +111,7 @@ export default function Settings() {
   }
 
   const handleDownloadLLMS = () => {
-    const content = generateLLMSTxt(components, packageName)
+    const content = generateLLMSTxt(components, { packageName, version })
     const blob = new Blob([content], { type: 'text/plain' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)

@@ -463,15 +463,15 @@ describe('Export Integration', () => {
   // Note: These tests verify the export modal generates valid output
   
   it.skip('generates valid CSS from theme tokens', async () => {
-    // TODO: Implement with ExportModal integration
+    // TODO: Implement with ThemeExportModal integration
   })
 
   it.skip('generates valid JSON in DTCG format', async () => {
-    // TODO: Implement with ExportModal integration
+    // TODO: Implement with ThemeExportModal integration
   })
 
   it.skip('generates valid Tailwind config', async () => {
-    // TODO: Implement with ExportModal integration
+    // TODO: Implement with ThemeExportModal integration
   })
 })
 

@@ -4,7 +4,7 @@ import { AlertCircle, Loader } from 'lucide-react'
 import EditorHeader from '../components/themes/editor/EditorHeader'
 import EditorLayout from '../components/themes/editor/EditorLayout'
 import TokenRow from '../components/themes/editor/TokenRow'
-import ExportModal from '../components/themes/export/ExportModal'
+import ThemeExportModal from '../components/themes/export/ThemeExportModal'
 import { 
   getThemeById, 
   updateTheme, 
@@ -517,7 +517,7 @@ export default function ThemeEditor() {
       />
 
       {/* Export Modal */}
-      <ExportModal
+      <ThemeExportModal
         isOpen={showExportModal}
         onClose={() => setShowExportModal(false)}
         theme={theme}
