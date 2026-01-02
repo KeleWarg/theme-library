@@ -5,249 +5,527 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       padding: 16px;
-      background: #ffffff;
-      color: #333;
+      background: #1e1e1e;
+      color: #e0e0e0;
+      font-size: 12px;
     }
     
     h2 {
       font-size: 14px;
       font-weight: 600;
       margin-bottom: 16px;
-      color: #1e1e1e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
-    .section { margin-bottom: 20px; }
+    .logo {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #657E79, #34a853);
+      border-radius: 4px;
+    }
+    
+    .section {
+      margin-bottom: 16px;
+    }
     
     .section-title {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #666;
+      color: #888;
       margin-bottom: 8px;
     }
     
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .preview-container {
+      background: #2d2d2d;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: center;
     }
     
-    .checkbox-label {
+    .preview-image {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+    
+    .preview-placeholder {
+      width: 100%;
+      height: 120px;
+      background: #3d3d3d;
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    
-    .checkbox-label input { width: 14px; height: 14px; }
-    
-    .collection-list {
-      max-height: 150px;
-      overflow-y: auto;
-      border: 1px solid #e5e5e5;
-      border-radius: 6px;
-      padding: 8px;
+      justify-content: center;
+      color: #666;
       margin-bottom: 12px;
     }
     
-    .collection-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 8px;
-      border-radius: 4px;
-      font-size: 12px;
+    .component-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
     }
     
-    .collection-item:hover { background: #f5f5f5; }
-    .collection-item.selected { background: #e8f0fe; }
+    .component-description {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.4;
+    }
     
-    .mode-badge {
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    
+    .metadata-item {
+      background: #2d2d2d;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    
+    .metadata-label {
       font-size: 10px;
-      padding: 2px 6px;
-      background: #e5e5e5;
-      border-radius: 3px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    
+    .metadata-value {
+      font-size: 12px;
+      font-weight: 500;
+      color: #fff;
+    }
+    
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    
+    .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      background: #3d3d3d;
+      border-radius: 4px;
+      color: #ccc;
+    }
+    
+    .tag.variant {
+      background: #1a472a;
+      color: #4ade80;
+    }
+    
+    .tag.token {
+      background: #1e3a5f;
+      color: #60a5fa;
+    }
+    
+    .divider {
+      height: 1px;
+      background: #3d3d3d;
+      margin: 16px 0;
+    }
+    
+    .input-group {
+      margin-bottom: 12px;
+    }
+    
+    .input-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #888;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #2d2d2d;
+      border: 1px solid #3d3d3d;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #fff;
+    }
+    
+    .input-group input:focus {
+      outline: none;
+      border-color: #657E79;
+    }
+    
+    .input-group input::placeholder {
       color: #666;
     }
     
     .button-group {
       display: flex;
       gap: 8px;
-      margin-top: 16px;
     }
     
     button {
       flex: 1;
-      padding: 10px 16px;
+      padding: 12px 16px;
       border-radius: 6px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
-    }
-    
-    .btn-primary {
-      background: #18a0fb;
-      color: white;
       border: none;
     }
     
-    .btn-primary:hover { background: #0d8de5; }
-    .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
-    
-    .btn-secondary {
-      background: white;
-      color: #333;
-      border: 1px solid #e5e5e5;
+    .btn-primary {
+      background: linear-gradient(135deg, #657E79, #4a6360);
+      color: white;
     }
     
-    .btn-secondary:hover { background: #f5f5f5; }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #758e89, #5a7370);
+    }
+    
+    .btn-primary:disabled {
+      background: #3d3d3d;
+      color: #666;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: #2d2d2d;
+      color: #ccc;
+      border: 1px solid #3d3d3d;
+    }
+    
+    .btn-secondary:hover {
+      background: #3d3d3d;
+    }
+    
+    .btn-sync {
+      width: 100%;
+      margin-top: 8px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+    }
+    
+    .btn-sync:hover {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+    
+    .btn-sync:disabled {
+      background: #3d3d3d;
+      color: #666;
+      cursor: not-allowed;
+    }
     
     .status {
-      margin-top: 16px;
-      padding: 12px;
+      margin-top: 12px;
+      padding: 10px 12px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11px;
       display: none;
     }
     
-    .status.success { display: block; background: #e6f4ea; color: #1e7e34; }
-    .status.error { display: block; background: #fce8e6; color: #c5221f; }
-    .status.info { display: block; background: #e8f0fe; color: #1967d2; }
-    
-    .divider { height: 1px; background: #e5e5e5; margin: 16px 0; }
-    
-    .input-group { margin-bottom: 12px; }
-    
-    .input-group label {
+    .status.success {
       display: block;
-      font-size: 11px;
-      font-weight: 500;
-      margin-bottom: 4px;
-      color: #666;
+      background: #1a472a;
+      color: #4ade80;
     }
     
-    .input-group input {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid #e5e5e5;
-      border-radius: 6px;
+    .status.error {
+      display: block;
+      background: #4a1a1a;
+      color: #f87171;
+    }
+    
+    .status.info {
+      display: block;
+      background: #1e3a5f;
+      color: #60a5fa;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+    }
+    
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 8px;
+    }
+    
+    .empty-state p {
       font-size: 12px;
+      line-height: 1.5;
     }
     
-    .input-group input:focus { outline: none; border-color: #18a0fb; }
+    .props-table {
+      width: 100%;
+      background: #2d2d2d;
+      border-radius: 6px;
+      overflow: hidden;
+      font-size: 11px;
+    }
+    
+    .props-table th,
+    .props-table td {
+      padding: 8px 10px;
+      text-align: left;
+    }
+    
+    .props-table th {
+      background: #3d3d3d;
+      color: #888;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 9px;
+    }
+    
+    .props-table td {
+      border-bottom: 1px solid #3d3d3d;
+      color: #ccc;
+    }
+    
+    .props-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .type-badge {
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 10px;
+      color: #f59e0b;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
-  <h2>Design System Variables Exporter</h2>
+  <h2>
+    <div class="logo"></div>
+    Design System Syncer
+  </h2>
   
-  <div class="section">
-    <div class="section-title">Variable Collections</div>
-    <div id="collections" class="collection-list">
-      <div style="color: #999; font-size: 11px;">Loading collections...</div>
-    </div>
+  <!-- Empty State -->
+  <div id="emptyState" class="empty-state">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      <path d="M12 8v8M8 12h8"/>
+    </svg>
+    <h3>No Component Selected</h3>
+    <p>Select a component or component set in Figma to extract its properties and sync to the dashboard.</p>
   </div>
   
-  <div class="section">
-    <div class="section-title">Export Options</div>
-    <div class="checkbox-group">
-      <label class="checkbox-label">
-        <input type="checkbox" id="exportColors" checked>
-        Colors (themes)
-      </label>
-      <label class="checkbox-label">
-        <input type="checkbox" id="exportTypography" checked>
-        Typography
-      </label>
-      <label class="checkbox-label">
-        <input type="checkbox" id="exportBreakpoints" checked>
-        Breakpoints / Spacing
-      </label>
-      <label class="checkbox-label">
-        <input type="checkbox" id="includeMetadata">
-        Include Figma metadata
-      </label>
+  <!-- Component Data -->
+  <div id="componentData" class="hidden">
+    <!-- Preview -->
+    <div class="preview-container">
+      <div id="previewPlaceholder" class="preview-placeholder">Loading preview...</div>
+      <img id="previewImage" class="preview-image hidden" alt="Component preview" />
+      <div id="componentName" class="component-name">ComponentName</div>
+      <div id="componentDescription" class="component-description">Component description</div>
     </div>
-  </div>
-  
-  <div class="divider"></div>
-  
-  <div class="section">
-    <div class="section-title">Output Format</div>
-    <div class="checkbox-group">
-      <label class="checkbox-label">
-        <input type="radio" name="format" value="dtcg" checked>
-        DTCG Format (Design Tokens Community Group)
-      </label>
-      <label class="checkbox-label">
-        <input type="radio" name="format" value="simple">
-        Simple JSON (key-value pairs)
-      </label>
+    
+    <!-- Metadata -->
+    <div class="section">
+      <div class="section-title">Metadata</div>
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <div class="metadata-label">Variants</div>
+          <div id="variantCount" class="metadata-value">0</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Props</div>
+          <div id="propCount" class="metadata-value">0</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Tokens</div>
+          <div id="tokenCount" class="metadata-value">0</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Figma ID</div>
+          <div id="figmaId" class="metadata-value" style="font-size: 10px; overflow: hidden; text-overflow: ellipsis;">-</div>
+        </div>
+      </div>
     </div>
-  </div>
-  
-  <div class="divider"></div>
-  
-  <div class="section">
-    <div class="section-title">API Sync (Optional)</div>
-    <div class="input-group">
-      <label>Admin Dashboard URL</label>
-      <input type="text" id="apiUrl" placeholder="https://your-admin.vercel.app/api/tokens">
+    
+    <!-- Variants -->
+    <div class="section" id="variantsSection">
+      <div class="section-title">Variants</div>
+      <div id="variantTags" class="tag-list">
+        <!-- Tags populated dynamically -->
+      </div>
     </div>
-    <div class="input-group">
-      <label>API Key</label>
-      <input type="password" id="apiKey" placeholder="Enter API key for sync">
+    
+    <!-- Props -->
+    <div class="section" id="propsSection">
+      <div class="section-title">Props</div>
+      <table class="props-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody id="propsTable">
+          <!-- Rows populated dynamically -->
+        </tbody>
+      </table>
     </div>
+    
+    <!-- Tokens -->
+    <div class="section" id="tokensSection">
+      <div class="section-title">Tokens Used</div>
+      <div id="tokenTags" class="tag-list">
+        <!-- Tags populated dynamically -->
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <!-- API Configuration -->
+    <div class="section">
+      <div class="section-title">Sync Configuration</div>
+      <div class="input-group">
+        <label>Dashboard API URL</label>
+        <input 
+          type="text" 
+          id="apiUrl" 
+          value="http://localhost:3001/api/components" 
+          placeholder="http://localhost:3001/api/components"
+        />
+      </div>
+    </div>
+    
+    <!-- Actions -->
+    <div class="button-group">
+      <button class="btn-secondary" id="refreshBtn">Refresh</button>
+      <button class="btn-primary" id="copyBtn">Copy JSON</button>
+    </div>
+    
+    <button class="btn-sync" id="syncBtn">
+      Sync to Dashboard
+    </button>
   </div>
-  
-  <div class="button-group">
-    <button class="btn-secondary" id="cancelBtn">Cancel</button>
-    <button class="btn-primary" id="exportBtn">Export to JSON</button>
-  </div>
-  
-  <button class="btn-primary" id="syncBtn" style="width: 100%; margin-top: 8px; background: #34a853;" disabled>
-    Sync to Dashboard
-  </button>
   
   <div id="status" class="status"></div>
 
   <script>
+    let currentComponentData = null;
+    
+    // Handle messages from plugin code
     window.onmessage = (event) => {
       const msg = event.data.pluginMessage;
       
-      if (msg.type === 'collections') {
-        renderCollections(msg.collections);
-      } else if (msg.type === 'export-complete') {
-        showStatus('success', `Exported ${msg.fileCount} files!`);
-        msg.files.forEach((file, index) => {
-          setTimeout(() => downloadFile(file.name, file.content), index * 500);
-        });
+      if (msg.type === 'component-extracted') {
+        currentComponentData = msg.data;
+        displayComponentData(msg.data);
+        showStatus('success', 'Component extracted successfully!');
+        setTimeout(() => hideStatus(), 2000);
+      } else if (msg.type === 'extracting') {
+        showStatus('info', msg.message);
+      } else if (msg.type === 'syncing') {
+        showStatus('info', msg.message);
+        document.getElementById('syncBtn').disabled = true;
       } else if (msg.type === 'sync-complete') {
-        showStatus('success', 'Synced to dashboard successfully!');
+        showStatus('success', msg.message);
+        document.getElementById('syncBtn').disabled = false;
       } else if (msg.type === 'error') {
         showStatus('error', msg.message);
+        document.getElementById('syncBtn').disabled = false;
+        showEmptyState();
       }
     };
     
-    function renderCollections(collections) {
-      const container = document.getElementById('collections');
+    function displayComponentData(data) {
+      // Show component section, hide empty state
+      document.getElementById('emptyState').classList.add('hidden');
+      document.getElementById('componentData').classList.remove('hidden');
       
-      if (collections.length === 0) {
-        container.innerHTML = '<div style="color: #999; font-size: 11px;">No variable collections found</div>';
-        return;
+      // Update preview
+      if (data.snapshot_url) {
+        document.getElementById('previewImage').src = data.snapshot_url;
+        document.getElementById('previewImage').classList.remove('hidden');
+        document.getElementById('previewPlaceholder').classList.add('hidden');
+      } else {
+        document.getElementById('previewImage').classList.add('hidden');
+        document.getElementById('previewPlaceholder').classList.remove('hidden');
       }
       
-      container.innerHTML = collections.map(col => `
-        <label class="collection-item">
-          <input type="checkbox" value="${col.id}" checked>
-          <span>${col.name}</span>
-          <span class="mode-badge">${col.modeCount} mode${col.modeCount > 1 ? 's' : ''}</span>
-        </label>
-      `).join('');
+      // Update component info
+      document.getElementById('componentName').textContent = data.name;
+      document.getElementById('componentDescription').textContent = 
+        data.description || 'No description provided';
+      
+      // Update metadata counts
+      document.getElementById('variantCount').textContent = data.variants?.length || 0;
+      document.getElementById('propCount').textContent = data.prop_types?.length || 0;
+      document.getElementById('tokenCount').textContent = data.tokens_used?.length || 0;
+      document.getElementById('figmaId').textContent = data.figma_id || '-';
+      
+      // Update variants
+      const variantTags = document.getElementById('variantTags');
+      if (data.variants && data.variants.length > 0) {
+        variantTags.innerHTML = data.variants
+          .map(v => `<span class="tag variant">${v.name}</span>`)
+          .join('');
+        document.getElementById('variantsSection').classList.remove('hidden');
+      } else {
+        document.getElementById('variantsSection').classList.add('hidden');
+      }
+      
+      // Update props table
+      const propsTable = document.getElementById('propsTable');
+      if (data.prop_types && data.prop_types.length > 0) {
+        propsTable.innerHTML = data.prop_types
+          .map(p => `
+            <tr>
+              <td>${p.name}</td>
+              <td class="type-badge">${escapeHtml(p.type)}</td>
+              <td>${p.default || '-'}</td>
+            </tr>
+          `)
+          .join('');
+        document.getElementById('propsSection').classList.remove('hidden');
+      } else {
+        document.getElementById('propsSection').classList.add('hidden');
+      }
+      
+      // Update tokens
+      const tokenTags = document.getElementById('tokenTags');
+      if (data.tokens_used && data.tokens_used.length > 0) {
+        tokenTags.innerHTML = data.tokens_used
+          .map(t => `<span class="tag token">${t}</span>`)
+          .join('');
+        document.getElementById('tokensSection').classList.remove('hidden');
+      } else {
+        document.getElementById('tokensSection').classList.add('hidden');
+      }
+    }
+    
+    function showEmptyState() {
+      document.getElementById('emptyState').classList.remove('hidden');
+      document.getElementById('componentData').classList.add('hidden');
+      currentComponentData = null;
     }
     
     function showStatus(type, message) {
@@ -256,70 +534,56 @@
       status.textContent = message;
     }
     
-    function getSelectedCollections() {
-      const checkboxes = document.querySelectorAll('#collections input[type="checkbox"]:checked');
-      return Array.from(checkboxes).map(cb => cb.value);
+    function hideStatus() {
+      const status = document.getElementById('status');
+      status.className = 'status';
     }
     
-    function getExportOptions() {
-      return {
-        colors: document.getElementById('exportColors').checked,
-        typography: document.getElementById('exportTypography').checked,
-        breakpoints: document.getElementById('exportBreakpoints').checked,
-        includeMetadata: document.getElementById('includeMetadata').checked,
-        format: document.querySelector('input[name="format"]:checked').value
-      };
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
     }
     
-    function downloadFile(filename, content) {
-      const blob = new Blob([content], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename.replace(/\//g, '_');
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-    
-    document.getElementById('exportBtn').onclick = () => {
-      const collections = getSelectedCollections();
-      const options = getExportOptions();
-      
-      if (collections.length === 0) {
-        showStatus('error', 'Please select at least one collection');
-        return;
-      }
-      
-      showStatus('info', 'Exporting...');
-      parent.postMessage({ pluginMessage: { type: 'export', collections, options } }, '*');
+    // Refresh button - re-extract selection
+    document.getElementById('refreshBtn').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'extract-component' } }, '*');
     };
     
+    // Copy JSON button
+    document.getElementById('copyBtn').onclick = () => {
+      if (currentComponentData) {
+        const json = JSON.stringify(currentComponentData, null, 2);
+        navigator.clipboard.writeText(json).then(() => {
+          showStatus('success', 'JSON copied to clipboard!');
+          setTimeout(hideStatus, 2000);
+        }).catch(() => {
+          showStatus('error', 'Failed to copy to clipboard');
+        });
+      }
+    };
+    
+    // Sync button
     document.getElementById('syncBtn').onclick = () => {
-      const apiUrl = document.getElementById('apiUrl').value;
-      const apiKey = document.getElementById('apiKey').value;
-      const collections = getSelectedCollections();
-      const options = getExportOptions();
-      
-      if (!apiUrl) {
-        showStatus('error', 'Please enter API URL');
+      if (!currentComponentData) {
+        showStatus('error', 'No component data to sync');
         return;
       }
       
-      showStatus('info', 'Syncing...');
-      parent.postMessage({ pluginMessage: { type: 'sync', apiUrl, apiKey, collections, options } }, '*');
+      const apiUrl = document.getElementById('apiUrl').value;
+      if (!apiUrl) {
+        showStatus('error', 'Please enter the API URL');
+        return;
+      }
+      
+      parent.postMessage({ 
+        pluginMessage: { 
+          type: 'sync-component',
+          apiUrl: apiUrl,
+          componentData: currentComponentData
+        } 
+      }, '*');
     };
-    
-    document.getElementById('apiUrl').oninput = (e) => {
-      document.getElementById('syncBtn').disabled = !e.target.value;
-    };
-    
-    document.getElementById('cancelBtn').onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
-    };
-    
-    parent.postMessage({ pluginMessage: { type: 'get-collections' } }, '*');
   </script>
 </body>
 </html>

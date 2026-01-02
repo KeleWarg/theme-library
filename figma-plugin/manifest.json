@@ -1,10 +1,10 @@
 {
-  "name": "Design System Variables Exporter",
-  "id": "design-system-variables-exporter",
+  "name": "Design System Component Syncer",
+  "id": "design-system-component-syncer",
   "api": "1.0.0",
   "main": "code.js",
   "ui": "ui.html",
-  "capabilities": [],
+  "capabilities": ["codegen"],
   "enableProposedApi": false,
   "editorType": ["figma"],
   "networkAccess": {

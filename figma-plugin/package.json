@@ -1,7 +1,7 @@
 {
-  "name": "figma-variables-exporter",
+  "name": "design-system-component-syncer",
   "version": "1.0.0",
-  "description": "Figma plugin to export design variables to JSON",
+  "description": "Figma plugin to sync design system components to the admin dashboard",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch"

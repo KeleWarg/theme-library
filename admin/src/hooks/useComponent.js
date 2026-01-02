@@ -57,3 +57,5 @@ export function useComponent(slug) {
   return { component, loading, error, update, refetch: fetchComponent }
 }
 
+
+

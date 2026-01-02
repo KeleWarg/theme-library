@@ -1,289 +1,422 @@
-// Types
-interface VariableCollection {
-  id: string;
+// Types for extracted component data
+interface ExtractedVariant {
   name: string;
-  modes: { modeId: string; name: string }[];
-  variableIds: string[];
+  properties: Record<string, string | boolean>;
 }
 
-interface ExportOptions {
-  colors: boolean;
-  typography: boolean;
-  breakpoints: boolean;
-  includeMetadata: boolean;
-  format: 'dtcg' | 'simple';
+interface ExtractedProp {
+  name: string;
+  type: string;
+  default?: string;
+  description?: string;
+  options?: string[];
 }
 
-interface ColorValue {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-interface ExportedToken {
-  $type: string;
-  $value: any;
-  $extensions?: Record<string, any>;
+interface ExtractedComponent {
+  figma_id: string;
+  name: string;
+  description: string;
+  variants: ExtractedVariant[];
+  prop_types: ExtractedProp[];
+  tokens_used: string[];
+  snapshot_url: string; // base64 PNG
+  figma_url: string;
+  status: string;
 }
 
 // Show UI
-figma.showUI(__html__, { width: 340, height: 580 });
+figma.showUI(__html__, { width: 400, height: 600 });
 
 // Handle messages from UI
 figma.ui.onmessage = async (msg) => {
-  if (msg.type === 'get-collections') {
-    await sendCollections();
-  } else if (msg.type === 'export') {
-    await exportVariables(msg.collections, msg.options);
-  } else if (msg.type === 'sync') {
-    await syncToAPI(msg.apiUrl, msg.apiKey, msg.collections, msg.options);
+  if (msg.type === 'extract-component') {
+    await extractSelectedComponent();
+  } else if (msg.type === 'sync-component') {
+    await syncComponent(msg.apiUrl, msg.componentData);
   } else if (msg.type === 'cancel') {
     figma.closePlugin();
   }
 };
 
-// Get all variable collections
-async function sendCollections() {
+// Extract the currently selected component
+async function extractSelectedComponent() {
   try {
-    const collections = await figma.variables.getLocalVariableCollectionsAsync();
-    
-    const collectionData = collections.map(col => ({
-      id: col.id,
-      name: col.name,
-      modeCount: col.modes.length
-    }));
-    
-    figma.ui.postMessage({ type: 'collections', collections: collectionData });
-  } catch (error) {
-    figma.ui.postMessage({ type: 'error', message: 'Failed to load collections' });
-  }
-}
+    const selection = figma.currentPage.selection;
 
-// Convert Figma color to hex
-function colorToHex(color: ColorValue): string {
-  const r = Math.round(color.r * 255);
-  const g = Math.round(color.g * 255);
-  const b = Math.round(color.b * 255);
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`.toUpperCase();
-}
-
-// Get resolved value for a variable
-async function getResolvedValue(variable: Variable, modeId: string): Promise<any> {
-  const value = variable.valuesByMode[modeId];
-  
-  if (value === undefined) return null;
-  
-  // Handle alias (reference to another variable)
-  if (typeof value === 'object' && 'type' in value && value.type === 'VARIABLE_ALIAS') {
-    const aliasedVar = await figma.variables.getVariableByIdAsync(value.id);
-    if (aliasedVar) {
-      return getResolvedValue(aliasedVar, modeId);
+    if (selection.length === 0) {
+      figma.ui.postMessage({
+        type: 'error',
+        message: 'Please select a component or component set in Figma'
+      });
+      return;
     }
-  }
-  
-  return value;
-}
 
-// Format variable value based on type
-function formatValue(value: any, type: string, options: ExportOptions): ExportedToken {
-  if (options.format === 'simple') {
-    if (type === 'COLOR' && typeof value === 'object' && 'r' in value) {
-      return { $type: 'color', $value: colorToHex(value as ColorValue) };
+    const node = selection[0];
+
+    // Check if it's a component or component set
+    if (node.type !== 'COMPONENT' && node.type !== 'COMPONENT_SET') {
+      figma.ui.postMessage({
+        type: 'error',
+        message: 'Please select a component or component set (not an instance)'
+      });
+      return;
     }
-    return { $type: type.toLowerCase(), $value: value };
-  }
-  
-  // DTCG format with full metadata
-  if (type === 'COLOR' && typeof value === 'object' && 'r' in value) {
-    const color = value as ColorValue;
-    return {
-      $type: 'color',
-      $value: {
-        colorSpace: 'srgb',
-        components: [color.r, color.g, color.b],
-        alpha: color.a,
-        hex: colorToHex(color)
-      }
-    };
-  }
-  
-  if (type === 'FLOAT') {
-    return { $type: 'number', $value: value };
-  }
-  
-  if (type === 'STRING') {
-    return { $type: 'string', $value: value };
-  }
-  
-  if (type === 'BOOLEAN') {
-    return { $type: 'boolean', $value: value };
-  }
-  
-  return { $type: type.toLowerCase(), $value: value };
-}
 
-// Build nested object from path
-function setNestedValue(obj: any, path: string[], value: any): void {
-  let current = obj;
-  for (let i = 0; i < path.length - 1; i++) {
-    const key = path[i];
-    if (!(key in current)) {
-      current[key] = {};
-    }
-    current = current[key];
-  }
-  current[path[path.length - 1]] = value;
-}
+    figma.ui.postMessage({ type: 'extracting', message: 'Extracting component...' });
 
-// Categorize variable by name
-function categorizeVariable(name: string): 'colors' | 'typography' | 'breakpoints' | 'other' {
-  const lowerName = name.toLowerCase();
-  
-  if (lowerName.includes('color') || lowerName.includes('bg') || lowerName.includes('fg') || 
-      lowerName.includes('button') || lowerName.includes('background') || lowerName.includes('foreground')) {
-    return 'colors';
-  }
-  
-  if (lowerName.includes('font') || lowerName.includes('text') || lowerName.includes('line-height') ||
-      lowerName.includes('letter') || lowerName.includes('typography')) {
-    return 'typography';
-  }
-  
-  if (lowerName.includes('breakpoint') || lowerName.includes('spacing') || lowerName.includes('grid') ||
-      lowerName.includes('margin') || lowerName.includes('gutter') || lowerName.includes('column')) {
-    return 'breakpoints';
-  }
-  
-  return 'other';
-}
+    // Extract component data
+    const componentData = await extractComponentData(node);
 
-// Export variables to JSON
-async function exportVariables(collectionIds: string[], options: ExportOptions) {
-  try {
-    const exports: { name: string; content: string }[] = [];
-    
-    for (const colId of collectionIds) {
-      const collection = await figma.variables.getVariableCollectionByIdAsync(colId);
-      if (!collection) continue;
-      
-      for (const mode of collection.modes) {
-        const tokens: Record<string, any> = {};
-        
-        for (const varId of collection.variableIds) {
-          const variable = await figma.variables.getVariableByIdAsync(varId);
-          if (!variable) continue;
-          
-          const category = categorizeVariable(variable.name);
-          
-          if (category === 'colors' && !options.colors) continue;
-          if (category === 'typography' && !options.typography) continue;
-          if (category === 'breakpoints' && !options.breakpoints) continue;
-          
-          const value = await getResolvedValue(variable, mode.modeId);
-          if (value === null) continue;
-          
-          const formattedValue = formatValue(value, variable.resolvedType, options);
-          
-          if (options.includeMetadata) {
-            formattedValue.$extensions = {
-              'com.figma.variableId': variable.id,
-              'com.figma.hiddenFromPublishing': variable.hiddenFromPublishing,
-              'com.figma.scopes': variable.scopes
-            };
-          }
-          
-          const path = variable.name.split('/').map(p => p.trim());
-          setNestedValue(tokens, path, formattedValue);
-        }
-        
-        const fileName = `${collection.name}/${mode.name}.tokens.json`;
-        exports.push({
-          name: fileName,
-          content: JSON.stringify(tokens, null, 2)
-        });
-      }
-    }
-    
-    figma.ui.postMessage({ 
-      type: 'export-complete', 
-      files: exports,
-      fileCount: exports.length
+    figma.ui.postMessage({
+      type: 'component-extracted',
+      data: componentData
     });
-    
-    figma.notify(`Exported ${exports.length} token files`);
-    
+
+    figma.notify(`Extracted: ${componentData.name}`);
+
   } catch (error) {
-    figma.ui.postMessage({ type: 'error', message: `Export failed: ${error}` });
+    figma.ui.postMessage({
+      type: 'error',
+      message: `Extraction failed: ${error}`
+    });
   }
 }
 
-// Sync to admin dashboard API
-async function syncToAPI(apiUrl: string, apiKey: string, collectionIds: string[], options: ExportOptions) {
-  try {
-    const exports: { name: string; content: any }[] = [];
+// Extract all data from a component or component set
+async function extractComponentData(node: ComponentNode | ComponentSetNode): Promise<ExtractedComponent> {
+  const isComponentSet = node.type === 'COMPONENT_SET';
+  
+  // Get component name and description
+  const name = formatComponentName(node.name);
+  const description = node.description || '';
+
+  // Extract variants
+  const variants = await extractVariants(node);
+
+  // Extract prop types from component properties or variants
+  const propTypes = extractPropTypes(node, variants);
+
+  // Find tokens used in the component
+  const tokensUsed = extractTokensUsed(node);
+
+  // Export PNG snapshot
+  const snapshot = await exportSnapshot(node);
+
+  // Build Figma URL
+  const figmaUrl = buildFigmaUrl(node);
+
+  return {
+    figma_id: node.id,
+    name,
+    description,
+    variants,
+    prop_types: propTypes,
+    tokens_used: tokensUsed,
+    snapshot_url: snapshot,
+    figma_url: figmaUrl,
+    status: 'pending_code'
+  };
+}
+
+// Format component name to PascalCase
+function formatComponentName(name: string): string {
+  // Remove variant properties from name (e.g., "Button, State=Default" -> "Button")
+  const baseName = name.split(',')[0].trim();
+  
+  // Convert to PascalCase
+  return baseName
+    .split(/[\s\-_]+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join('');
+}
+
+// Extract variants from a component set
+async function extractVariants(node: ComponentNode | ComponentSetNode): Promise<ExtractedVariant[]> {
+  if (node.type === 'COMPONENT') {
+    // Single component - one default variant
+    return [{
+      name: 'default',
+      properties: {}
+    }];
+  }
+
+  // Component set - extract all variant combinations
+  const variants: ExtractedVariant[] = [];
+  
+  // Get all child components
+  const children = node.children.filter(child => child.type === 'COMPONENT') as ComponentNode[];
+
+  for (const child of children) {
+    const variantName = child.name;
+    const properties: Record<string, string | boolean> = {};
+
+    // Parse variant properties from the name (e.g., "State=Hover, Size=Large")
+    const parts = variantName.split(',').map(p => p.trim());
     
-    for (const colId of collectionIds) {
-      const collection = await figma.variables.getVariableCollectionByIdAsync(colId);
-      if (!collection) continue;
-      
-      for (const mode of collection.modes) {
-        const tokens: Record<string, any> = {};
-        
-        for (const varId of collection.variableIds) {
-          const variable = await figma.variables.getVariableByIdAsync(varId);
-          if (!variable) continue;
-          
-          const category = categorizeVariable(variable.name);
-          if (category === 'colors' && !options.colors) continue;
-          if (category === 'typography' && !options.typography) continue;
-          if (category === 'breakpoints' && !options.breakpoints) continue;
-          
-          const value = await getResolvedValue(variable, mode.modeId);
-          if (value === null) continue;
-          
-          const formattedValue = formatValue(value, variable.resolvedType, options);
-          
-          if (options.includeMetadata) {
-            formattedValue.$extensions = {
-              'com.figma.variableId': variable.id,
-              'com.figma.hiddenFromPublishing': variable.hiddenFromPublishing,
-              'com.figma.scopes': variable.scopes
-            };
-          }
-          
-          const path = variable.name.split('/').map(p => p.trim());
-          setNestedValue(tokens, path, formattedValue);
+    for (const part of parts) {
+      const [key, value] = part.split('=').map(s => s.trim());
+      if (key && value) {
+        // Convert "true"/"false" strings to booleans
+        if (value.toLowerCase() === 'true') {
+          properties[key] = true;
+        } else if (value.toLowerCase() === 'false') {
+          properties[key] = false;
+        } else {
+          properties[key] = value;
         }
-        
-        exports.push({
-          name: `${collection.name}/${mode.name}`,
-          content: tokens
-        });
       }
     }
+
+    // Create a readable variant name
+    const readableName = Object.values(properties)
+      .filter(v => typeof v === 'string')
+      .join('-')
+      .toLowerCase() || 'default';
+
+    variants.push({
+      name: readableName,
+      properties
+    });
+  }
+
+  return variants;
+}
+
+// Extract prop types from component properties and variants
+function extractPropTypes(node: ComponentNode | ComponentSetNode, variants: ExtractedVariant[]): ExtractedProp[] {
+  const props: ExtractedProp[] = [];
+  const seenProps = new Set<string>();
+
+  // Get component property definitions if available
+  if (node.type === 'COMPONENT_SET') {
+    // Extract property definitions from variant names
+    const propertyValues: Record<string, Set<string>> = {};
+
+    for (const variant of variants) {
+      for (const [key, value] of Object.entries(variant.properties)) {
+        if (!propertyValues[key]) {
+          propertyValues[key] = new Set();
+        }
+        propertyValues[key].add(String(value));
+      }
+    }
+
+    // Create prop types from extracted properties
+    for (const [propName, values] of Object.entries(propertyValues)) {
+      const valuesArray = Array.from(values);
+      
+      // Determine type
+      let type = 'string';
+      if (valuesArray.every(v => v === 'true' || v === 'false')) {
+        type = 'boolean';
+      }
+
+      const prop: ExtractedProp = {
+        name: toCamelCase(propName),
+        type: type === 'boolean' ? 'boolean' : `'${valuesArray.join("' | '")}'`,
+        options: type === 'boolean' ? undefined : valuesArray
+      };
+
+      // Set default to first value
+      if (valuesArray.length > 0) {
+        prop.default = valuesArray[0];
+      }
+
+      if (!seenProps.has(prop.name)) {
+        seenProps.add(prop.name);
+        props.push(prop);
+      }
+    }
+  }
+
+  // Add common React props
+  if (!seenProps.has('children')) {
+    props.push({
+      name: 'children',
+      type: 'React.ReactNode',
+      description: 'Content to render inside the component'
+    });
+  }
+
+  if (!seenProps.has('className')) {
+    props.push({
+      name: 'className',
+      type: 'string',
+      description: 'Additional CSS classes'
+    });
+  }
+
+  if (!seenProps.has('onClick')) {
+    props.push({
+      name: 'onClick',
+      type: '() => void',
+      description: 'Click handler'
+    });
+  }
+
+  return props;
+}
+
+// Convert a string to camelCase
+function toCamelCase(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase());
+}
+
+// Extract design tokens used in the component
+function extractTokensUsed(node: ComponentNode | ComponentSetNode): string[] {
+  const tokens = new Set<string>();
+
+  // Walk through all nodes and extract bound variables
+  function walkNode(n: SceneNode) {
+    // Check for fill colors
+    if ('fills' in n && Array.isArray(n.fills)) {
+      for (const fill of n.fills) {
+        if (fill.type === 'SOLID' && fill.boundVariables?.color) {
+          const varId = fill.boundVariables.color.id;
+          tokens.add(variableIdToToken(varId));
+        }
+      }
+    }
+
+    // Check for stroke colors
+    if ('strokes' in n && Array.isArray(n.strokes)) {
+      for (const stroke of n.strokes) {
+        if (stroke.type === 'SOLID' && stroke.boundVariables?.color) {
+          const varId = stroke.boundVariables.color.id;
+          tokens.add(variableIdToToken(varId));
+        }
+      }
+    }
+
+    // Check for effects (shadows, blurs)
+    if ('effects' in n && Array.isArray(n.effects)) {
+      for (const effect of n.effects) {
+        if ('boundVariables' in effect && effect.boundVariables?.color) {
+          const varId = (effect.boundVariables as any).color.id;
+          tokens.add(variableIdToToken(varId));
+        }
+      }
+    }
+
+    // Check bound variables on the node itself
+    if ('boundVariables' in n) {
+      const bv = n.boundVariables as Record<string, any>;
+      for (const [key, value] of Object.entries(bv)) {
+        if (value && typeof value === 'object' && 'id' in value) {
+          tokens.add(variableIdToToken(value.id));
+        }
+      }
+    }
+
+    // Recursively walk children
+    if ('children' in n) {
+      for (const child of (n as any).children) {
+        walkNode(child);
+      }
+    }
+  }
+
+  walkNode(node);
+
+  // Remove empty tokens
+  return Array.from(tokens).filter(t => t.length > 0);
+}
+
+// Convert Figma variable ID to a CSS variable name
+function variableIdToToken(varId: string): string {
+  // Try to get the variable asynchronously is complex in sync context
+  // Return a placeholder that references the variable
+  return `var(--figma-${varId.replace(/[:/]/g, '-')})`;
+}
+
+// Export a PNG snapshot of the component
+async function exportSnapshot(node: ComponentNode | ComponentSetNode): Promise<string> {
+  try {
+    // For component sets, export the first variant or the set itself
+    let exportNode: SceneNode = node;
     
+    if (node.type === 'COMPONENT_SET' && node.children.length > 0) {
+      // Find the "default" variant or use the first one
+      const defaultChild = node.children.find(child => 
+        child.type === 'COMPONENT' && 
+        (child.name.toLowerCase().includes('default') || 
+         child.name.toLowerCase().includes('primary'))
+      );
+      exportNode = defaultChild || node.children[0];
+    }
+
+    const bytes = await exportNode.exportAsync({
+      format: 'PNG',
+      constraint: { type: 'SCALE', value: 2 } // 2x for retina
+    });
+
+    // Convert to base64
+    const base64 = figma.base64Encode(bytes);
+    return `data:image/png;base64,${base64}`;
+
+  } catch (error) {
+    console.error('Failed to export snapshot:', error);
+    return '';
+  }
+}
+
+// Build a Figma URL for the component
+function buildFigmaUrl(node: ComponentNode | ComponentSetNode): string {
+  const fileKey = figma.fileKey;
+  const nodeId = node.id;
+  
+  if (fileKey) {
+    return `https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(nodeId)}`;
+  }
+  
+  return '';
+}
+
+// Sync component to the admin dashboard API
+async function syncComponent(apiUrl: string, componentData: ExtractedComponent) {
+  try {
+    figma.ui.postMessage({ type: 'syncing', message: 'Syncing to dashboard...' });
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        tokens: exports,
-        timestamp: new Date().toISOString(),
-        source: 'figma-plugin'
-      })
+      body: JSON.stringify(componentData)
     });
-    
+
     if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`API returned ${response.status}: ${errorText}`);
     }
-    
-    figma.ui.postMessage({ type: 'sync-complete' });
-    figma.notify('Synced to dashboard successfully!');
-    
+
+    const result = await response.json();
+
+    figma.ui.postMessage({
+      type: 'sync-complete',
+      message: `Synced "${componentData.name}" successfully!`,
+      result
+    });
+
+    figma.notify(`Synced: ${componentData.name}`);
+
   } catch (error) {
-    figma.ui.postMessage({ type: 'error', message: `Sync failed: ${error}` });
+    figma.ui.postMessage({
+      type: 'error',
+      message: `Sync failed: ${error}`
+    });
   }
 }
+
+// Initialize - send current selection info on load
+async function init() {
+  await extractSelectedComponent();
+}
+
+// Run init after a short delay to allow UI to load
+setTimeout(init, 100);
+
+
+

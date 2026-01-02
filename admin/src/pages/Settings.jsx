@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { Download, FileText, Package, Check, AlertCircle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Download, FileText, Package, Check, AlertCircle, Figma, RefreshCw } from 'lucide-react'
 import { useComponents } from '../hooks/useComponents'
 import { downloadPackage, generateLLMSTxt } from '../lib/packageGenerator'
 import { isAIConfigured } from '../lib/generateCode'
+import { getRecentSyncs } from '../lib/componentSync'
 
 export default function Settings() {
   const { components, loading } = useComponents()
@@ -283,6 +284,83 @@ export default function Settings() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Figma Plugin Section */}
+      <section style={{ 
+        background: 'var(--color-bg-white)', 
+        padding: '24px', 
+        borderRadius: '8px',
+        marginBottom: '24px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+          <Figma size={24} color="var(--color-fg-heading)" />
+          <h3 style={{ margin: 0, color: 'var(--color-fg-heading)' }}>Figma Plugin</h3>
+        </div>
+
+        <p style={{ color: 'var(--color-fg-body)', marginBottom: '20px' }}>
+          Sync components directly from Figma to this dashboard using our plugin.
+        </p>
+
+        <div style={{ 
+          background: 'var(--color-bg-neutral-light)', 
+          padding: '16px', 
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          <h4 style={{ margin: '0 0 12px', fontSize: 'var(--font-size-body-md)', color: 'var(--color-fg-heading)' }}>
+            Installation
+          </h4>
+          <ol style={{ 
+            margin: 0, 
+            paddingLeft: '20px', 
+            color: 'var(--color-fg-body)',
+            fontSize: 'var(--font-size-body-sm)',
+            lineHeight: '1.8'
+          }}>
+            <li>Open the <code style={{ background: '#1E1E1E', padding: '2px 6px', borderRadius: '3px', color: '#D4D4D4' }}>figma-plugin/</code> folder in terminal</li>
+            <li>Run <code style={{ background: '#1E1E1E', padding: '2px 6px', borderRadius: '3px', color: '#D4D4D4' }}>npm install && npm run build</code></li>
+            <li>In Figma: <strong>Plugins → Development → Import plugin from manifest</strong></li>
+            <li>Select the <code style={{ background: '#1E1E1E', padding: '2px 6px', borderRadius: '3px', color: '#D4D4D4' }}>manifest.json</code> file</li>
+          </ol>
+        </div>
+
+        <div style={{ 
+          background: 'var(--color-bg-neutral-light)', 
+          padding: '16px', 
+          borderRadius: '8px'
+        }}>
+          <h4 style={{ margin: '0 0 12px', fontSize: 'var(--font-size-body-md)', color: 'var(--color-fg-heading)' }}>
+            Usage
+          </h4>
+          <ol style={{ 
+            margin: 0, 
+            paddingLeft: '20px', 
+            color: 'var(--color-fg-body)',
+            fontSize: 'var(--font-size-body-sm)',
+            lineHeight: '1.8'
+          }}>
+            <li>Select a <strong>Component</strong> or <strong>Component Set</strong> in Figma</li>
+            <li>Run: <strong>Plugins → Development → Design System Component Syncer</strong></li>
+            <li>Review extracted metadata (variants, props, tokens)</li>
+            <li>Click <strong>Sync to Dashboard</strong></li>
+          </ol>
+        </div>
+
+        <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
+          <div style={{
+            flex: 1,
+            padding: '12px 16px',
+            background: '#2D2D2D',
+            borderRadius: '6px',
+            fontFamily: 'monospace',
+            fontSize: '12px',
+            color: '#D4D4D4'
+          }}>
+            <span style={{ color: '#6A9955' }}>API Endpoint:</span>{' '}
+            <span style={{ color: '#CE9178' }}>http://localhost:3001/api/components</span>
           </div>
         </div>
       </section>
