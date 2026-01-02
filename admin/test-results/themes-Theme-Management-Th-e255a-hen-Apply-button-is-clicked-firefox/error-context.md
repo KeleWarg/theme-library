@@ -1,0 +1,80 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - heading "Design System" [level=1] [ref=e6]
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - generic [ref=e14]: Dashboard
+      - link "Components" [ref=e15] [cursor=pointer]:
+        - /url: /components
+        - img [ref=e16]
+        - generic [ref=e29]: Components
+      - link "Foundations" [ref=e30] [cursor=pointer]:
+        - /url: /foundations
+        - img [ref=e31]
+        - generic [ref=e37]: Foundations
+      - link "Themes" [ref=e38] [cursor=pointer]:
+        - /url: /themes
+        - img [ref=e39]
+        - generic [ref=e43]: Themes
+      - link "Settings" [ref=e44] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e45]
+        - generic [ref=e48]: Settings
+  - generic [ref=e49]:
+    - banner [ref=e50]:
+      - heading "Themes" [level=1] [ref=e51]
+      - generic [ref=e52]:
+        - combobox [ref=e53] [cursor=pointer]:
+          - option "Health SEM" [selected]
+          - option "Home SEM"
+          - option "LLM"
+          - option "ForbesMedia SEO"
+          - option "Compare Coverage"
+        - button "Export" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - text: Export
+    - main [ref=e59]:
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - heading "Themes" [level=2] [ref=e63]
+            - paragraph [ref=e64]: Preview and apply different color themes to the design system.
+          - button "Create Theme" [ref=e65] [cursor=pointer]:
+            - img [ref=e66]
+            - text: Create Theme
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e73]: Health SEM
+            - generic [ref=e80]:
+              - button "Preview" [ref=e81] [cursor=pointer]
+              - button "Apply" [ref=e82] [cursor=pointer]
+          - generic [ref=e83]:
+            - generic [ref=e85]:
+              - generic [ref=e86]: Home SEM
+              - generic [ref=e87]:
+                - img [ref=e88]
+                - text: Active
+            - generic [ref=e96]:
+              - button "Preview" [ref=e97] [cursor=pointer]
+              - button "Apply" [disabled] [ref=e98]
+          - generic [ref=e99]:
+            - generic [ref=e102]: LLM
+            - generic [ref=e109]:
+              - button "Preview" [ref=e110] [cursor=pointer]
+              - button "Apply" [ref=e111] [cursor=pointer]
+          - generic [ref=e112]:
+            - generic [ref=e115]: ForbesMedia SEO
+            - generic [ref=e122]:
+              - button "Preview" [ref=e123] [cursor=pointer]
+              - button "Apply" [ref=e124] [cursor=pointer]
+          - generic [ref=e125]:
+            - generic [ref=e128]: Compare Coverage
+            - generic [ref=e135]:
+              - button "Preview" [ref=e136] [cursor=pointer]
+              - button "Apply" [ref=e137] [cursor=pointer]
+```

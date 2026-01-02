@@ -72,9 +72,9 @@ Estimated total time: **40-55 hours**
 
 | Chunk | Name | Est. Time | Dependencies | Status |
 |-------|------|-----------|--------------|--------|
-| 5.01 | Themes Page Integration | 2h | Phase 2, Phase 3 | ⬜ |
-| 5.02 | ThemeCard Updates | 1.5h | 5.01 | ⬜ |
-| 5.03 | Comprehensive Tests | 4h | All previous | ⬜ |
+| 5.01 | Themes Page Integration | 2h | Phase 2, Phase 3 | ✅ |
+| 5.02 | ThemeCard Updates | 1.5h | 5.01 | ✅ |
+| 5.03 | Comprehensive Tests | 4h | All previous | ✅ |
 
 **Phase 5 Total:** 7.5 hours
 
@@ -136,6 +136,19 @@ These chunks can be worked on in parallel:
 | Import UI | 2.01 + 2.02 + 2.03 | All three steps can be built independently |
 | Editor UI | 3.02 + 3.03 | Sidebar and row editor both depend only on layout |
 | Export | 4.03 + 4.04 | Modal and generators are coupled but separable |
+
+---
+
+## Gate Checkpoints
+
+| Gate | Trigger | Test File | Status |
+|------|---------|-----------|--------|
+| Gate 1 | 1.01 + 1.02 + 1.03 complete | `gate-1.test.js` | ✅ |
+| Gate 2 | 2.01 + 2.02 + 2.03 complete | `gate-2.test.jsx` | ✅ |
+| Gate 3 | 2.04 complete | `gate-3.test.jsx` | ✅ |
+| Gate 4 | Phase 3 complete (3.01-3.05) | `gate-4.test.jsx` | ✅ |
+| Gate 5 | Phase 4 complete (4.01-4.04) | `gate-5.test.jsx` | ✅ |
+| Gate 6 | Phase 5 complete (5.01-5.03) | `full-flow.spec.ts` | ✅ |
 
 ---
 

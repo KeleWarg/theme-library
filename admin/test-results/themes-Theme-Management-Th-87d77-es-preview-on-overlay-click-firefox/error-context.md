@@ -1,0 +1,109 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - heading "Design System" [level=1] [ref=e6]
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - generic [ref=e14]: Dashboard
+      - link "Components" [ref=e15] [cursor=pointer]:
+        - /url: /components
+        - img [ref=e16]
+        - generic [ref=e29]: Components
+      - link "Foundations" [ref=e30] [cursor=pointer]:
+        - /url: /foundations
+        - img [ref=e31]
+        - generic [ref=e37]: Foundations
+      - link "Themes" [ref=e38] [cursor=pointer]:
+        - /url: /themes
+        - img [ref=e39]
+        - generic [ref=e43]: Themes
+      - link "Settings" [ref=e44] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e45]
+        - generic [ref=e48]: Settings
+  - generic [ref=e49]:
+    - banner [ref=e50]:
+      - heading "Themes" [level=1] [ref=e51]
+      - generic [ref=e52]:
+        - combobox [ref=e53] [cursor=pointer]:
+          - option "Health SEM" [selected]
+          - option "Home SEM"
+          - option "LLM"
+          - option "ForbesMedia SEO"
+          - option "Compare Coverage"
+        - button "Export" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - text: Export
+    - main [ref=e59]:
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - heading "Themes" [level=2] [ref=e63]
+            - paragraph [ref=e64]: Preview and apply different color themes to the design system.
+          - button "Create Theme" [ref=e65] [cursor=pointer]:
+            - img [ref=e66]
+            - text: Create Theme
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: Health SEM
+              - generic [ref=e74]:
+                - img [ref=e75]
+                - text: Active
+            - generic [ref=e83]:
+              - button "Preview" [ref=e84] [cursor=pointer]
+              - button "Apply" [disabled] [ref=e85]
+          - generic [ref=e86]:
+            - generic [ref=e89]: Home SEM
+            - generic [ref=e96]:
+              - button "Preview" [ref=e97] [cursor=pointer]
+              - button "Apply" [ref=e98] [cursor=pointer]
+          - generic [ref=e99]:
+            - generic [ref=e102]: LLM
+            - generic [ref=e109]:
+              - button "Preview" [ref=e110] [cursor=pointer]
+              - button "Apply" [ref=e111] [cursor=pointer]
+          - generic [ref=e112]:
+            - generic [ref=e115]: ForbesMedia SEO
+            - generic [ref=e122]:
+              - button "Preview" [ref=e123] [cursor=pointer]
+              - button "Apply" [ref=e124] [cursor=pointer]
+          - generic [ref=e125]:
+            - generic [ref=e128]: Compare Coverage
+            - generic [ref=e135]:
+              - button "Preview" [ref=e136] [cursor=pointer]
+              - button "Apply" [ref=e137] [cursor=pointer]
+        - generic [ref=e139]:
+          - generic [ref=e140]:
+            - heading "Health SEM" [level=2] [ref=e141]
+            - button [ref=e142] [cursor=pointer]:
+              - img [ref=e143]
+          - generic [ref=e146]:
+            - generic [ref=e147]:
+              - heading "Buttons" [level=3] [ref=e148]
+              - generic [ref=e149]:
+                - button "Primary" [ref=e150] [cursor=pointer]
+                - button "Secondary" [ref=e151] [cursor=pointer]
+                - button "Ghost" [ref=e152] [cursor=pointer]
+            - generic [ref=e153]:
+              - heading "Typography" [level=3] [ref=e154]
+              - generic [ref=e155]:
+                - paragraph [ref=e156]: Heading Example
+                - paragraph [ref=e157]: Body text example. This is what regular paragraph text looks like in this theme.
+                - paragraph [ref=e158]: Caption text example - smaller, muted text for secondary information.
+            - generic [ref=e159]:
+              - heading "Sample Card" [level=3] [ref=e160]
+              - generic [ref=e161]:
+                - heading "Card Title" [level=4] [ref=e162]
+                - paragraph [ref=e163]: This is a sample card showing how content cards will look with this theme applied.
+            - generic [ref=e164]:
+              - heading "Form Input" [level=3] [ref=e165]
+              - textbox "Enter text..." [ref=e166]
+          - generic [ref=e167]:
+            - button "Close" [ref=e168] [cursor=pointer]
+            - button "Apply Theme" [ref=e169] [cursor=pointer]
+```
