@@ -1,4 +1,4 @@
-# Red Ventures Design System
+#Design System
 
 > Multi-theme design tokens optimized for AI-assisted development with Bolt, Lovable, Cursor, and other LLM coding tools.
 
