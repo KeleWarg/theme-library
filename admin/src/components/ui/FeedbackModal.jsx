@@ -35,22 +35,22 @@ export default function FeedbackModal({ isOpen, onClose, onSubmit, loading = fal
       <div 
         onClick={e => e.stopPropagation()}
         style={{
-          background: 'white',
-          borderRadius: '16px',
-          padding: '28px',
+          background: 'var(--color-bg-white)',
+          borderRadius: 'var(--radius-lg)',
+          padding: 'var(--spacing-3xl)',
           width: '100%',
           maxWidth: '520px',
-          margin: '16px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+          margin: 'var(--spacing-lg)',
+          boxShadow: 'var(--shadow-xl)',
         }}
       >
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-xl)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
             <div style={{
               width: '40px',
               height: '40px',
-              borderRadius: '10px',
+              borderRadius: 'var(--radius-sm)',
               background: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)',
               display: 'flex',
               alignItems: 'center',
@@ -70,7 +70,7 @@ export default function FeedbackModal({ isOpen, onClose, onSubmit, loading = fal
               cursor: 'pointer',
               width: '32px',
               height: '32px',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-sm)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -81,7 +81,7 @@ export default function FeedbackModal({ isOpen, onClose, onSubmit, loading = fal
         </div>
 
         {/* Description */}
-        <p style={{ color: 'var(--color-fg-body)', marginBottom: '16px', fontSize: '14px', lineHeight: 1.6 }}>
+        <p style={{ color: 'var(--color-fg-body)', marginBottom: 'var(--spacing-lg)', fontSize: 'var(--font-size-body-sm)', lineHeight: 1.6 }}>
           Describe what you'd like to change. Be specific about styling, behavior, or accessibility improvements.
         </p>
 
@@ -95,11 +95,11 @@ export default function FeedbackModal({ isOpen, onClose, onSubmit, loading = fal
           style={{
             width: '100%',
             minHeight: '140px',
-            padding: '14px',
+            padding: 'var(--spacing-md)',
             border: '2px solid var(--color-border-default)',
-            borderRadius: '10px',
+            borderRadius: 'var(--radius-sm)',
             resize: 'vertical',
-            fontSize: '14px',
+            fontSize: 'var(--font-size-body-sm)',
             fontFamily: 'inherit',
             lineHeight: 1.6,
             outline: 'none',
@@ -110,22 +110,22 @@ export default function FeedbackModal({ isOpen, onClose, onSubmit, loading = fal
         />
 
         {/* Hint */}
-        <p style={{ fontSize: '12px', color: 'var(--color-fg-caption)', marginTop: '8px', marginBottom: '20px' }}>
+        <p style={{ fontSize: 'var(--font-size-label-sm)', color: 'var(--color-fg-caption)', marginTop: 'var(--spacing-sm)', marginBottom: 'var(--spacing-xl)' }}>
           Tip: Press ⌘+Enter to submit
         </p>
 
         {/* Actions */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-md)' }}>
           <button
             onClick={onClose}
             style={{
-              padding: '10px 18px',
+              padding: 'var(--spacing-sm) var(--spacing-lg)',
               background: 'transparent',
               border: '1px solid var(--color-border-default)',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: 500,
+              fontSize: 'var(--font-size-body-sm)',
+              fontWeight: 'var(--font-weight-medium)',
             }}
           >
             Cancel
@@ -134,19 +134,19 @@ export default function FeedbackModal({ isOpen, onClose, onSubmit, loading = fal
             onClick={handleSubmit}
             disabled={loading || !feedback.trim()}
             style={{
-              padding: '10px 18px',
+              padding: 'var(--spacing-sm) var(--spacing-lg)',
               background: loading || !feedback.trim() 
                 ? '#9CA3AF' 
                 : 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)',
               color: 'white',
               border: 'none',
-              borderRadius: '8px',
+              borderRadius: 'var(--radius-sm)',
               cursor: loading || !feedback.trim() ? 'not-allowed' : 'pointer',
-              fontSize: '14px',
-              fontWeight: 600,
+              fontSize: 'var(--font-size-body-sm)',
+              fontWeight: 'var(--font-weight-semibold)',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
+              gap: 'var(--spacing-sm)',
             }}
           >
             <Sparkles size={16} style={{ animation: loading ? 'spin 1s linear infinite' : 'none' }} />

@@ -172,7 +172,7 @@ export default function Themes() {
           marginBottom: '24px',
         }}
       >
-        <div>
+        <div style={{ pointerEvents: 'none' }}>
           <h2
             style={{
               color: 'var(--color-fg-heading)',
@@ -195,7 +195,7 @@ export default function Themes() {
 
         <button
           onClick={handleCreateClick}
-          data-testid="create-theme-button"
+          data-testid="create-theme-btn"
           style={{
             display: 'flex',
             alignItems: 'center',

@@ -8,6 +8,7 @@ import {
   Circle, 
   CheckCircle,
   Loader,
+  Download,
   MoreHorizontal
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -45,6 +46,7 @@ const STATUS_STYLES = {
  * @param {Function} props.onUndo - Undo handler
  * @param {Function} props.onRedo - Redo handler
  * @param {Function} props.onNameChange - Theme name change handler
+ * @param {Function} props.onExport - Export handler
  */
 export default function EditorHeader({
   theme,
@@ -57,6 +59,7 @@ export default function EditorHeader({
   onUndo,
   onRedo,
   onNameChange,
+  onExport,
 }) {
   const [isEditingName, setIsEditingName] = useState(false)
   const [editedName, setEditedName] = useState(theme?.name || '')
@@ -236,6 +239,35 @@ export default function EditorHeader({
             marginRight: '8px',
           }}
         />
+
+        {/* Export Button */}
+        <button
+          onClick={onExport}
+          data-testid="export-button"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 16px',
+            fontSize: 'var(--font-size-body-md, 16px)',
+            fontWeight: 'var(--font-weight-medium, 500)',
+            background: 'transparent',
+            color: 'var(--color-fg-body, #383C43)',
+            border: '1px solid var(--color-fg-stroke-default, #BFC7D4)',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'var(--color-bg-neutral-light, #ECEFF3)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'transparent'
+          }}
+        >
+          <Download size={18} />
+          Export
+        </button>
 
         {/* Save Button */}
         <button

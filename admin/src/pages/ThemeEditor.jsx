@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { AlertCircle, Loader } from 'lucide-react'
 import EditorHeader from '../components/themes/editor/EditorHeader'
 import EditorLayout from '../components/themes/editor/EditorLayout'
+import TokenRow from '../components/themes/editor/TokenRow'
+import ExportModal from '../components/themes/export/ExportModal'
 import { 
   getThemeById, 
   updateTheme, 
-  updateToken, 
+  updateToken,
+  deleteToken,
   publishTheme,
   groupTokensByCategory 
 } from '../lib/themeService'
@@ -40,6 +43,7 @@ export default function ThemeEditor() {
   const [isSaving, setIsSaving] = useState(false)
   const [showPreview, setShowPreview] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   // Undo/Redo state
   const [undoStack, setUndoStack] = useState([])
@@ -216,6 +220,23 @@ export default function ThemeEditor() {
     }
 
     setHasUnsavedChanges(true)
+  }, [tokens])
+
+  // Token delete handler
+  const handleTokenDelete = useCallback(async (tokenId) => {
+    const token = tokens.find(t => t.id === tokenId)
+    if (!token) return
+
+    try {
+      // Delete from database
+      await deleteToken(tokenId)
+      
+      // Remove from local state
+      setTokens(prev => prev.filter(t => t.id !== tokenId))
+    } catch (err) {
+      console.error('Failed to delete token:', err)
+      setError(err.message || 'Failed to delete token')
+    }
   }, [tokens])
 
   // Push state to undo stack
@@ -465,6 +486,7 @@ export default function ThemeEditor() {
         onUndo={handleUndo}
         onRedo={handleRedo}
         onNameChange={handleNameChange}
+        onExport={() => setShowExportModal(true)}
       />
 
       {/* Editor Layout */}
@@ -484,6 +506,7 @@ export default function ThemeEditor() {
             tokens={selectedTokens}
             category={selectedCategory}
             onTokenChange={handleTokenChange}
+            onTokenDelete={handleTokenDelete}
           />
         }
         preview={
@@ -491,6 +514,14 @@ export default function ThemeEditor() {
         }
         showPreview={showPreview}
         onTogglePreview={handleTogglePreview}
+      />
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        theme={theme}
+        tokens={tokens}
       />
     </div>
   )
@@ -592,9 +623,9 @@ function CategorySidebar({ categories, selectedCategory, onSelect, tokenCounts }
 }
 
 /**
- * Token list component (placeholder for chunk 3.03)
+ * Token list component - Uses TokenRow for inline editing
  */
-function TokenList({ tokens, category, onTokenChange }) {
+function TokenList({ tokens, category, onTokenChange, onTokenDelete }) {
   if (!category) {
     return (
       <div
@@ -629,6 +660,18 @@ function TokenList({ tokens, category, onTokenChange }) {
     )
   }
 
+  // Handle token update from TokenRow
+  const handleTokenUpdate = (tokenId, changes) => {
+    if (changes.value !== undefined) {
+      onTokenChange?.(tokenId, 'value', changes.value)
+    }
+  }
+
+  // Handle token delete from TokenRow
+  const handleTokenDelete = (tokenId) => {
+    onTokenDelete?.(tokenId)
+  }
+
   return (
     <div data-testid="token-list">
       <h2
@@ -650,63 +693,14 @@ function TokenList({ tokens, category, onTokenChange }) {
         }}
       >
         {tokens.map(token => (
-          <TokenRowPlaceholder key={token.id} token={token} />
+          <TokenRow 
+            key={token.id} 
+            token={token}
+            onUpdate={handleTokenUpdate}
+            onDelete={handleTokenDelete}
+            isReadOnly={false}
+          />
         ))}
-      </div>
-    </div>
-  )
-}
-
-/**
- * Token row placeholder (will be replaced by chunk 3.03)
- */
-function TokenRowPlaceholder({ token }) {
-  return (
-    <div
-      data-testid={`token-row-${token.id}`}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '16px',
-        background: 'var(--color-bg-white, #FFFFFF)',
-        border: '1px solid var(--color-fg-divider, #D7DCE5)',
-        borderRadius: '8px',
-      }}
-    >
-      <div>
-        <p
-          style={{
-            margin: '0 0 4px 0',
-            fontSize: 'var(--font-size-body-md, 16px)',
-            fontWeight: 'var(--font-weight-medium, 500)',
-            color: 'var(--color-fg-heading, #1E2125)',
-          }}
-        >
-          {token.name}
-        </p>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 'var(--font-size-body-sm, 14px)',
-            color: 'var(--color-fg-caption, #616A76)',
-            fontFamily: 'monospace',
-          }}
-        >
-          {token.css_variable}
-        </p>
-      </div>
-      <div
-        style={{
-          padding: '8px 16px',
-          background: 'var(--color-bg-neutral-subtle, #F4F5F8)',
-          borderRadius: '6px',
-          fontSize: 'var(--font-size-body-sm, 14px)',
-          fontFamily: 'monospace',
-          color: 'var(--color-fg-body, #383C43)',
-        }}
-      >
-        {token.value?.hex || token.value?.value || JSON.stringify(token.value)}
       </div>
     </div>
   )

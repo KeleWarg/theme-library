@@ -15,6 +15,7 @@ import DesktopBreakpoints from '../../../figma_tokens/breakpoints/Desktop.tokens
 
 // Theme definitions - matches CSS classes in tokens.css
 export const themes = [
+  { name: 'System Default', slug: 'theme-system-default', isDefault: true },
   { name: 'Health SEM', slug: 'theme-health---sem' },
   { name: 'Home SEM', slug: 'theme-home---sem' },
   { name: 'LLM', slug: 'theme-llm' },
@@ -101,6 +102,44 @@ export const colorTokens = {
 
 // Font Family tokens by theme - from Desktop_tokens.json "Font Family" section
 export const fontFamilyTokens = {
+  // System Default theme - clean modern sans-serif
+  systemDefault: [
+    {
+      name: 'font-family-sans',
+      variable: '--font-family-sans',
+      value: 'Inter',
+      fallback: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      description: 'Primary sans-serif font for all text'
+    },
+    {
+      name: 'font-family-mono',
+      variable: '--font-family-mono',
+      value: 'JetBrains Mono',
+      fallback: 'JetBrains Mono, Fira Code, SF Mono, Consolas, monospace',
+      description: 'Monospace font for code'
+    },
+    {
+      name: 'font-family-heading',
+      variable: '--font-family-heading',
+      value: 'Inter',
+      fallback: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      description: 'Font for headings (uses --font-family-sans)'
+    },
+    {
+      name: 'font-family-body',
+      variable: '--font-family-body',
+      value: 'Inter',
+      fallback: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      description: 'Font for body text (uses --font-family-sans)'
+    },
+    {
+      name: 'font-family-display',
+      variable: '--font-family-display',
+      value: 'Inter',
+      fallback: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      description: 'Font for display text (uses --font-family-sans)'
+    },
+  ],
   // SEM themes: Health, Home, Compare Coverage
   // Only 2 fonts defined: serif (Georgia) and sans-serif (Euclid Circular B)
   sem: [
@@ -154,6 +193,8 @@ export const fontFamilyTokens = {
 
 // Map theme slugs to font family sets
 export const themeFontMap = {
+  // System Default theme
+  'theme-system-default': 'systemDefault',
   // SEM themes (Health, Home, Compare Coverage)
   'theme-health---sem': 'sem',
   'theme-health-sem': 'sem',
@@ -175,8 +216,8 @@ export const themeFontMap = {
  * @returns {Array} - Array of font family token objects
  */
 export function getFontFamiliesForTheme(themeSlug) {
-  const fontSetKey = themeFontMap[themeSlug] || 'sem';
-  return fontFamilyTokens[fontSetKey] || fontFamilyTokens.sem;
+  const fontSetKey = themeFontMap[themeSlug] || 'systemDefault';
+  return fontFamilyTokens[fontSetKey] || fontFamilyTokens.systemDefault;
 }
 
 /**
@@ -191,12 +232,32 @@ export function isSEMTheme(themeSlug) {
 }
 
 /**
+ * Check if theme slug is the System Default theme
+ * @param {string} themeSlug - The theme slug
+ * @returns {boolean}
+ */
+export function isSystemDefaultTheme(themeSlug) {
+  return themeSlug === 'theme-system-default';
+}
+
+/**
  * Get the primary font families for a theme organized by use case
  * Returns CSS variable references for dynamic theming
  * @param {string} themeSlug - The theme slug
  * @returns {Object} - Object with font family CSS variable references
  */
 export function getThemeFonts(themeSlug) {
+  // System Default theme: uses Inter for everything
+  if (isSystemDefaultTheme(themeSlug)) {
+    return {
+      display: 'var(--font-family-display)',
+      heading: 'var(--font-family-heading)',
+      body: 'var(--font-family-body)',
+      sansSerif: 'var(--font-family-sans)',
+      mono: 'var(--font-family-mono)',
+    };
+  }
+
   if (isSEMTheme(themeSlug)) {
     // SEM themes: only serif and sans-serif
     return {

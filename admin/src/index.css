@@ -1,3 +1,6 @@
+/* ============================================================================
+   CSS RESET & BASE STYLES
+   ============================================================================ */
 * {
   margin: 0;
   padding: 0;
@@ -9,15 +12,92 @@ html, body, #root {
   width: 100%;
 }
 
+/* ============================================================================
+   BASE TYPOGRAPHY - System Default
+   ============================================================================ */
 body {
-  font-family: 'Euclid Circular B', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-fg-primary);
+  background-color: var(--color-bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ============================================
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-fg-heading);
+  margin: 0;
+}
+
+h1 { font-size: var(--font-size-4xl); }
+h2 { font-size: var(--font-size-3xl); }
+h3 { font-size: var(--font-size-2xl); }
+h4 { font-size: var(--font-size-xl); }
+h5 { font-size: var(--font-size-lg); }
+h6 { font-size: var(--font-size-base); }
+
+/* Body text */
+p { 
+  color: var(--color-fg-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Code elements */
+code, pre {
+  font-family: var(--font-family-mono);
+}
+
+pre {
+  background-color: var(--color-bg-tertiary);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+code {
+  background-color: var(--color-bg-tertiary);
+  padding: var(--spacing-0-5) var(--spacing-1);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Links */
+a {
+  color: var(--color-fg-link);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-700);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Selection styles */
+::selection {
+  background-color: var(--color-primary-200);
+  color: var(--color-gray-900);
+}
+
+/* ============================================================================
    Theme-specific Font Family CSS Variables
-   ============================================ */
+   ============================================================================ */
 
 /* SEM Themes: Health, Home, Compare Coverage */
 .theme-health---sem,

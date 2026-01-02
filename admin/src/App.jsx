@@ -5,6 +5,7 @@ import Components from './pages/Components'
 import ComponentDetail from './pages/ComponentDetail'
 import Foundations from './pages/Foundations'
 import Themes from './pages/Themes'
+import ThemeEditor from './pages/ThemeEditor'
 import Settings from './pages/Settings'
 
 function App() {
@@ -25,6 +26,9 @@ function App() {
         } />
         <Route path="/themes" element={
           <Layout pageTitle="Themes"><Themes /></Layout>
+        } />
+        <Route path="/themes/:id" element={
+          <ThemeEditor />
         } />
         <Route path="/settings" element={
           <Layout pageTitle="Settings"><Settings /></Layout>

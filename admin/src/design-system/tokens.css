@@ -4,14 +4,219 @@
  * 
  * USAGE FOR AI TOOLS:
  * - Use CSS variables for theming: var(--color-bg-primary)
- * - Theme class on root: <html class="theme-health-sem">
+ * - Theme class on root: <html class="theme-system-default">
  * - Responsive breakpoints: mobile (<744px), tablet (744-1439px), desktop (≥1440px)
  */
 
 /* ============================================================================
-   BREAKPOINTS & GRID
+   SYSTEM DEFAULT THEME - Baseline Tokens
+   Clean, modern, professional design system foundation
    ============================================================================ */
 :root {
+  /* ===== TYPOGRAPHY ===== */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  --font-family-body: var(--font-family-sans);
+  --font-family-heading: var(--font-family-sans);
+  --font-family-display: var(--font-family-sans);
+  --font-family-sans-serif: var(--font-family-sans);
+  
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+
+  /* ===== COLORS - Neutral Palette ===== */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  /* Gray scale */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f4f4f5;
+  --color-gray-200: #e4e4e7;
+  --color-gray-300: #d4d4d8;
+  --color-gray-400: #a1a1aa;
+  --color-gray-500: #71717a;
+  --color-gray-600: #52525b;
+  --color-gray-700: #3f3f46;
+  --color-gray-800: #27272a;
+  --color-gray-900: #18181b;
+  --color-gray-950: #09090b;
+  
+  /* Primary - Clean blue */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  
+  /* Semantic colors */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Semantic mappings */
+  --color-bg-primary: var(--color-white);
+  --color-bg-secondary: var(--color-gray-50);
+  --color-bg-tertiary: var(--color-gray-100);
+  --color-bg-inverse: var(--color-gray-900);
+  --color-bg-white: var(--color-white);
+  --color-bg-neutral-subtle: var(--color-gray-50);
+  --color-bg-neutral-light: var(--color-gray-100);
+  --color-bg-neutral: var(--color-gray-200);
+  --color-bg-neutral-mid: var(--color-gray-700);
+  --color-bg-neutral-strong: var(--color-gray-800);
+  --color-bg-header: var(--color-gray-900);
+  --color-bg-accent: var(--color-primary-50);
+  --color-bg-accent-mid: var(--color-primary-100);
+  --color-bg-brand-subtle: var(--color-primary-50);
+  --color-bg-brand-light: var(--color-primary-100);
+  --color-bg-brand-mid: var(--color-primary-600);
+  --color-bg-brand: var(--color-primary-700);
+  --color-bg-table: var(--color-gray-50);
+  --color-bg-button: var(--color-primary-600);
+  --color-bg-superlative: var(--color-primary-500);
+  
+  --color-fg-primary: var(--color-gray-900);
+  --color-fg-secondary: var(--color-gray-600);
+  --color-fg-tertiary: var(--color-gray-400);
+  --color-fg-inverse: var(--color-white);
+  --color-fg-heading: var(--color-gray-900);
+  --color-fg-body: var(--color-gray-700);
+  --color-fg-caption: var(--color-gray-500);
+  --color-fg-link: var(--color-primary-600);
+  --color-fg-link-secondary: var(--color-gray-600);
+  --color-fg-heading-inverse: var(--color-white);
+  --color-fg-body-inverse: var(--color-gray-100);
+  --color-fg-caption-inverse: var(--color-gray-300);
+  --color-fg-stroke-ui: var(--color-gray-400);
+  --color-fg-stroke-ui-inverse: var(--color-gray-300);
+  --color-fg-stroke-default: var(--color-gray-200);
+  --color-fg-stroke-inverse: var(--color-white);
+  --color-fg-stroke-dark-inverse: var(--color-gray-700);
+  --color-fg-divider: var(--color-gray-200);
+  --color-fg-table-border: var(--color-gray-200);
+  --color-fg-feedback-error: var(--color-error);
+  --color-fg-feedback-warning: var(--color-warning);
+  --color-fg-feedback-success: var(--color-success);
+  
+  --color-border-primary: var(--color-gray-200);
+  --color-border-secondary: var(--color-gray-100);
+  --color-border-focus: var(--color-primary-500);
+  
+  --color-btn-primary-bg: var(--color-primary-600);
+  --color-btn-primary-fg: var(--color-white);
+  --color-btn-primary-text: var(--color-white);
+  --color-btn-primary-icon: var(--color-white);
+  --color-btn-primary-hover: var(--color-primary-700);
+  --color-btn-primary-hover-bg: var(--color-primary-700);
+  --color-btn-primary-pressed-bg: var(--color-primary-800);
+  --color-btn-primary-disabled-bg: var(--color-primary-400);
+  --color-btn-focused-border: var(--color-primary-400);
+  
+  --color-btn-secondary-bg: var(--color-white);
+  --color-btn-secondary-fg: var(--color-gray-700);
+  --color-btn-secondary-text: var(--color-gray-700);
+  --color-btn-secondary-icon: var(--color-gray-600);
+  --color-btn-secondary-border: var(--color-gray-300);
+  --color-btn-secondary-hover: var(--color-gray-50);
+  --color-btn-secondary-hover-bg: var(--color-gray-50);
+  --color-btn-secondary-pressed-bg: var(--color-gray-100);
+  --color-btn-secondary-disabled-bg: var(--color-gray-100);
+  
+  --color-btn-ghost-bg: transparent;
+  --color-btn-ghost-text: var(--color-gray-700);
+  --color-btn-ghost-icon: var(--color-gray-600);
+  --color-btn-ghost-hover-bg: var(--color-gray-100);
+  --color-btn-ghost-pressed-bg: var(--color-gray-200);
+  --color-btn-ghost-disabled-bg: var(--color-gray-50);
+
+  /* Superlative / Accent */
+  --color-superlative-primary: var(--color-primary-600);
+  --color-superlative-secondary: var(--color-primary-100);
+
+  /* ===== SPACING - 4px base ===== */
+  --spacing-0: 0;
+  --spacing-px: 1px;
+  --spacing-0-5: 0.125rem;  /* 2px */
+  --spacing-1: 0.25rem;     /* 4px */
+  --spacing-2: 0.5rem;      /* 8px */
+  --spacing-3: 0.75rem;     /* 12px */
+  --spacing-4: 1rem;        /* 16px */
+  --spacing-5: 1.25rem;     /* 20px */
+  --spacing-6: 1.5rem;      /* 24px */
+  --spacing-8: 2rem;        /* 32px */
+  --spacing-10: 2.5rem;     /* 40px */
+  --spacing-12: 3rem;       /* 48px */
+  --spacing-16: 4rem;       /* 64px */
+  
+  /* Semantic spacing aliases */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 40px;
+  --spacing-4xl: 48px;
+
+  /* ===== BORDER RADIUS ===== */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;     /* 4px */
+  --radius-md: 0.375rem;    /* 6px */
+  --radius-lg: 0.5rem;      /* 8px */
+  --radius-xl: 0.75rem;     /* 12px */
+  --radius-2xl: 1rem;       /* 16px */
+  --radius-full: 9999px;
+  /* Aliases for existing tokens */
+  --radius-xs: var(--radius-sm);
+
+  /* ===== SHADOWS ===== */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-none: 0 0 #0000;
+
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* ===== Z-INDEX ===== */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 300;
+  --z-popover: 400;
+  --z-tooltip: 500;
+
+  /* ===== BREAKPOINTS & GRID (Legacy) ===== */
   /* mobile */
   --breakpoint-mobile: 390px;
   --grid-columns-mobile: 4;
@@ -30,8 +235,7 @@
   --grid-margin-desktop: 80px;
   --grid-gutter-desktop: 24px;
 
-
-  /* Typography - Font Sizes */
+  /* Typography - Legacy Font Sizes */
   --font-size-display: 56px;
   --font-size-heading-lg: 48px;
   --font-size-heading-md: 32px;
@@ -61,14 +265,11 @@
   --font-size-forbes-media-label-eyebrow: 18px;
   --font-size-forbes-media-label-breadcrumb: 12px;
 
-  /* Typography - Font Weights */
-  --font-weight-bold: 700;
-  --font-weight-semibold: 600;
-  --font-weight-medium: 500;
+  /* Typography - Legacy Font Weights */
   --font-weight-regular: 400;
   --font-weight-light: 300;
 
-  /* Typography - Line Heights */
+  /* Typography - Legacy Line Heights */
   --line-height-5xl: 68px;
   --line-height-4xl: 58px;
   --line-height-3xl: 40px;
@@ -80,12 +281,20 @@
   --line-height-xs: 18px;
   --line-height-2xs: 16px;
 
-  /* Typography - Letter Spacing */
-  --letter-spacing-tighter: -0.20000000298023224px;
+  /* Typography - Legacy Letter Spacing */
+  --letter-spacing-tighter: -0.2px;
   --letter-spacing-wider: 1px;
-  --letter-spacing-tight: -0.10000000149011612px;
-  --letter-spacing-normal: 0px;
-  --letter-spacing-wide: 0.5px;
+}
+
+/* ============================================================================
+   THEME: System Default
+   Clean, modern, professional baseline theme
+   Uses the :root tokens - no overrides needed
+   ============================================================================ */
+.theme-system-default,
+[data-theme="system-default"] {
+  /* System Default uses all :root tokens as-is */
+  /* This class exists for theme switching compatibility */
 }
 
 /* ============================================================================

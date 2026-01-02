@@ -1,12 +1,71 @@
+import { useEffect, useRef, useCallback } from 'react'
 import { X } from 'lucide-react'
 
 export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
+  const modalRef = useRef(null)
+  const closeButtonRef = useRef(null)
+
+  // Handle escape key to close modal
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape') {
+      onClose()
+    }
+  }, [onClose])
+
+  // Focus trap and keyboard handling
+  useEffect(() => {
+    if (!isOpen) return
+
+    // Focus the close button when modal opens
+    const timer = setTimeout(() => {
+      closeButtonRef.current?.focus()
+    }, 100)
+
+    // Add escape key listener
+    document.addEventListener('keydown', handleKeyDown)
+
+    // Trap focus within modal
+    const modal = modalRef.current
+    const focusableElements = modal?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    const firstFocusable = focusableElements?.[0]
+    const lastFocusable = focusableElements?.[focusableElements.length - 1]
+
+    const handleTabKey = (e) => {
+      if (e.key !== 'Tab') return
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault()
+          lastFocusable?.focus()
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault()
+          firstFocusable?.focus()
+        }
+      }
+    }
+
+    modal?.addEventListener('keydown', handleTabKey)
+
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('keydown', handleKeyDown)
+      modal?.removeEventListener('keydown', handleTabKey)
+    }
+  }, [isOpen, handleKeyDown])
+
   if (!isOpen || !theme) return null
 
   return (
     <div
       data-testid="modal-overlay"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="preview-modal-title"
       style={{
         position: 'fixed',
         inset: 0,
@@ -18,17 +77,18 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
       }}
     >
       <div
+        ref={modalRef}
         data-testid="modal-content"
         className={theme.slug}
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundColor: 'var(--color-bg-white, #FFFFFF)',
-          borderRadius: '12px',
+          borderRadius: 'var(--radius-md)',
           width: '90%',
           maxWidth: '600px',
           maxHeight: '80vh',
           overflow: 'auto',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          boxShadow: 'var(--shadow-xl)',
         }}
       >
         {/* Header */}
@@ -37,11 +97,12 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '20px 24px',
+            padding: 'var(--spacing-xl) var(--spacing-xl)',
             borderBottom: '1px solid var(--color-fg-divider, #D7DCE5)',
           }}
         >
           <h2
+            id="preview-modal-title"
             style={{
               margin: 0,
               fontSize: 'var(--font-size-heading-sm, 24px)',
@@ -52,7 +113,9 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
             {theme.name}
           </h2>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
+            aria-label="Close preview"
             style={{
               background: 'none',
               border: 'none',
@@ -66,27 +129,27 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
         </div>
 
         {/* Preview Content */}
-        <div style={{ padding: '24px' }}>
+        <div style={{ padding: 'var(--spacing-xl)' }}>
           {/* Buttons Section */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: 'var(--spacing-2xl)' }}>
             <h3
               style={{
                 fontSize: 'var(--font-size-title-md, 18px)',
                 fontWeight: 'var(--font-weight-medium, 500)',
                 color: 'var(--color-fg-heading, #1E2125)',
-                marginBottom: '16px',
+                marginBottom: 'var(--spacing-lg)',
               }}
             >
               Buttons
             </h3>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--spacing-md)', flexWrap: 'wrap' }}>
               <button
                 style={{
-                  padding: '10px 20px',
+                  padding: 'var(--spacing-sm) var(--spacing-xl)',
                   backgroundColor: 'var(--color-btn-primary-bg, #657E79)',
                   color: 'var(--color-btn-primary-text, #FFFFFF)',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-xs)',
                   fontWeight: 'var(--font-weight-medium, 500)',
                   cursor: 'pointer',
                 }}
@@ -95,11 +158,11 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
               </button>
               <button
                 style={{
-                  padding: '10px 20px',
+                  padding: 'var(--spacing-sm) var(--spacing-xl)',
                   backgroundColor: 'var(--color-btn-secondary-bg, #FFFFFF)',
                   color: 'var(--color-btn-secondary-text, #383C43)',
                   border: '1px solid var(--color-btn-secondary-border, #BFC7D4)',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-xs)',
                   fontWeight: 'var(--font-weight-medium, 500)',
                   cursor: 'pointer',
                 }}
@@ -108,11 +171,11 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
               </button>
               <button
                 style={{
-                  padding: '10px 20px',
+                  padding: 'var(--spacing-sm) var(--spacing-xl)',
                   backgroundColor: 'transparent',
                   color: 'var(--color-btn-ghost-text, #657E79)',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-xs)',
                   fontWeight: 'var(--font-weight-medium, 500)',
                   cursor: 'pointer',
                 }}
@@ -123,18 +186,18 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
           </div>
 
           {/* Typography Section */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: 'var(--spacing-2xl)' }}>
             <h3
               style={{
                 fontSize: 'var(--font-size-title-md, 18px)',
                 fontWeight: 'var(--font-weight-medium, 500)',
                 color: 'var(--color-fg-heading, #1E2125)',
-                marginBottom: '16px',
+                marginBottom: 'var(--spacing-lg)',
               }}
             >
               Typography
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
               <p
                 style={{
                   margin: 0,
@@ -167,13 +230,13 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
           </div>
 
           {/* Sample Card */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: 'var(--spacing-2xl)' }}>
             <h3
               style={{
                 fontSize: 'var(--font-size-title-md, 18px)',
                 fontWeight: 'var(--font-weight-medium, 500)',
                 color: 'var(--color-fg-heading, #1E2125)',
-                marginBottom: '16px',
+                marginBottom: 'var(--spacing-lg)',
               }}
             >
               Sample Card
@@ -182,13 +245,13 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
               style={{
                 backgroundColor: 'var(--color-bg-neutral-light, #F4F5F8)',
                 border: '1px solid var(--color-fg-stroke-default, #BFC7D4)',
-                borderRadius: '8px',
-                padding: '16px',
+                borderRadius: 'var(--radius-sm)',
+                padding: 'var(--spacing-lg)',
               }}
             >
               <h4
                 style={{
-                  margin: '0 0 8px 0',
+                  margin: '0 0 var(--spacing-sm) 0',
                   fontSize: 'var(--font-size-title-lg, 20px)',
                   color: 'var(--color-fg-heading, #1E2125)',
                 }}
@@ -214,7 +277,7 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
                 fontSize: 'var(--font-size-title-md, 18px)',
                 fontWeight: 'var(--font-weight-medium, 500)',
                 color: 'var(--color-fg-heading, #1E2125)',
-                marginBottom: '16px',
+                marginBottom: 'var(--spacing-lg)',
               }}
             >
               Form Input
@@ -224,10 +287,10 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
               placeholder="Enter text..."
               style={{
                 width: '100%',
-                padding: '12px 16px',
+                padding: 'var(--spacing-md) var(--spacing-lg)',
                 fontSize: 'var(--font-size-body-md, 16px)',
                 border: '1px solid var(--color-fg-stroke-default, #BFC7D4)',
-                borderRadius: '6px',
+                borderRadius: 'var(--radius-xs)',
                 backgroundColor: 'var(--color-bg-white, #FFFFFF)',
                 color: 'var(--color-fg-body, #383C43)',
                 boxSizing: 'border-box',
@@ -241,19 +304,19 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
-            gap: '12px',
-            padding: '16px 24px',
+            gap: 'var(--spacing-md)',
+            padding: 'var(--spacing-lg) var(--spacing-xl)',
             borderTop: '1px solid var(--color-fg-divider, #D7DCE5)',
           }}
         >
           <button
             onClick={onClose}
             style={{
-              padding: '10px 20px',
+              padding: 'var(--spacing-sm) var(--spacing-xl)',
               backgroundColor: 'transparent',
               color: 'var(--color-fg-body, #383C43)',
               border: '1px solid var(--color-btn-secondary-border, #BFC7D4)',
-              borderRadius: '6px',
+              borderRadius: 'var(--radius-xs)',
               fontWeight: 'var(--font-weight-medium, 500)',
               cursor: 'pointer',
             }}
@@ -263,11 +326,11 @@ export default function ThemePreviewModal({ isOpen, theme, onClose, onApply }) {
           <button
             onClick={onApply}
             style={{
-              padding: '10px 20px',
+              padding: 'var(--spacing-sm) var(--spacing-xl)',
               backgroundColor: 'var(--color-btn-primary-bg, #657E79)',
               color: 'var(--color-btn-primary-text, #FFFFFF)',
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: 'var(--radius-xs)',
               fontWeight: 'var(--font-weight-medium, 500)',
               cursor: 'pointer',
             }}

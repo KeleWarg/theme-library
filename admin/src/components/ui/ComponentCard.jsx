@@ -12,7 +12,7 @@ export default function ComponentCard({ component, onClick }) {
         display: 'flex',
         flexDirection: 'column',
         background: 'var(--color-bg-white)',
-        borderRadius: '8px',
+        borderRadius: 'var(--radius-sm)',
         overflow: 'hidden',
         border: 'none',
         cursor: 'pointer',
@@ -45,7 +45,7 @@ export default function ComponentCard({ component, onClick }) {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '16px' }}>
+      <div style={{ padding: 'var(--spacing-lg)' }}>
         <h3 style={{ 
           margin: 0, 
           fontSize: 'var(--font-size-body-md)',
@@ -56,14 +56,14 @@ export default function ComponentCard({ component, onClick }) {
         </h3>
         
         <p style={{ 
-          margin: '4px 0 12px', 
+          margin: 'var(--spacing-xs) 0 var(--spacing-md)', 
           fontSize: 'var(--font-size-body-sm)',
           color: 'var(--color-fg-caption)',
         }}>
           {category}
         </p>
 
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
           <Badge variant={code_status}>{code_status}</Badge>
           <Badge variant={status}>{status}</Badge>
         </div>

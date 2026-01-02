@@ -82,19 +82,19 @@ export default function ThemeCard({
           border: isActive
             ? '2px solid var(--color-btn-primary-bg, #657E79)'
             : '1px solid var(--color-fg-stroke-default, #BFC7D4)',
-          borderRadius: 'var(--radius-sm, 8px)',
+          borderRadius: 'var(--radius-sm)',
           backgroundColor: 'var(--color-bg-white, #FFFFFF)',
-          padding: '20px',
+          padding: 'var(--spacing-xl)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
+          gap: 'var(--spacing-lg)',
           position: 'relative',
         }}
       >
         {/* Header row with name, badges, and menu */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           {/* Theme name and badges */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
             <span
               style={{
                 fontWeight: 'var(--font-weight-semibold, 600)',
@@ -110,13 +110,13 @@ export default function ThemeCard({
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: 'var(--spacing-xs)',
                   backgroundColor: 'var(--color-bg-brand-subtle, #E8F5F3)',
                   color: 'var(--color-btn-primary-bg, #657E79)',
                   fontSize: 'var(--font-size-label-sm, 12px)',
                   fontWeight: 'var(--font-weight-medium, 500)',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
+                  padding: 'var(--spacing-xs) var(--spacing-sm)',
+                  borderRadius: 'var(--radius-xs)',
                 }}
               >
                 <Check size={12} />
@@ -141,7 +141,7 @@ export default function ThemeCard({
                     ? 'var(--color-bg-neutral-subtle, #F4F5F8)' 
                     : 'transparent',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: 'var(--radius-xs)',
                   cursor: 'pointer',
                   color: 'var(--color-fg-caption, #616A76)',
                   transition: 'background-color 0.15s ease',
@@ -171,12 +171,12 @@ export default function ThemeCard({
                     position: 'absolute',
                     top: '100%',
                     right: 0,
-                    marginTop: '4px',
+                    marginTop: 'var(--spacing-xs)',
                     minWidth: '140px',
                     backgroundColor: 'var(--color-bg-white, #FFFFFF)',
                     border: '1px solid var(--color-fg-stroke-default, #BFC7D4)',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
+                    borderRadius: 'var(--radius-sm)',
+                    boxShadow: 'var(--shadow-md)',
                     zIndex: 50,
                     overflow: 'hidden',
                   }}
@@ -283,7 +283,7 @@ export default function ThemeCard({
         </div>
 
         {/* Color swatches */}
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
           {colors.map((color, index) => (
             <div
               key={index}
@@ -291,7 +291,7 @@ export default function ThemeCard({
               style={{
                 width: '32px',
                 height: '32px',
-                borderRadius: '4px',
+                borderRadius: 'var(--radius-xs)',
                 backgroundColor: color,
                 border: '1px solid var(--color-fg-divider, #D7DCE5)',
               }}
@@ -301,7 +301,7 @@ export default function ThemeCard({
 
         {/* Status badge for database themes */}
         {isManageable && theme.status && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)' }}>
             <span
               data-testid="status-badge"
               style={{
@@ -327,16 +327,16 @@ export default function ThemeCard({
         )}
 
         {/* Action buttons */}
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
           <button
             data-testid="preview-button"
             onClick={onPreview}
             style={{
               flex: 1,
-              padding: '8px 16px',
+              padding: 'var(--spacing-sm) var(--spacing-lg)',
               backgroundColor: 'transparent',
               border: '1px solid var(--color-btn-secondary-border, #BFC7D4)',
-              borderRadius: '6px',
+              borderRadius: 'var(--radius-xs)',
               fontSize: 'var(--font-size-body-sm, 14px)',
               fontWeight: 'var(--font-weight-medium, 500)',
               color: 'var(--color-fg-body, #383C43)',
@@ -360,12 +360,12 @@ export default function ThemeCard({
             disabled={isActive}
             style={{
               flex: 1,
-              padding: '8px 16px',
+              padding: 'var(--spacing-sm) var(--spacing-lg)',
               backgroundColor: isActive
                 ? 'var(--color-btn-primary-disabled-bg, #BFC7D4)'
                 : 'var(--color-btn-primary-bg, #657E79)',
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: 'var(--radius-xs)',
               fontSize: 'var(--font-size-body-sm, 14px)',
               fontWeight: 'var(--font-weight-medium, 500)',
               color: 'var(--color-btn-primary-text, #FFFFFF)',
@@ -408,17 +408,17 @@ export default function ThemeCard({
             data-testid="delete-confirm-dialog"
             style={{
               backgroundColor: 'var(--color-bg-white, #FFFFFF)',
-              borderRadius: '12px',
-              padding: '24px',
+              borderRadius: 'var(--radius-md)',
+              padding: 'var(--spacing-xl)',
               maxWidth: '400px',
               width: '90%',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.16)',
+              boxShadow: 'var(--shadow-lg)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <h3
               style={{
-                margin: '0 0 12px',
+                margin: `0 0 var(--spacing-md)`,
                 fontSize: 'var(--font-size-title-md, 18px)',
                 fontWeight: 'var(--font-weight-semibold, 600)',
                 color: 'var(--color-fg-heading, #1E2125)',
@@ -428,7 +428,7 @@ export default function ThemeCard({
             </h3>
             <p
               style={{
-                margin: '0 0 24px',
+                margin: `0 0 var(--spacing-xl)`,
                 fontSize: 'var(--font-size-body-md, 16px)',
                 color: 'var(--color-fg-body, #383C43)',
                 lineHeight: 1.5,
@@ -436,15 +436,15 @@ export default function ThemeCard({
             >
               Are you sure you want to delete &quot;{theme.name}&quot;? This will also delete all tokens associated with this theme. This action cannot be undone.
             </p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', gap: 'var(--spacing-md)', justifyContent: 'flex-end' }}>
               <button
                 data-testid="cancel-delete-button"
                 onClick={handleCancelDelete}
                 style={{
-                  padding: '10px 20px',
+                  padding: 'var(--spacing-sm) var(--spacing-xl)',
                   backgroundColor: 'transparent',
                   border: '1px solid var(--color-btn-secondary-border, #BFC7D4)',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-sm)',
                   fontSize: 'var(--font-size-body-sm, 14px)',
                   fontWeight: 'var(--font-weight-medium, 500)',
                   color: 'var(--color-fg-body, #383C43)',
@@ -457,10 +457,10 @@ export default function ThemeCard({
                 data-testid="confirm-delete-button"
                 onClick={handleConfirmDelete}
                 style={{
-                  padding: '10px 20px',
+                  padding: 'var(--spacing-sm) var(--spacing-xl)',
                   backgroundColor: 'var(--color-fg-feedback-error, #EB4015)',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-sm)',
                   fontSize: 'var(--font-size-body-sm, 14px)',
                   fontWeight: 'var(--font-weight-medium, 500)',
                   color: '#FFFFFF',
