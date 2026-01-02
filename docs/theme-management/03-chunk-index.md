@@ -2,8 +2,8 @@
 
 ## Overview
 
-Total chunks: **20** across **5** phases
-Estimated total time: **40-55 hours**
+Total chunks: **42** across **8** phases
+Estimated total time: **70-85 hours**
 
 ---
 
@@ -80,6 +80,72 @@ Estimated total time: **40-55 hours**
 
 ---
 
+## Phase 6: AI Code Generation
+
+| Chunk | Name | Est. Time | Dependencies | Status |
+|-------|------|-----------|--------------|--------|
+| 6.01 | AI Types & Config | 0.5h | Phase 5 | ✅ |
+| 6.02 | Prompt Builder | 1.5h | 6.01 | ✅ |
+| 6.03 | Code Generation Service | 2h | 6.02 | ✅ |
+| 6.04 | GenerateButton Component | 1h | 6.01 | ✅ |
+| 6.05 | FeedbackModal Component | 1h | 6.01 | ✅ |
+| 6.06 | ComponentDetail Integration | 2h | 6.03, 6.04 | ✅ |
+
+**Phase 6 Total:** 8 hours
+
+---
+
+## Phase 7: Export + Dashboard
+
+| Chunk | Name | Est. Time | Dependencies | Status |
+|-------|------|-----------|--------------|--------|
+| 7.01 | Export Types & Utils | 1h | Phase 6 | ✅ |
+| 7.02 | LLMS.txt Generator | 1.5h | 7.01 | ✅ |
+| 7.03 | Package Generator | 2h | 7.01 | ✅ |
+| 7.04 | CSS Token Exporter | 1.5h | 7.01 | ✅ |
+| 7.05 | Export Modal Component | 2h | 7.02, 7.03, 7.04 | ✅ |
+| 7.06 | Settings Page | 1.5h | 7.01 | ✅ |
+| 7.07 | Dashboard Stats | 1.5h | 7.01 | ✅ |
+| 7.08 | Dashboard Page | 2h | 7.07 | ✅ |
+
+**Phase 7 Total:** 13 hours
+
+---
+
+## Phase 8: AI Platform Export
+
+| Chunk | Name | Est. Time | Dependencies | Status |
+|-------|------|-----------|--------------|--------|
+| 8.01 | AI Export Types | 0.5h | Phase 7 | ✅ |
+| 8.02 | Token Utils | 1h | 8.01 | ✅ |
+| 8.03 | Cursor Rules Generator | 1h | 8.02 | ✅ |
+| 8.04 | Claude Code Generator | 1h | 8.02 | ✅ |
+| 8.05 | Project Knowledge Generator | 1h | 8.02 | ✅ |
+| 8.06 | MCP Server | 2h | 8.02 | ✅ |
+| 8.07 | AI Export Panel | 1.5h | 8.03, 8.04, 8.05 | ✅ |
+| 8.08 | Full Package Generator | 1h | 8.01 | ✅ |
+
+**Phase 8 Total:** 9 hours
+
+---
+
+## Phase 9: Figma Plugin (INDEPENDENT)
+
+| Chunk | Name | Est. Time | Dependencies | Status |
+|-------|------|-----------|--------------|--------|
+| 9.01 | Plugin Scaffold | 0.5h | None | ✅ |
+| 9.02 | Plugin UI | 1h | 9.01 | ✅ |
+| 9.03 | Variable Reader | 1.5h | 9.02 | ✅ |
+| 9.04 | Export Logic | 1.5h | 9.03 | ✅ |
+| 9.05 | API Sync | 1.5h | 9.02, 9.03, 9.04 | ✅ |
+| 9.06 | Manual Testing | 1h | 9.05 | ✅ |
+
+**Phase 9 Total:** 8 hours
+
+**Note:** Phase 9 can run in parallel with Phases 6-8
+
+---
+
 ## Dependency Graph
 
 ```
@@ -108,6 +174,30 @@ Phase 4: Creation & Export
                          ↓
 Phase 5: Integration
   5.01 (Page) ── 5.02 (Card) ── 5.03 (Tests)
+                         │
+                         ↓
+Phase 6: AI Code Generation
+  6.01 (Types & Config) ──┬── 6.02 (Prompt Builder) ── 6.03 (Code Gen)
+                          ├── 6.04 (GenerateButton) ─────────┐
+                          └── 6.05 (FeedbackModal)           │
+                                                             ↓
+                                               6.06 (ComponentDetail Integration)
+                         │
+                         ↓
+Phase 7: Export + Dashboard
+  7.01 (Types & Utils) ──┬── 7.02 (LLMS.txt) ───────┐
+                         ├── 7.03 (Package Gen) ────┼── 7.05 (Export Modal)
+                         ├── 7.04 (CSS Exporter) ───┘
+                         ├── 7.06 (Settings Page)
+                         └── 7.07 (Dashboard Stats) ── 7.08 (Dashboard Page)
+                         │
+                         ↓
+Phase 8: AI Platform Export
+  8.01 (Types) ── 8.02 (Token Utils) ──┬── 8.03 (Cursor Rules) ────┐
+                                       ├── 8.04 (Claude Code) ─────┼── 8.07 (AI Export Panel)
+                                       ├── 8.05 (Project Knowledge) ┘
+                                       └── 8.06 (MCP Server)
+  8.08 (Full Package) ◄── 8.01
 ```
 
 ---
@@ -149,6 +239,13 @@ These chunks can be worked on in parallel:
 | Gate 4 | Phase 3 complete (3.01-3.05) | `gate-4.test.jsx` | ✅ |
 | Gate 5 | Phase 4 complete (4.01-4.04) | `gate-5.test.jsx` | ✅ |
 | Gate 6 | Phase 5 complete (5.01-5.03) | `full-flow.spec.ts` | ✅ |
+| Gate 6A | 6.01 + 6.02 + 6.03 complete | `gate-6a.test.ts` | ✅ |
+| Gate 6B | Phase 6 complete (6.01-6.06) | `gate-6b.test.tsx` | ✅ |
+| Gate 7A | 7.01 + 7.02 + 7.03 + 7.04 complete | `gate-7a.test.ts` | ⬜ |
+| Gate 7B | Phase 7 complete (7.01-7.08) | `gate-7b.test.ts` | ⬜ |
+| Gate 8A | 8.01 + 8.02 + 8.03 + 8.04 + 8.05 complete | `gate-8a.test.ts` | ⬜ |
+| Gate 8B | Phase 8 complete (8.01-8.08) | `gate-8b.test.ts` | ⬜ |
+| Gate 9 | Phase 9 complete (9.01-9.06) | Manual Figma Testing | ⬜ |
 
 ---
 

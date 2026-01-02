@@ -9,6 +9,7 @@ import express from 'express'
 import cors from 'cors'
 import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
+import { handleTokenSync } from './src/api/tokens.js'
 
 // Load environment variables
 dotenv.config({ path: '.env.local' })
@@ -200,18 +201,31 @@ app.get('/api/health', (req, res) => {
   })
 })
 
+/**
+ * POST /api/tokens - Sync tokens from Figma plugin (Chunk 9.05)
+ * 
+ * Receives exported tokens from the Figma Variables Exporter plugin
+ * and creates/updates themes in the database.
+ */
+app.post('/api/tokens', async (req, res) => {
+  const apiKey = process.env.FIGMA_SYNC_API_KEY || null
+  await handleTokenSync(req, res, supabase, apiKey)
+})
+
 // Start server
 app.listen(PORT, () => {
   console.log('')
   console.log('🚀 Design System API Server')
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-  console.log(`   API:      http://localhost:${PORT}/api/components`)
-  console.log(`   Health:   http://localhost:${PORT}/api/health`)
-  console.log(`   Database: ${supabase ? '✅ Connected' : '⚠️  Not configured'}`)
+  console.log(`   Components: http://localhost:${PORT}/api/components`)
+  console.log(`   Tokens:     http://localhost:${PORT}/api/tokens`)
+  console.log(`   Health:     http://localhost:${PORT}/api/health`)
+  console.log(`   Database:   ${supabase ? '✅ Connected' : '⚠️  Not configured'}`)
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
   console.log('')
   console.log('📋 In Figma plugin, set API URL to:')
-  console.log(`   http://localhost:${PORT}/api/components`)
+  console.log(`   Components: http://localhost:${PORT}/api/components`)
+  console.log(`   Tokens:     http://localhost:${PORT}/api/tokens`)
   console.log('')
 })
 

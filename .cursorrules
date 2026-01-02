@@ -13,6 +13,147 @@ ALWAYS read the relevant phase doc before implementing:
 - `docs/phases/PHASE_*.md` - Step-by-step implementation tasks
 - `docs/CURSOR_BUILD_GUIDE.md` - Token transformation reference
 
+---
+
+## Theme Management System
+
+This feature follows the **research-first-development methodology** with a structured document harness.
+
+### Document Harness Location
+```
+docs/theme-management/
+├── 00-problem-statement.md      # Why we're building this
+├── 01-research-foundation.md    # Figma format spec, provenance table
+├── 02-architecture.md           # Phases, data flow, key types
+├── 03-chunk-index.md            # All chunks with dependencies + gate status
+├── 04-config-reference.md       # All tunable values
+├── GATE_CHECKPOINTS.md          # Integration tests + orchestration rules
+└── chunks/
+    └── chunk-X_YY.md            # Individual implementation specs
+```
+
+### Before Implementing ANY Theme Management Feature
+
+1. **Read the chunk spec first** — Find `docs/theme-management/chunks/chunk-X_YY.md`
+2. **Check dependencies** — Verify prerequisite chunks are complete
+3. **Reference architecture** — Review `02-architecture.md` for data flow and type contracts
+4. **Use config values** — Never hardcode; reference `04-config-reference.md`
+
+### Phase Status
+```
+✅ Phase 1: Foundation (1.01 → 1.04)
+✅ Phase 2: Import Flow (2.01 → 2.04)
+✅ Phase 3: Editing (3.01 → 3.05)
+✅ Phase 4: Creation & Export (4.01 → 4.04)
+✅ Phase 5: Integration & Testing (5.01 → 5.03)
+⬜ Phase 6: AI Code Generation (6.01 → 6.06)
+⬜ Phase 7: Export + Dashboard (7.01 → 7.08)
+⬜ Phase 8: AI Platform Export (8.01 → 8.08)
+⬜ Phase 9: Figma Plugin (9.01 → 9.06) — INDEPENDENT
+```
+
+### Theme Management Key Types
+Defined in `docs/theme-management/02-architecture.md`:
+- **Theme** — Database record for theme metadata
+- **ThemeToken** — Database record for individual tokens
+- **ParsedToken** — Parser output structure
+- **ParseResult** — Parser return with tokens, errors, warnings
+
+### Update Status After Each Chunk
+Edit `docs/theme-management/03-chunk-index.md`:
+- ⬜ Not started → 🔄 In progress → ✅ Complete
+
+---
+
+## Phases 6-9: New Features
+
+### Phase 6: AI Code Generation
+Generate React code from Figma specs using Claude API.
+
+**Files:**
+```
+src/lib/ai/
+├── types.ts           # 6.01
+├── config.ts          # 6.01
+├── promptBuilder.ts   # 6.02
+└── generateCode.ts    # 6.03
+src/components/ui/
+├── GenerateButton.jsx # 6.04
+└── FeedbackModal.jsx  # 6.05
+```
+
+**Requires:** `VITE_ANTHROPIC_API_KEY` in `.env.local`
+
+### Phase 7: Export + Dashboard
+Package export, LLMS.txt, Settings, Dashboard.
+
+**Files:**
+```
+src/lib/export/        # types, utils, generators
+src/lib/dashboard/     # stats
+src/components/export/ # ExportModal
+src/pages/             # Settings, Dashboard
+```
+
+**Requires:** `npm install jszip file-saver`
+
+### Phase 8: AI Platform Export
+Export for Cursor, Claude Code, Bolt/Lovable, MCP.
+
+**Files:**
+```
+src/lib/aiExport/      # generators for each format
+src/components/        # AIExportPanel
+mcp-server/            # standalone MCP server
+```
+
+### Phase 9: Figma Plugin (INDEPENDENT)
+Can run parallel to Phases 6-8.
+
+**Files:**
+```
+figma-variables-exporter/
+├── manifest.json
+├── ui.html
+└── src/code.ts, exporter.ts, variableReader.ts
+```
+
+---
+
+## Agent Orchestration Rules
+
+**Before starting ANY chunk:**
+1. Check `03-chunk-index.md` for dependencies
+2. ALL dependencies must show ✅
+3. If crossing a phase boundary, run the gate test first
+
+**After completing ANY chunk:**
+1. Run tests for that chunk
+2. Update status to ✅ in `03-chunk-index.md`
+3. Check if a gate checkpoint is triggered
+4. If gate triggered, create and run the gate test
+
+**Gate Checkpoints (Phases 1-5):**
+- Gate 1 (after 1.01-1.03) blocks 2.02, 2.03
+- Gate 2 (after 2.01-2.03) blocks 2.04
+- Gate 3 (after 2.04) blocks Phase 3
+- Gate 4 (after Phase 3) blocks Phase 4
+- Gate 5 (after Phase 4) blocks Phase 5
+- Gate 6 (after Phase 5) is release validation
+
+**Gate Checkpoints (Phases 6-9):**
+- Gate 6A (after 6.01-6.03) blocks 6.06
+- Gate 6B (after Phase 6) blocks Phase 7
+- Gate 7A (after 7.01-7.03) blocks 7.05, 7.06
+- Gate 7B (after Phase 7) blocks Phase 8
+- Gate 8A (after 8.01-8.05) blocks 8.07
+- Gate 8B (after Phase 8) is release validation
+- Gate 9 (after Phase 9) is manual Figma testing
+
+See `GATE_CHECKPOINTS.md` for full test code.
+
+---
+
 ## Token Data
 Raw Figma exports are in `figma_tokens/raw/*.json` in DTCG format:
 ```json
@@ -54,16 +195,31 @@ src/
 ├── components/
 │   ├── layout/        # Sidebar, Header, Layout
 │   ├── ui/            # Reusable: Button, Card, Badge, etc.
-│   └── features/      # Feature-specific components
+│   ├── themes/        # Theme management feature
+│   │   ├── import/    # Import wizard components
+│   │   ├── create/    # Creation wizard components
+│   │   ├── editor/    # Theme editor components
+│   │   └── export/    # Export components
+│   ├── export/        # Package export (Phase 7)
+│   ├── dashboard/     # Dashboard components (Phase 7)
+│   └── features/      # Other feature-specific components
 ├── pages/             # Route pages
 ├── lib/               # Utilities, API clients, helpers
+│   ├── ai/            # AI code generation (Phase 6)
+│   ├── export/        # Package export (Phase 7)
+│   ├── aiExport/      # AI platform export (Phase 8)
+│   ├── dashboard/     # Dashboard stats (Phase 7)
+│   ├── themeService.js
+│   ├── tokenParser.js
+│   └── exportGenerators.js
 ├── hooks/             # Custom React hooks
-└── __tests__/         # Test files (or colocate with components)
+└── __tests__/         # Test files
 ```
 
 ### File naming
 - Components: `PascalCase.jsx` (e.g., `ColorSwatch.jsx`)
 - Utilities: `camelCase.js` (e.g., `tokenData.js`)
+- Types: `camelCase.ts` (e.g., `types.ts`)
 - Hooks: `use*.js` (e.g., `useTheme.js`)
 - Tests: `*.test.jsx` alongside component
 
@@ -99,50 +255,30 @@ pending_code → generated → approved → published
 ```
 
 ## Database Schema (Supabase)
-```sql
--- Components table
-components (
-  id uuid PRIMARY KEY,
-  figma_id text UNIQUE,
-  name text NOT NULL,
-  description text,
-  status text DEFAULT 'pending_code',
-  variants jsonb,
-  prop_types jsonb,
-  tokens_used text[],
-  snapshot_url text,
-  figma_url text,
-  react_code text,
-  created_at timestamptz,
-  updated_at timestamptz
-)
 
--- Tokens table  
-tokens (
-  id uuid PRIMARY KEY,
-  theme text NOT NULL,
-  category text,
-  name text NOT NULL,
-  value jsonb,
-  css_variable text
-)
+### Existing Tables
+```sql
+components (id, figma_id, name, description, status, variants, prop_types, tokens_used, snapshot_url, figma_url, react_code, created_at, updated_at)
+tokens (id, theme, category, name, value, css_variable)
 ```
 
-## AI Code Generation
-When generating React components with Claude:
-1. Include component name and description
-2. List all variants and their properties
-3. Map prop types with TypeScript types
-4. Specify which CSS variables to use
-5. Request accessible, well-commented code
+### Theme Management Tables
+```sql
+themes (id, name, slug, description, status, source, source_file_name, created_at, updated_at, published_at)
+theme_tokens (id, theme_id, category, subcategory, group_name, name, value, css_variable, figma_variable_id, sort_order, created_at, updated_at)
+```
 
 ## Task Execution
-1. Read the phase doc completely before starting
-2. Implement ONE task at a time
-3. Write tests alongside code
-4. Run `npm test` after each task
-5. Mark task complete in the doc
-6. Don't proceed if tests fail
+
+### For Theme Management Chunks
+1. Read `docs/theme-management/chunks/chunk-X_YY.md` completely
+2. Check **Dependencies** section — all must be complete
+3. Note **Inputs/Outputs** — what you receive and must produce
+4. Follow **Implementation Notes** — especially Gotchas
+5. Create all files listed in **Files Created**
+6. Implement all tests from **Tests** section
+7. Run verification steps
+8. Update status in `03-chunk-index.md`
 
 ## Dependencies
 ```json
@@ -160,7 +296,9 @@ When generating React components with Claude:
   "devDependencies": {
     "vitest": "^1.0.0",
     "@testing-library/react": "^14.1.0",
-    "@testing-library/jest-dom": "^6.1.0"
+    "@testing-library/jest-dom": "^6.1.0",
+    "playwright": "^1.40.0",
+    "@types/file-saver": "^2.0.7"
   }
 }
 ```
@@ -169,46 +307,39 @@ When generating React components with Claude:
 ```bash
 npm run dev          # Start dev server
 npm test             # Run tests
-npm run test:watch   # Tests in watch mode
 npm run build        # Production build
+
+# Gate tests
+npm test tests/integration/gate-6a.test.ts
+
+# Phase 8 MCP server
+cd mcp-server && npm run build
+
+# Phase 9 Figma plugin
+cd figma-variables-exporter && npm run build
 ```
 
 ## Common Patterns
 
-### Fetching from Supabase
+### Theme Service
 ```javascript
-import { supabase } from '../lib/supabase'
-
-const { data, error } = await supabase
-  .from('components')
-  .select('*')
-  .eq('status', 'published')
+import { getThemes, createTheme, bulkCreateTokens } from '../lib/themeService'
+const themes = await getThemes()
+const theme = await createTheme({ name, slug, description })
+await bulkCreateTokens(tokens.map(t => ({ ...t, theme_id: theme.id })))
 ```
 
-### Theme context
+### AI Code Generation (Phase 6)
 ```javascript
-import { useTheme } from '../hooks/useTheme'
-
-function Component() {
-  const { theme, setTheme } = useTheme()
-  // ...
-}
-```
-
-### Copy to clipboard with feedback
-```javascript
-const [copied, setCopied] = useState(false)
-
-const handleCopy = (text) => {
-  navigator.clipboard.writeText(text)
-  setCopied(true)
-  setTimeout(() => setCopied(false), 1500)
-}
+import { generateComponentCode, isAIConfigured } from '../lib/ai/generateCode'
+if (!isAIConfigured()) return
+const result = await generateComponentCode({ component, feedback })
 ```
 
 ## Don't
 - Don't hardcode colors, sizes, or spacing
 - Don't skip writing tests
-- Don't implement multiple tasks at once
+- Don't implement multiple chunks at once
 - Don't proceed with failing tests
-- Don't create components without reading the phase doc first
+- Don't skip chunk dependencies
+- Don't hardcode thresholds — use config reference

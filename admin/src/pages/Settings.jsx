@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Download, FileText, Package, Check, AlertCircle, Figma, RefreshCw } from 'lucide-react'
 import { useComponents } from '../hooks/useComponents'
 import { downloadPackage, generateLLMSTxt } from '../lib/packageGenerator'
-import { isAIConfigured } from '../lib/generateCode'
+import { isAIConfigured } from '../lib/ai/generateCode'
 import { getRecentSyncs } from '../lib/componentSync'
+import { getThemes } from '../lib/themeService'
+import AIExportPanel from '../components/AIExportPanel'
+import { getAllColorTokens, getAllTypographyTokens, spacingTokens } from '../lib/tokenData'
 
 export default function Settings() {
   const { components, loading } = useComponents()
@@ -11,6 +14,84 @@ export default function Settings() {
   const [version, setVersion] = useState('1.0.0')
   const [exporting, setExporting] = useState(false)
   const [exportResult, setExportResult] = useState(null)
+  const [availableThemes, setAvailableThemes] = useState([])
+
+  // Fetch themes for AI export
+  useEffect(() => {
+    async function fetchThemes() {
+      try {
+        const themes = await getThemes()
+        setAvailableThemes(themes.map(t => t.slug || t.name))
+      } catch (err) {
+        console.error('Failed to fetch themes:', err)
+        setAvailableThemes(['theme-system-default'])
+      }
+    }
+    fetchThemes()
+  }, [])
+
+  // Build tokens array for AI export (transform to DesignToken format)
+  const allTokens = useMemo(() => {
+    const tokens = []
+    
+    // Add color tokens
+    getAllColorTokens().forEach(t => {
+      tokens.push({
+        path: t.variable.replace('--', '').replace(/-/g, '.'),
+        name: t.name,
+        category: 'color',
+        type: 'color',
+        value: t.variable, // CSS variable reference
+        cssVar: t.variable,
+      })
+    })
+    
+    // Add typography tokens
+    getAllTypographyTokens().forEach(t => {
+      tokens.push({
+        path: t.variable.replace('--', '').replace(/-/g, '.'),
+        name: t.name,
+        category: 'typography',
+        type: 'string',
+        value: t.value,
+        cssVar: t.variable,
+      })
+    })
+    
+    // Add spacing tokens
+    spacingTokens.forEach(t => {
+      tokens.push({
+        path: t.variable.replace('--', '').replace(/-/g, '.'),
+        name: t.name,
+        category: 'spacing',
+        type: 'string',
+        value: t.value,
+        cssVar: t.variable,
+      })
+    })
+    
+    return tokens
+  }, [])
+
+  // Build AI export bundle
+  const aiBundle = useMemo(() => ({
+    tokens: allTokens,
+    components: components.map(c => ({
+      name: c.name,
+      slug: c.slug,
+      description: c.description,
+      props: c.prop_types,
+      variants: c.variants,
+      jsx_code: c.jsx_code,
+      status: c.status,
+    })),
+    themes: availableThemes,
+    metadata: {
+      packageName,
+      version,
+      exportedAt: new Date().toISOString(),
+    },
+  }), [allTokens, components, availableThemes, packageName, version])
 
   const publishedComponents = components.filter(c => c.status === 'published' && c.jsx_code)
   const publishedCount = publishedComponents.length
@@ -408,6 +489,9 @@ export default function Settings() {
           )}
         </div>
       </section>
+
+      {/* AI Export Panel */}
+      <AIExportPanel bundle={aiBundle} />
     </div>
   )
 }

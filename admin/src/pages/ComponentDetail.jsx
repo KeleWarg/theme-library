@@ -10,7 +10,7 @@ import PropsTable from '../components/ui/PropsTable'
 import ComponentPreview from '../components/ui/ComponentPreview'
 import GenerateButton from '../components/ui/GenerateButton'
 import FeedbackModal from '../components/ui/FeedbackModal'
-import { generateComponentCode } from '../lib/generateCode'
+import { generateComponentCode, isAIConfigured } from '../lib/ai/generateCode'
 import { themes } from '../lib/tokenData'
 
 const tabs = [
@@ -82,7 +82,10 @@ export default function ComponentDetail() {
     setShowFeedbackModal(false)
     
     try {
-      const result = await generateComponentCode(component, feedback)
+      const result = await generateComponentCode({
+        component,
+        feedback: feedback || undefined,
+      })
       setLocalCode(result.jsx_code)
       if (result.props && result.props.length > 0) {
         setLocalProps(result.props)

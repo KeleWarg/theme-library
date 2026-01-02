@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "outDir": "./",
+    "rootDir": "./src",
+    "typeRoots": ["./node_modules/@figma"],
+    "types": ["plugin-typings"],
+    "skipLibCheck": true
+  },
+  "files": [
+    "src/variableReader.ts",
+    "src/exporter.ts",
+    "src/code.ts"
+  ]
+}
+

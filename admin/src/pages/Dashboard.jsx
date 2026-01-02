@@ -1,29 +1,18 @@
 import { Link } from 'react-router-dom'
 import { Package, Sparkles, CheckCircle, Clock, ArrowRight, AlertCircle, Download } from 'lucide-react'
 import { useComponents } from '../hooks/useComponents'
+import { calculateStats, getComponentsNeedingAttention } from '../lib/dashboard/stats'
+import StatCard from '../components/dashboard/StatCard'
 import Badge from '../components/ui/Badge'
 
 export default function Dashboard() {
   const { components, loading } = useComponents()
   
-  // Calculate stats
-  const stats = {
-    total: components.length,
-    published: components.filter(c => c.status === 'published').length,
-    approved: components.filter(c => c.code_status === 'approved').length,
-    generated: components.filter(c => c.code_status === 'generated').length,
-    pending: components.filter(c => c.code_status === 'pending').length,
-  }
+  // Calculate stats using the imported function
+  const stats = calculateStats(components)
 
-  // Components that need attention (pending or generated but not approved)
-  const needsAttention = components
-    .filter(c => ['pending', 'generated'].includes(c.code_status))
-    .slice(0, 5)
-
-  // Recently updated (would need timestamp in real app)
-  const recentlyUpdated = components
-    .filter(c => c.jsx_code)
-    .slice(0, 3)
+  // Components that need attention using the imported function
+  const needsAttention = getComponentsNeedingAttention(components, 5)
 
   if (loading) {
     return (
@@ -59,26 +48,25 @@ export default function Dashboard() {
         <StatCard 
           label="Total Components" 
           value={stats.total} 
-          icon={<Package size={20} />}
+          icon={Package}
           color="var(--color-fg-heading)"
         />
         <StatCard 
           label="Published" 
           value={stats.published} 
-          icon={<CheckCircle size={20} />}
+          icon={CheckCircle}
           color="var(--color-fg-feedback-success)"
-          subtitle={stats.total > 0 ? `${Math.round((stats.published / stats.total) * 100)}% of total` : null}
         />
         <StatCard 
           label="Ready for Review" 
           value={stats.generated} 
-          icon={<Sparkles size={20} />}
+          icon={Sparkles}
           color="#7C3AED"
         />
         <StatCard 
           label="Needs Code" 
           value={stats.pending} 
-          icon={<Clock size={20} />}
+          icon={Clock}
           color="var(--color-fg-feedback-warning)"
         />
       </div>
@@ -302,34 +290,6 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-    </div>
-  )
-}
-
-function StatCard({ label, value, icon, color, subtitle }) {
-  return (
-    <div style={{ 
-      background: 'var(--color-bg-white)', 
-      padding: '20px', 
-      borderRadius: '8px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <span style={{ color: 'var(--color-fg-caption)', fontSize: '14px' }}>{label}</span>
-        <span style={{ color }}>{icon}</span>
-      </div>
-      <div style={{ 
-        fontSize: '32px', 
-        fontWeight: 'var(--font-weight-bold)', 
-        color 
-      }}>
-        {value}
-      </div>
-      {subtitle && (
-        <span style={{ fontSize: '12px', color: 'var(--color-fg-caption)' }}>{subtitle}</span>
-      )}
     </div>
   )
 }
