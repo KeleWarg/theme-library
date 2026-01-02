@@ -1,5 +1,5 @@
 {
-  "name": "@redventures/design-system",
+  "name": "@kele/design-system",
   "version": "1.0.0",
   "description": "Multi-theme design system tokens for AI-assisted development. Optimized for Bolt, Lovable, Cursor, and other LLM coding tools.",
   "main": "dist/tokens.js",
@@ -36,8 +36,8 @@
     "lovable",
     "cursor"
   ],
-  "author": "Red Ventures",
-  "license": "PROPRIETARY",
+  "author": "Kele",
+  "license": "MIT",
   "peerDependencies": {
     "tailwindcss": ">=3.0.0"
   }

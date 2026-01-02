@@ -1,4 +1,4 @@
-# Red Ventures Design System
+# Kele's Design System
 
 > Multi-theme design tokens optimized for AI-assisted development with Bolt, Lovable, Cursor, and other LLM coding tools.
 
@@ -7,14 +7,14 @@
 ### Installation
 
 ```bash
-npm install @redventures/design-system
+npm install @kele/design-system
 ```
 
 ### Basic Usage
 
 ```jsx
 // 1. Import the CSS tokens
-import '@redventures/design-system/css';
+import '@kele/design-system/css';
 
 // 2. Add theme class to your root element
 <html className="theme-health-sem">
@@ -32,7 +32,7 @@ import '@redventures/design-system/css';
 
 ```js
 // tailwind.config.js
-const designSystem = require('@redventures/design-system/tailwind');
+const designSystem = require('@kele/design-system/tailwind');
 
 module.exports = {
   presets: [designSystem],
@@ -79,7 +79,7 @@ function ThemeSwitcher() {
 ## 📦 Package Contents
 
 ```
-@redventures/design-system/
+@kele/design-system/
 ├── dist/
 │   ├── tokens.css          # CSS custom properties (all themes)
 │   ├── tokens.ts           # TypeScript definitions & utilities
@@ -96,7 +96,7 @@ This package includes `LLMS.txt` - a specially formatted documentation file that
 **For Cursor/Copilot**: The LLMS.txt file is automatically read when the package is installed.
 
 **For Bolt/Lovable**: Reference the design system in your prompt:
-> "Use the @redventures/design-system package. Apply the health-sem theme. Use semantic color tokens like var(--color-btn-primary-bg) instead of hardcoded colors."
+> "Use the @kele/design-system package. Apply the health-sem theme. Use semantic color tokens like var(--color-btn-primary-bg) instead of hardcoded colors."
 
 ## 🎯 Token Reference
 
@@ -254,4 +254,4 @@ function Input({ label, error, ...props }) {
 
 ## 📄 License
 
-Proprietary - Red Ventures
+MIT - Kele

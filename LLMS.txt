@@ -5,7 +5,7 @@
 
 ## Quick Start
 
-1. Import the CSS: `@import '@your-org/design-system/dist/tokens.css';`
+1. Import the CSS: `@import '@kele/design-system/dist/tokens.css';`
 2. Add theme to HTML: `<html class="theme-health-sem">`
 3. Use semantic CSS variables: `color: var(--color-fg-heading);`
 
@@ -89,7 +89,7 @@
 
 ### React Component with Theme
 ```jsx
-import '@your-org/design-system/dist/tokens.css';
+import '@kele/design-system/dist/tokens.css';
 
 function Card({ title, children }) {
   return (
