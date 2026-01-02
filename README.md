@@ -20,14 +20,6 @@ import '@kele/design-system/css';
 </html>
 ```
 
-## Themes
-
-- `theme-health-sem`
-- `theme-home-sem`
-- `theme-forbes-media-seo`
-- `theme-advisor-sem-compare-coverage`
-- `theme-llm`
-
 ## License
 
 MIT
