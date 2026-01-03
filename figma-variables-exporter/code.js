@@ -51,7 +51,7 @@
         continue;
       const variables = await getCollectionVariables(collection);
       for (const mode of collection.modes) {
-        const tokens = buildTokens(variables, mode.modeId, options);
+        const tokens = await buildTokens(variables, mode.modeId, options);
         if (Object.keys(tokens).length === 0)
           continue;
         files.push({
@@ -62,7 +62,7 @@
     }
     return files;
   }
-  function buildTokens(variables, modeId, options) {
+  async function buildTokens(variables, modeId, options) {
     const tokens = {};
     for (const v of variables) {
       if (!shouldExportVariable(v.name, options))
@@ -70,25 +70,67 @@
       const value = v.valuesByMode[modeId];
       if (value === void 0)
         continue;
-      const formatted = formatValue(value, v.resolvedType);
+      const formatted = await formatValue(value, v.resolvedType);
       const path = v.name.split("/").map((p) => p.trim());
       setNested(tokens, path, formatted);
     }
     return tokens;
   }
-  function formatValue(value, type) {
-    if (type === "COLOR" && typeof value === "object" && "r" in value) {
-      const { r, g, b, a = 1 } = value;
-      const hex = "#" + [r, g, b].map((c) => Math.round(c * 255).toString(16).padStart(2, "0")).join("").toUpperCase();
-      return { $type: "color", $value: { hex, alpha: a } };
+  async function resolveVariableValue(value, resolvedType) {
+    if (value === null || value === void 0) {
+      return null;
+    }
+    if (typeof value === "number" || typeof value === "string" || typeof value === "boolean") {
+      return value;
+    }
+    if (typeof value === "object" && value !== null) {
+      if ("type" in value && value.type === "VARIABLE_ALIAS") {
+        const aliasId = value.id;
+        try {
+          const referencedVar = await figma.variables.getVariableByIdAsync(aliasId);
+          if (referencedVar) {
+            const firstModeId = Object.keys(referencedVar.valuesByMode)[0];
+            const refValue = referencedVar.valuesByMode[firstModeId];
+            return resolveVariableValue(refValue, referencedVar.resolvedType);
+          }
+        } catch (e) {
+          return { alias: aliasId };
+        }
+      }
+      if ("r" in value && "g" in value && "b" in value) {
+        const c = value;
+        const toHex = (n) => Math.round(n * 255).toString(16).padStart(2, "0");
+        return {
+          hex: "#" + toHex(c.r) + toHex(c.g) + toHex(c.b),
+          alpha: c.a !== void 0 ? c.a : 1
+        };
+      }
+    }
+    if (typeof value === "object") {
+      return String(value);
+    }
+    return value;
+  }
+  async function formatValue(value, type) {
+    const resolved = await resolveVariableValue(value, type);
+    if (type === "COLOR") {
+      if (typeof resolved === "object" && resolved !== null && "hex" in resolved) {
+        return { $type: "color", $value: resolved };
+      }
+      if (typeof resolved === "object" && resolved !== null && "alias" in resolved) {
+        return { $type: "color", $value: resolved };
+      }
     }
     if (type === "FLOAT") {
-      return { $type: "number", $value: value };
+      return { $type: "number", $value: resolved };
     }
     if (type === "STRING") {
-      return { $type: "string", $value: value };
+      return { $type: "string", $value: resolved };
     }
-    return { $type: "unknown", $value: String(value) };
+    if (type === "BOOLEAN") {
+      return { $type: "boolean", $value: resolved };
+    }
+    return { $type: "unknown", $value: resolved };
   }
   function setNested(obj, path, value) {
     let current = obj;
